@@ -167,15 +167,21 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('associations.*') ? 'active' : '' }}" 
+                        <a class="nav-link {{ request()->routeIs('associations.*') ? 'active' : '' }}"
                            href="{{ route('associations.index') }}">
                             <i class="fas fa-users me-1"></i>Associations
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" 
+                        <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}"
                            href="{{ route('projects.index') }}">
                             <i class="fas fa-project-diagram me-1"></i>Projets
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('greenspaces.*') ? 'active' : '' }}"
+                           href="{{ route('greenspaces.index') }}">
+                            <i class="fa-solid fa-tree"></i>greenspaces
                         </a>
                     </li>
                 </ul>

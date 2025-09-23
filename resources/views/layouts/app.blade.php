@@ -469,6 +469,12 @@
                             <i class="fas fa-project-diagram me-1"></i>Projets
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('greenspaces.*') ? 'active' : '' }}"
+                           href="{{ route('greenspaces.index') }}">
+                            <i class="fa-solid fa-tree"></i>greenspaces
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

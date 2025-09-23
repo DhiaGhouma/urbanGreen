@@ -71,18 +71,21 @@ class GreenSpaceController extends Controller
             ->with('success', 'Espace vert créé avec succès.');
     }
 
-    public function show(GreenSpace $greenSpace): View
+    // Change parameter name from $greenSpace to $greenspace (lowercase)
+    public function show(GreenSpace $greenspace): View
     {
-        $greenSpace->load('projects');
-        return view('greenspaces.show', compact('greenSpace'));
+        $greenspace->load('projects');
+        return view('greenspaces.show', compact('greenspace'));
     }
 
-    public function edit(GreenSpace $greenSpace): View
+    // Change parameter name from $greenSpace to $greenspace (lowercase)
+    public function edit(GreenSpace $greenspace): View
     {
-        return view('greenspaces.edit', compact('greenSpace'));
+        return view('greenspaces.edit', compact('greenspace'));
     }
 
-    public function update(Request $request, GreenSpace $greenSpace): RedirectResponse
+    // Change parameter name from $greenSpace to $greenspace (lowercase)
+    public function update(Request $request, GreenSpace $greenspace): RedirectResponse
     {
         $validated = $request->validate([
             'name'          => 'required|string|max:255',
@@ -107,15 +110,16 @@ class GreenSpaceController extends Controller
             $validated['photos_after'] = array_map(fn($file) => $file->store('greenspaces/photos_after', 'public'), $request->file('photos_after'));
         }
 
-        $greenSpace->update($validated);
+        $greenspace->update($validated);
 
         return redirect()->route('greenspaces.index')
             ->with('success', 'Espace vert mis à jour avec succès.');
     }
 
-    public function destroy(GreenSpace $greenSpace): RedirectResponse
+    // Change parameter name from $greenSpace to $greenspace (lowercase)
+    public function destroy(GreenSpace $greenspace): RedirectResponse
     {
-        $greenSpace->delete();
+        $greenspace->delete();
 
         return redirect()->route('greenspaces.index')
             ->with('success', 'Espace vert supprimé avec succès.');
