@@ -45,7 +45,9 @@ class DatabaseSeeder extends Seeder
             ['title' => 'Hôtels à Insectes - Square du Vert-Galant', 'description' => 'Installation d\'hôtels à insectes...', 'estimated_budget' => 3500.00, 'status' => 'terminé', 'association_id' => 3, 'green_space_id' => 2],
             ['title' => 'Parcours Découverte Nature - Jardin des Tuileries', 'description' => 'Création d\'un parcours pédagogique...', 'estimated_budget' => 8000.00, 'status' => 'proposé', 'association_id' => 4, 'green_space_id' => 3],
             ['title' => 'Compostage Collectif - Parc de Bercy', 'description' => 'Mise en place d\'un système de compostage collectif...', 'estimated_budget' => 5500.00, 'status' => 'en cours', 'association_id' => 2, 'green_space_id' => 4],
-            ['title' => 'Jardin Médiéval Participatif', 'description' => 'Restauration et animation du jardin médiéval...', 'estimated_budget' => 12000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 5]
+            ['title' => 'Jardin Médiéval Participatif', 'description' => 'Restauration et animation du jardin médiéval...', 'estimated_budget' => 12000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 5],
+            ['title' => 'Jardin japonaise Participatif', 'description' => 'Restauration et animation du jardin médiéval...', 'estimated_budget' => 10000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 6]
+
         ];
 
         foreach ($projects as $projectData) {
