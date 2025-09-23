@@ -14,18 +14,25 @@ class GreenSpaceController extends Controller
         $query = GreenSpace::query();
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('location', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
         }
 
         if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         $greenSpaces = $query->paginate(10);
 
         $types = GreenSpace::select('type')->distinct()->pluck('type');
+        $statuses = GreenSpace::select('status')->distinct()->pluck('status');
 
-        return view('greenspaces.index', compact('greenSpaces', 'types'));
+        return view('greenspaces.index', compact('greenSpaces', 'types', 'statuses'));
     }
 
     public function create(): View
@@ -35,14 +42,30 @@ class GreenSpaceController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'type' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name'          => 'required|string|max:255',
+            'location'      => 'required|string|max:255',
+            'description'   => 'nullable|string',
+            'type'          => 'required|string|max:255',
+            'surface'       => 'nullable|numeric|min:0',
+            'latitude'      => 'nullable|numeric|between:-90,90',
+            'longitude'     => 'nullable|numeric|between:-180,180',
+            'status'        => 'required|string|in:proposé,en cours,terminé',
+            'photos_before' => 'nullable|array',
+            'photos_before.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'photos_after'  => 'nullable|array',
+            'photos_after.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        GreenSpace::create($request->all());
+        // Handle file uploads
+        if ($request->hasFile('photos_before')) {
+            $validated['photos_before'] = array_map(fn($file) => $file->store('greenspaces/photos_before', 'public'), $request->file('photos_before'));
+        }
+        if ($request->hasFile('photos_after')) {
+            $validated['photos_after'] = array_map(fn($file) => $file->store('greenspaces/photos_after', 'public'), $request->file('photos_after'));
+        }
+
+        GreenSpace::create($validated);
 
         return redirect()->route('greenspaces.index')
             ->with('success', 'Espace vert créé avec succès.');
@@ -61,17 +84,33 @@ class GreenSpaceController extends Controller
 
     public function update(Request $request, GreenSpace $greenSpace): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'type' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name'          => 'required|string|max:255',
+            'location'      => 'required|string|max:255',
+            'description'   => 'nullable|string',
+            'type'          => 'required|string|max:255',
+            'surface'       => 'nullable|numeric|min:0',
+            'latitude'      => 'nullable|numeric|between:-90,90',
+            'longitude'     => 'nullable|numeric|between:-180,180',
+            'status'        => 'required|string|in:proposé,en cours,terminé',
+            'photos_before' => 'nullable|array',
+            'photos_before.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'photos_after'  => 'nullable|array',
+            'photos_after.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $greenSpace->update($request->all());
+        if ($request->hasFile('photos_before')) {
+            $validated['photos_before'] = array_map(fn($file) => $file->store('greenspaces/photos_before', 'public'), $request->file('photos_before'));
+        }
+
+        if ($request->hasFile('photos_after')) {
+            $validated['photos_after'] = array_map(fn($file) => $file->store('greenspaces/photos_after', 'public'), $request->file('photos_after'));
+        }
+
+        $greenSpace->update($validated);
 
         return redirect()->route('greenspaces.index')
-            ->with('success', 'Espace vert modifié avec succès.');
+            ->with('success', 'Espace vert mis à jour avec succès.');
     }
 
     public function destroy(GreenSpace $greenSpace): RedirectResponse
