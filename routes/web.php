@@ -19,4 +19,5 @@ Route::resource('associations', AssociationController::class);
 Route::resource('projects', ProjectController::class);
 Route::resource('greenspaces', GreenSpaceController::class);
 Route::get('/export/projects', [ExportDataController::class, 'exportProjects']);
+Route::post('/projects/recommend', [ProjectController::class, 'recommend']);
 
