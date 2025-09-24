@@ -14,20 +14,20 @@ class ProjectController extends Controller
     public function index(Request $request): View
     {
         $query = Project::with(['association', 'greenSpace']);
-        
+
         if ($request->filled('association_id')) {
             $query->where('association_id', $request->association_id);
         }
-        
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-        
+
         $projects = $query->paginate(10);
-        
+
         $associations = Association::all();
         $statuses = ['proposé', 'en cours', 'terminé'];
-        
+
         return view('projects.index', compact('projects', 'associations', 'statuses'));
     }
 
@@ -35,10 +35,20 @@ class ProjectController extends Controller
     {
         $associations = Association::all();
         $greenSpaces = GreenSpace::all();
-        
+
         return view('projects.create', compact('associations', 'greenSpaces'));
     }
+    public function recommend(Request $request)
+    {
+    $response = Http::post('http://127.0.0.1:5001/recommend', [
+        'description' => $request->description,
+        'status' => $request->status,
+        'green_space_type' => $request->green_space_type,
+        'association_domain' => $request->association_domain,
+    ]);
 
+    return $response->json();
+    }
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -66,7 +76,7 @@ class ProjectController extends Controller
     {
         $associations = Association::all();
         $greenSpaces = GreenSpace::all();
-        
+
         return view('projects.edit', compact('project', 'associations', 'greenSpaces'));
     }
 
