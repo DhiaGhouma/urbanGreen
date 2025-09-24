@@ -181,7 +181,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('greenspaces.*') ? 'active' : '' }}"
                            href="{{ route('greenspaces.index') }}">
-                            <i class="fa-solid fa-tree"></i>greenspaces
+                            <i class="fa-solid fa-tree me-1"></i>greenspaces
                         </a>
                     </li>
                 </ul>

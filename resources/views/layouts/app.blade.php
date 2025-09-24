@@ -449,34 +449,46 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('associations.index') }}">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <i class="fas fa-leaf me-2"></i>UrbanGreen
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('associations.*') ? 'active' : '' }}"
-                           href="{{ route('associations.index') }}">
-                            <i class="fas fa-users me-1"></i>Associations
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}"
-                           href="{{ route('projects.index') }}">
-                            <i class="fas fa-project-diagram me-1"></i>Projets
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('greenspaces.*') ? 'active' : '' }}"
-                           href="{{ route('greenspaces.index') }}">
-                            <i class="fa-solid fa-tree"></i>greenspaces
-                        </a>
-                    </li>
-                </ul>
-            </div>
+           <div class="collapse navbar-collapse" id="navbarNav">
+    <!-- Left side links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('associations.*') ? 'active' : '' }}"
+               href="{{ route('associations.index') }}">
+                <i class="fas fa-users me-1"></i>Associations
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}"
+               href="{{ route('projects.index') }}">
+                <i class="fas fa-project-diagram me-1"></i>Projets
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('greenspaces.*') ? 'active' : '' }}"
+               href="{{ route('greenspaces.index') }}">
+                <i class="fa-solid fa-tree me-1"></i>Espaces Verts
+            </a>
+        </li>
+    </ul>
+
+    <!-- Right side link -->
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('team') ? 'active' : '' }}"
+               href="{{ route('team') }}">
+                <i class="fas fa-users-cog me-1"></i>Team
+            </a>
+        </li>
+    </ul>
+</div>
+
         </div>
     </nav>
 
