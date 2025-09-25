@@ -455,6 +455,54 @@
             background: #e8f5e8;
             color: #a8e6a3;
         }
+        /* Add this CSS to your main stylesheet or in a <style> tag */
+        .border-left-success {
+            border-left: 4px solid #28a745 !important;
+        }
+
+        .badge-lg {
+            font-size: 1rem;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+        }
+
+        .badge-light {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .badge-primary {
+            background-color: #007bff;
+        }
+
+        #recommendations .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        #recommendations .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
 
 
         /* Responsive enhancements */
