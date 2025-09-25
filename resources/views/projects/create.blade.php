@@ -42,10 +42,10 @@
                                     required>
                                 <option value="">Sélectionnez une association</option>
                                 @foreach($associations as $association)
-                                    <option value="{{ $association->id }}"
-                                            {{ old('association_id', request('association_id')) == $association->id ? 'selected' : '' }}>
-                                        {{ $association->name }}
+                                    <option value="{{ $association->id }}" data-domain="{{ $association->domain }}">
+                                     {{ $association->name }}
                                     </option>
+
                                 @endforeach
                             </select>
                             @error('association_id')
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const recommendationsDiv = document.getElementById('recommendations');
 
     async function fetchRecommendations() {
-        const associationText = associationSelect.options[associationSelect.selectedIndex].text;
+        const associationDomain = associationSelect.options[associationSelect.selectedIndex].dataset.domain;
         const greenSpaceText = greenSpaceSelect.options[greenSpaceSelect.selectedIndex].text;
         const description = document.getElementById('description').value;
         const status = document.getElementById('status').value;
@@ -158,8 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             description: description,
             status: status,
             green_space_type: greenSpaceText.split(' - ')[0],
-            association_domain: associationText
-        };
+            association_domain: associationDomain         };
 
         try {
             const res = await fetch('http://127.0.0.1:5001/recommend', {

@@ -1,110 +1,32 @@
 [
   {
-    "id":2,
-    "title":"H\u00f4tels \u00e0 Insectes - Square du Vert-Galant",
-    "description":"Installation d'h\u00f4tels \u00e0 insectes...",
-    "estimated_budget":"3500.00",
-    "status":"termin\u00e9",
-    "association_id":3,
-    "green_space_id":2,
-    "created_at":"2025-09-23T14:34:38.000000Z",
-    "updated_at":"2025-09-23T14:34:38.000000Z",
-    "association":{
-      "id":3,
-      "name":"Biodiversit\u00e9 en Ville",
-      "email":"contact@biodiversite-ville.org",
-      "phone":"01 53 88 99 00",
-      "domain":"Biodiversit\u00e9",
-      "created_at":"2025-09-23T14:34:37.000000Z",
-      "updated_at":"2025-09-23T14:34:37.000000Z"
-    },
-    "green_space":{
-      "id":2,
-      "name":"lothbrok",
-      "location":"\u00cele de la Cit\u00e9, Paris",
-      "description":"Petit jardin sur la pointe de l'\u00cele de la Cit\u00e9",
-      "type":"Parc",
-      "surface":500,
-      "latitude":"48.8570000",
-      "longitude":"2.3410000",
-      "status":"propos\u00e9",
-      "photos_before":[
-
-      ],
-      "photos_after":[
-
-      ],
-      "created_at":"2025-09-23T14:34:38.000000Z",
-      "updated_at":"2025-09-23T15:08:50.000000Z"
-    }
-  },
-  {
-    "id":3,
-    "title":"Parcours D\u00e9couverte Nature - Jardin des Tuileries",
-    "description":"Cr\u00e9ation d'un parcours p\u00e9dagogique...",
-    "estimated_budget":"8000.00",
-    "status":"propos\u00e9",
-    "association_id":4,
-    "green_space_id":3,
-    "created_at":"2025-09-23T14:34:38.000000Z",
-    "updated_at":"2025-09-23T14:34:38.000000Z",
-    "association":{
-      "id":4,
-      "name":"Nature et \u00c9ducation",
-      "email":"hello@nature-education.fr",
-      "phone":"01 44 22 33 44",
-      "domain":"\u00c9ducation environnementale",
-      "created_at":"2025-09-23T14:34:37.000000Z",
-      "updated_at":"2025-09-23T14:34:37.000000Z"
-    },
-    "green_space":{
-      "id":3,
-      "name":"Jardin des Tuileries",
-      "location":"1er arrondissement, Paris",
-      "description":"Jardin historique entre le Louvre et la Place de la Concorde",
-      "type":"jardin",
-      "surface":25000,
-      "latitude":"48.8630000",
-      "longitude":"2.3270000",
-      "status":"termin\u00e9",
-      "photos_before":[
-
-      ],
-      "photos_after":[
-
-      ],
-      "created_at":"2025-09-23T14:34:38.000000Z",
-      "updated_at":"2025-09-23T14:34:38.000000Z"
-    }
-  },
-  {
-    "id":4,
-    "title":"Compostage Collectif - Parc de Bercy",
-    "description":"Mise en place d'un syst\u00e8me de compostage collectif...",
-    "estimated_budget":"5500.00",
+    "id":1,
+    "title":"Reboisement de la For\u00eat de Bizerte",
+    "description":"Plantation de 2000 arbres autochtones pour restaurer la biodiversit\u00e9.",
+    "estimated_budget":"20000.00",
     "status":"en cours",
-    "association_id":2,
-    "green_space_id":4,
-    "created_at":"2025-09-23T14:34:38.000000Z",
-    "updated_at":"2025-09-23T14:34:38.000000Z",
+    "association_id":5,
+    "green_space_id":5,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
     "association":{
-      "id":2,
-      "name":"Eco-Citoyens 92",
-      "email":"info@eco-citoyens92.fr",
-      "phone":"01 47 55 66 77",
-      "domain":"Environnement",
-      "created_at":"2025-09-23T14:34:37.000000Z",
-      "updated_at":"2025-09-23T14:34:37.000000Z"
+      "id":5,
+      "name":"Bizerte Verte",
+      "email":"bizerteverte@bz.tn",
+      "phone":"72 889 900",
+      "domain":"Reboisement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
     },
     "green_space":{
-      "id":4,
-      "name":"Parc de Bercy",
-      "location":"12e arrondissement, Paris",
-      "description":"Parc moderne avec jardins th\u00e9matiques",
-      "type":"parc",
-      "surface":14000,
-      "latitude":"48.8370000",
-      "longitude":"2.3840000",
+      "id":5,
+      "name":"For\u00eat de Bizerte",
+      "location":"Bizerte",
+      "description":"For\u00eat naturelle \u00e0 reboiser",
+      "type":"for\u00eat",
+      "surface":50000,
+      "latitude":"37.2800000",
+      "longitude":"9.8700000",
       "status":"en cours",
       "photos_before":[
 
@@ -112,38 +34,77 @@
       "photos_after":[
 
       ],
-      "created_at":"2025-09-23T14:34:38.000000Z",
-      "updated_at":"2025-09-23T14:34:38.000000Z"
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
     }
   },
   {
-    "id":5,
-    "title":"Jardin M\u00e9di\u00e9val Participatif",
-    "description":"Restauration et animation du jardin m\u00e9di\u00e9val...",
-    "estimated_budget":"12000.00",
-    "status":"propos\u00e9",
-    "association_id":1,
-    "green_space_id":5,
-    "created_at":"2025-09-23T14:34:38.000000Z",
-    "updated_at":"2025-09-23T14:34:38.000000Z",
+    "id":2,
+    "title":"Cr\u00e9ation d\u2019un Jardin Botanique \u00e0 Sfax",
+    "description":"Installation d\u2019espaces th\u00e9matiques pour \u00e9ducation des jeunes.",
+    "estimated_budget":"15000.00",
+    "status":"termin\u00e9",
+    "association_id":3,
+    "green_space_id":3,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
     "association":{
-      "id":1,
-      "name":"Jardins Urbains de Paris",
-      "email":"contact@jardins-urbains-paris.org",
-      "phone":"01 42 33 44 55",
-      "domain":"Jardinage urbain",
-      "created_at":"2025-09-23T14:34:37.000000Z",
-      "updated_at":"2025-09-23T14:34:37.000000Z"
+      "id":3,
+      "name":"Sfax Nature",
+      "email":"info@sfaxnature.tn",
+      "phone":"74 112 233",
+      "domain":"Biodiversit\u00e9",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
     },
     "green_space":{
-      "id":5,
-      "name":"Square Saint-Julien-le-Pauvre",
-      "location":"5e arrondissement, Paris",
-      "description":"Petit square m\u00e9di\u00e9val pr\u00e8s de Notre-Dame",
-      "type":"square",
-      "surface":350,
-      "latitude":"48.8530000",
-      "longitude":"2.3480000",
+      "id":3,
+      "name":"Jardin Botanique de Sfax",
+      "location":"Sfax",
+      "description":"Espace d\u00e9di\u00e9 \u00e0 la flore m\u00e9diterran\u00e9enne",
+      "type":"jardin",
+      "surface":15000,
+      "latitude":"34.7400000",
+      "longitude":"10.7600000",
+      "status":"termin\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":3,
+    "title":"Nettoyage de la Plage de Monastir",
+    "description":"Campagne de nettoyage et sensibilisation des citoyens.",
+    "estimated_budget":"5000.00",
+    "status":"propos\u00e9",
+    "association_id":4,
+    "green_space_id":4,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":4,
+      "name":"Monastir Propre",
+      "email":"monastir@propre.tn",
+      "phone":"73 987 654",
+      "domain":"Nettoyage et recyclage",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":4,
+      "name":"Plage de Monastir - Zone Verte",
+      "location":"Monastir",
+      "description":"Zone prot\u00e9g\u00e9e avec dunes et plantations",
+      "type":"zone c\u00f4ti\u00e8re",
+      "surface":20000,
+      "latitude":"35.7800000",
+      "longitude":"10.8200000",
       "status":"propos\u00e9",
       "photos_before":[
 
@@ -151,8 +112,1100 @@
       "photos_after":[
 
       ],
-      "created_at":"2025-09-23T14:34:38.000000Z",
-      "updated_at":"2025-09-23T14:34:38.000000Z"
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":4,
+    "title":"Compostage Collectif \u00e0 Ariana",
+    "description":"Mise en place de bacs \u00e0 compost dans le parc.",
+    "estimated_budget":"4000.00",
+    "status":"en cours",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":5,
+    "title":"Potagers Urbains au Belv\u00e9d\u00e8re",
+    "description":"Cr\u00e9ation de potagers collectifs pour les habitants.",
+    "estimated_budget":"8000.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":6,
+    "title":"Sensibilisation au tri des d\u00e9chets \u00e0 Tunis",
+    "description":"Organisation d\u2019ateliers sur le tri des d\u00e9chets pour les familles.",
+    "estimated_budget":"3000.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":7,
+    "title":"Reboisement du Parc de la R\u00e9publique",
+    "description":"Planter 500 arbres pour embellir le parc.",
+    "estimated_budget":"7000.00",
+    "status":"en cours",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":8,
+    "title":"Cr\u00e9ation d\u2019espaces p\u00e9dagogiques \u00e0 Sfax",
+    "description":"Installer panneaux \u00e9ducatifs sur la biodiversit\u00e9.",
+    "estimated_budget":"2500.00",
+    "status":"termin\u00e9",
+    "association_id":3,
+    "green_space_id":3,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":3,
+      "name":"Sfax Nature",
+      "email":"info@sfaxnature.tn",
+      "phone":"74 112 233",
+      "domain":"Biodiversit\u00e9",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":3,
+      "name":"Jardin Botanique de Sfax",
+      "location":"Sfax",
+      "description":"Espace d\u00e9di\u00e9 \u00e0 la flore m\u00e9diterran\u00e9enne",
+      "type":"jardin",
+      "surface":15000,
+      "latitude":"34.7400000",
+      "longitude":"10.7600000",
+      "status":"termin\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":9,
+    "title":"Nettoyage de la plage \u00e0 Monastir",
+    "description":"Organisation d\u2019une journ\u00e9e de nettoyage et collecte de d\u00e9chets.",
+    "estimated_budget":"2000.00",
+    "status":"propos\u00e9",
+    "association_id":4,
+    "green_space_id":4,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":4,
+      "name":"Monastir Propre",
+      "email":"monastir@propre.tn",
+      "phone":"73 987 654",
+      "domain":"Nettoyage et recyclage",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":4,
+      "name":"Plage de Monastir - Zone Verte",
+      "location":"Monastir",
+      "description":"Zone prot\u00e9g\u00e9e avec dunes et plantations",
+      "type":"zone c\u00f4ti\u00e8re",
+      "surface":20000,
+      "latitude":"35.7800000",
+      "longitude":"10.8200000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":10,
+    "title":"Ateliers de jardinage urbain au Belv\u00e9d\u00e8re",
+    "description":"Former les habitants \u00e0 cultiver des plantes locales.",
+    "estimated_budget":"4500.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":11,
+    "title":"Plantation d\u2019arbustes dans la For\u00eat de Bizerte",
+    "description":"Augmenter la biodiversit\u00e9 avec 1000 arbustes locaux.",
+    "estimated_budget":"12000.00",
+    "status":"en cours",
+    "association_id":5,
+    "green_space_id":5,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":5,
+      "name":"Bizerte Verte",
+      "email":"bizerteverte@bz.tn",
+      "phone":"72 889 900",
+      "domain":"Reboisement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":5,
+      "name":"For\u00eat de Bizerte",
+      "location":"Bizerte",
+      "description":"For\u00eat naturelle \u00e0 reboiser",
+      "type":"for\u00eat",
+      "surface":50000,
+      "latitude":"37.2800000",
+      "longitude":"9.8700000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":12,
+    "title":"\u00c9co-atelier pour enfants \u00e0 Ariana",
+    "description":"Ateliers pour enseigner le recyclage et le compostage.",
+    "estimated_budget":"3500.00",
+    "status":"propos\u00e9",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":13,
+    "title":"Cr\u00e9ation d\u2019un sentier botanique \u00e0 Sfax",
+    "description":"Sentier p\u00e9dagogique avec plantes locales et panneaux informatifs.",
+    "estimated_budget":"10000.00",
+    "status":"termin\u00e9",
+    "association_id":3,
+    "green_space_id":3,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":3,
+      "name":"Sfax Nature",
+      "email":"info@sfaxnature.tn",
+      "phone":"74 112 233",
+      "domain":"Biodiversit\u00e9",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":3,
+      "name":"Jardin Botanique de Sfax",
+      "location":"Sfax",
+      "description":"Espace d\u00e9di\u00e9 \u00e0 la flore m\u00e9diterran\u00e9enne",
+      "type":"jardin",
+      "surface":15000,
+      "latitude":"34.7400000",
+      "longitude":"10.7600000",
+      "status":"termin\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":14,
+    "title":"Plantation de fleurs m\u00e9diterran\u00e9ennes au Belv\u00e9d\u00e8re",
+    "description":"Am\u00e9liorer l\u2019esth\u00e9tique et la biodiversit\u00e9 du parc.",
+    "estimated_budget":"6000.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":15,
+    "title":"Journ\u00e9e de nettoyage de la plage Monastir",
+    "description":"Collecte des d\u00e9chets et sensibilisation environnementale.",
+    "estimated_budget":"2500.00",
+    "status":"en cours",
+    "association_id":4,
+    "green_space_id":4,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":4,
+      "name":"Monastir Propre",
+      "email":"monastir@propre.tn",
+      "phone":"73 987 654",
+      "domain":"Nettoyage et recyclage",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":4,
+      "name":"Plage de Monastir - Zone Verte",
+      "location":"Monastir",
+      "description":"Zone prot\u00e9g\u00e9e avec dunes et plantations",
+      "type":"zone c\u00f4ti\u00e8re",
+      "surface":20000,
+      "latitude":"35.7800000",
+      "longitude":"10.8200000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":16,
+    "title":"Reforestation du Parc de la R\u00e9publique",
+    "description":"Planter des arbres r\u00e9sistants au climat local.",
+    "estimated_budget":"8000.00",
+    "status":"propos\u00e9",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":17,
+    "title":"Cr\u00e9ation d\u2019un jardin sensoriel \u00e0 Tunis",
+    "description":"Jardin pour personnes \u00e0 mobilit\u00e9 r\u00e9duite.",
+    "estimated_budget":"9000.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":18,
+    "title":"Formation compostage \u00e0 Sfax",
+    "description":"Formation pratique pour habitants et \u00e9coles.",
+    "estimated_budget":"4000.00",
+    "status":"termin\u00e9",
+    "association_id":3,
+    "green_space_id":3,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":3,
+      "name":"Sfax Nature",
+      "email":"info@sfaxnature.tn",
+      "phone":"74 112 233",
+      "domain":"Biodiversit\u00e9",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":3,
+      "name":"Jardin Botanique de Sfax",
+      "location":"Sfax",
+      "description":"Espace d\u00e9di\u00e9 \u00e0 la flore m\u00e9diterran\u00e9enne",
+      "type":"jardin",
+      "surface":15000,
+      "latitude":"34.7400000",
+      "longitude":"10.7600000",
+      "status":"termin\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":19,
+    "title":"Plantation d\u2019arbres fruitiers \u00e0 Monastir",
+    "description":"Cr\u00e9er un verger collectif pour les habitants.",
+    "estimated_budget":"7000.00",
+    "status":"en cours",
+    "association_id":4,
+    "green_space_id":4,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":4,
+      "name":"Monastir Propre",
+      "email":"monastir@propre.tn",
+      "phone":"73 987 654",
+      "domain":"Nettoyage et recyclage",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":4,
+      "name":"Plage de Monastir - Zone Verte",
+      "location":"Monastir",
+      "description":"Zone prot\u00e9g\u00e9e avec dunes et plantations",
+      "type":"zone c\u00f4ti\u00e8re",
+      "surface":20000,
+      "latitude":"35.7800000",
+      "longitude":"10.8200000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":20,
+    "title":"Jardin communautaire \u00e0 Ariana",
+    "description":"Potager partag\u00e9 pour les habitants.",
+    "estimated_budget":"5000.00",
+    "status":"propos\u00e9",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":21,
+    "title":"Ateliers \u00e9cologiques \u00e0 Belv\u00e9d\u00e8re",
+    "description":"\u00c9ducation \u00e0 la biodiversit\u00e9 et aux esp\u00e8ces locales.",
+    "estimated_budget":"3000.00",
+    "status":"termin\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":22,
+    "title":"Plantation de haies \u00e0 Bizerte",
+    "description":"Cr\u00e9er des corridors \u00e9cologiques pour la faune locale.",
+    "estimated_budget":"15000.00",
+    "status":"en cours",
+    "association_id":5,
+    "green_space_id":5,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":5,
+      "name":"Bizerte Verte",
+      "email":"bizerteverte@bz.tn",
+      "phone":"72 889 900",
+      "domain":"Reboisement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":5,
+      "name":"For\u00eat de Bizerte",
+      "location":"Bizerte",
+      "description":"For\u00eat naturelle \u00e0 reboiser",
+      "type":"for\u00eat",
+      "surface":50000,
+      "latitude":"37.2800000",
+      "longitude":"9.8700000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":23,
+    "title":"Cr\u00e9ation d\u2019un espace jeux nature \u00e0 Sfax",
+    "description":"Jeux \u00e9ducatifs int\u00e9gr\u00e9s \u00e0 la nature.",
+    "estimated_budget":"12000.00",
+    "status":"propos\u00e9",
+    "association_id":3,
+    "green_space_id":3,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":3,
+      "name":"Sfax Nature",
+      "email":"info@sfaxnature.tn",
+      "phone":"74 112 233",
+      "domain":"Biodiversit\u00e9",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":3,
+      "name":"Jardin Botanique de Sfax",
+      "location":"Sfax",
+      "description":"Espace d\u00e9di\u00e9 \u00e0 la flore m\u00e9diterran\u00e9enne",
+      "type":"jardin",
+      "surface":15000,
+      "latitude":"34.7400000",
+      "longitude":"10.7600000",
+      "status":"termin\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":24,
+    "title":"Nettoyage de l\u2019Avenue Verte \u00e0 Monastir",
+    "description":"Sensibilisation et ramassage des d\u00e9chets.",
+    "estimated_budget":"3500.00",
+    "status":"en cours",
+    "association_id":4,
+    "green_space_id":4,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":4,
+      "name":"Monastir Propre",
+      "email":"monastir@propre.tn",
+      "phone":"73 987 654",
+      "domain":"Nettoyage et recyclage",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":4,
+      "name":"Plage de Monastir - Zone Verte",
+      "location":"Monastir",
+      "description":"Zone prot\u00e9g\u00e9e avec dunes et plantations",
+      "type":"zone c\u00f4ti\u00e8re",
+      "surface":20000,
+      "latitude":"35.7800000",
+      "longitude":"10.8200000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":25,
+    "title":"Potagers \u00e9ducatifs \u00e0 Ariana",
+    "description":"Jardin p\u00e9dagogique pour les \u00e9coles locales.",
+    "estimated_budget":"6000.00",
+    "status":"termin\u00e9",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":26,
+    "title":"Cr\u00e9ation de nichoirs \u00e0 Belv\u00e9d\u00e8re",
+    "description":"Favoriser la biodiversit\u00e9 aviaire dans le parc.",
+    "estimated_budget":"2500.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":27,
+    "title":"Plantation d\u2019arbres m\u00e9diterran\u00e9ens \u00e0 Bizerte",
+    "description":"Augmenter la couverture v\u00e9g\u00e9tale et la biodiversit\u00e9.",
+    "estimated_budget":"18000.00",
+    "status":"en cours",
+    "association_id":5,
+    "green_space_id":5,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":5,
+      "name":"Bizerte Verte",
+      "email":"bizerteverte@bz.tn",
+      "phone":"72 889 900",
+      "domain":"Reboisement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":5,
+      "name":"For\u00eat de Bizerte",
+      "location":"Bizerte",
+      "description":"For\u00eat naturelle \u00e0 reboiser",
+      "type":"for\u00eat",
+      "surface":50000,
+      "latitude":"37.2800000",
+      "longitude":"9.8700000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":28,
+    "title":"Jardin communautaire sensoriel \u00e0 Sfax",
+    "description":"Pour enfants et personnes \u00e2g\u00e9es avec sensibilit\u00e9 sensorielle.",
+    "estimated_budget":"9000.00",
+    "status":"propos\u00e9",
+    "association_id":3,
+    "green_space_id":3,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":3,
+      "name":"Sfax Nature",
+      "email":"info@sfaxnature.tn",
+      "phone":"74 112 233",
+      "domain":"Biodiversit\u00e9",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":3,
+      "name":"Jardin Botanique de Sfax",
+      "location":"Sfax",
+      "description":"Espace d\u00e9di\u00e9 \u00e0 la flore m\u00e9diterran\u00e9enne",
+      "type":"jardin",
+      "surface":15000,
+      "latitude":"34.7400000",
+      "longitude":"10.7600000",
+      "status":"termin\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":29,
+    "title":"Ateliers de sensibilisation \u00e0 la plage Monastir",
+    "description":"Education des jeunes sur la pollution marine.",
+    "estimated_budget":"4000.00",
+    "status":"en cours",
+    "association_id":4,
+    "green_space_id":4,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":4,
+      "name":"Monastir Propre",
+      "email":"monastir@propre.tn",
+      "phone":"73 987 654",
+      "domain":"Nettoyage et recyclage",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":4,
+      "name":"Plage de Monastir - Zone Verte",
+      "location":"Monastir",
+      "description":"Zone prot\u00e9g\u00e9e avec dunes et plantations",
+      "type":"zone c\u00f4ti\u00e8re",
+      "surface":20000,
+      "latitude":"35.7800000",
+      "longitude":"10.8200000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":30,
+    "title":"Formation en permaculture \u00e0 Ariana",
+    "description":"Apprentissage de m\u00e9thodes de culture durable.",
+    "estimated_budget":"5000.00",
+    "status":"termin\u00e9",
+    "association_id":2,
+    "green_space_id":2,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":2,
+      "name":"EcoJeunes Ariana",
+      "email":"ecojeunes@ariana.tn",
+      "phone":"71 654 321",
+      "domain":"\u00c9ducation environnementale",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":2,
+      "name":"Parc de la R\u00e9publique",
+      "location":"Ariana",
+      "description":"Petit parc familial avec aire de jeux",
+      "type":"parc",
+      "surface":5000,
+      "latitude":"36.8660000",
+      "longitude":"10.1930000",
+      "status":"propos\u00e9",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    }
+  },
+  {
+    "id":31,
+    "title":"Cr\u00e9ation d\u2019un sentier \u00e9cologique Belv\u00e9d\u00e8re",
+    "description":"Sentier \u00e9ducatif avec panneaux sur biodiversit\u00e9.",
+    "estimated_budget":"7000.00",
+    "status":"propos\u00e9",
+    "association_id":1,
+    "green_space_id":1,
+    "created_at":"2025-09-25T13:29:49.000000Z",
+    "updated_at":"2025-09-25T13:29:49.000000Z",
+    "association":{
+      "id":1,
+      "name":"Association Green Tunisia",
+      "email":"contact@greentn.org",
+      "phone":"71 123 456",
+      "domain":"Environnement",
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
+    },
+    "green_space":{
+      "id":1,
+      "name":"Parc du Belv\u00e9d\u00e8re",
+      "location":"Tunis",
+      "description":"Plus grand parc de Tunis avec zones de pique-nique et zoo",
+      "type":"parc",
+      "surface":100000,
+      "latitude":"36.8180000",
+      "longitude":"10.1650000",
+      "status":"en cours",
+      "photos_before":[
+
+      ],
+      "photos_after":[
+
+      ],
+      "created_at":"2025-09-25T13:29:49.000000Z",
+      "updated_at":"2025-09-25T13:29:49.000000Z"
     }
   }
 ]

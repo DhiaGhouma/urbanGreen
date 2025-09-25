@@ -15,7 +15,6 @@
     </div>
 </div>
 
-<!-- Filtres et recherche -->
 <div class="search-filter-card">
     <form method="GET" action="{{ route('projects.index') }}">
         <div class="row g-3">
@@ -23,7 +22,7 @@
                 <select name="association_id" class="form-select">
                     <option value="">Toutes les associations</option>
                     @foreach($associations as $association)
-                        <option value="{{ $association->id }}" 
+                        <option value="{{ $association->id }}"
                                 {{ request('association_id') == $association->id ? 'selected' : '' }}>
                             {{ $association->name }}
                         </option>
@@ -49,7 +48,6 @@
     </form>
 </div>
 
-<!-- Liste des projets -->
 <div class="row">
     @forelse($projects as $project)
         <div class="col-md-6 col-lg-4 mb-4">
@@ -61,9 +59,9 @@
                             {{ ucfirst($project->status) }}
                         </span>
                     </div>
-                    
+
                     <p class="card-text text-muted">{{ Str::limit($project->description, 100) }}</p>
-                    
+
                     <div class="mb-3">
                         <small class="text-muted d-block">
                             <i class="fas fa-users me-1"></i>{{ $project->association->name }}
@@ -72,21 +70,21 @@
                             <i class="fas fa-map-marker-alt me-1"></i>{{ $project->greenSpace->name ?? 'Espace vert non défini' }}
                         </small>
                     </div>
-                    
+
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <span class="fw-bold text-success">{{ number_format($project->estimated_budget, 2) }} €</span>
                         </div>
                         <div class="action-buttons">
-                            <a href="{{ route('projects.show', $project) }}" 
+                            <a href="{{ route('projects.show', $project) }}"
                                class="btn btn-sm btn-outline-primary" title="Voir">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('projects.edit', $project) }}" 
+                            <a href="{{ route('projects.edit', $project) }}"
                                class="btn btn-sm btn-outline-warning" title="Modifier">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form method="POST" action="{{ route('projects.destroy', $project) }}" 
+                            <form method="POST" action="{{ route('projects.destroy', $project) }}"
                                   class="d-inline"
                                   onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">
                                 @csrf
@@ -116,10 +114,27 @@
     @endforelse
 </div>
 
-<!-- Pagination -->
 @if($projects->hasPages())
-    <div class="d-flex justify-content-center mt-4">
-        {{ $projects->links() }}
-    </div>
+<div class="custom-pagination">
+    @if ($projects->onFirstPage())
+        <span class="page-link disabled">&laquo;</span>
+    @else
+        <a href="{{ $projects->previousPageUrl() }}" class="page-link">&laquo;</a>
+    @endif
+
+    @foreach ($projects->getUrlRange(1, $projects->lastPage()) as $page => $url)
+        @if ($page == $projects->currentPage())
+            <span class="page-link active">{{ $page }}</span>
+        @else
+            <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+        @endif
+    @endforeach
+
+    @if ($projects->hasMorePages())
+        <a href="{{ $projects->nextPageUrl() }}" class="page-link">&raquo;</a>
+    @else
+        <span class="page-link disabled">&raquo;</span>
+    @endif
+</div>
 @endif
 @endsection
