@@ -60,4 +60,8 @@ class GreenSpace extends Model
         return $this->hasMany(Participation::class);
     }
 
+    public function plants(): HasMany
+    {
+        return $this->hasMany(GreenSpacePlant::class);
+    }
 }
