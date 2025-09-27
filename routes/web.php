@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GreenSpaceController;
 use App\Http\Controllers\ExportDataController;
 use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\GreenSpacePlantsController;
 
 Route::get('/', function () {
     return redirect()->route('associations.index');
@@ -28,3 +29,4 @@ Route::resource('participations', ParticipationController::class);
 Route::patch('participations/{participation}/status', [ParticipationController::class, 'updateStatus'])
     ->name('participations.updateStatus');
 
+Route::resource('greenspaces.plants', GreenSpacePlantsController::class);
