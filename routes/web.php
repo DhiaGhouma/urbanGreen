@@ -30,3 +30,7 @@ Route::patch('participations/{participation}/status', [ParticipationController::
     ->name('participations.updateStatus');
 
 Route::resource('greenspaces.plants', GreenSpacePlantsController::class);
+
+
+
+
