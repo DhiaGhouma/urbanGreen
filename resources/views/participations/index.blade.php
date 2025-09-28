@@ -1,99 +1,136 @@
 @extends('layouts.app')
 
+@section('title', 'Participations - UrbanGreen')
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Participations</h1>
-        <a href="{{ route('participations.create') }}" 
-           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Nouvelle Participation
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="mb-2"><i class="fas fa-hand-holding-heart me-2"></i>Gestion des Participations</h1>
+            <p class="mb-0 text-muted">Gérez les participations citoyennes aux espaces verts</p>
+        </div>
+        <a href="{{ route('participations.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nouvelle Participation
         </a>
     </div>
+</div>
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
+<!-- Filtres et recherche -->
+<div class="search-filter-card">
+    <form method="GET" action="{{ route('participations.index') }}">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <select name="statut" class="form-select">
+                    <option value="">Tous les statuts</option>
+                    <option value="en_attente" {{ request('statut') == 'en_attente' ? 'selected' : '' }}>En Attente</option>
+                    <option value="confirmee" {{ request('statut') == 'confirmee' ? 'selected' : '' }}>Confirmée</option>
+                    <option value="annulee" {{ request('statut') == 'annulee' ? 'selected' : '' }}>Annulée</option>
+                    <option value="terminee" {{ request('statut') == 'terminee' ? 'selected' : '' }}>Terminée</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="date" 
+                       class="form-control" 
+                       name="date" 
+                       placeholder="Date de participation"
+                       value="{{ request('date') }}">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    <i class="fas fa-search me-1"></i>Filtrer
+                </button>
+            </div>
         </div>
-    @endif
+    </form>
+</div>
 
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <table class="min-w-full table-auto">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Utilisateur
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Espace Vert
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Statut
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($participations as $participation)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">
-                                {{ $participation->user->name }}
-                            </div>
-                            <div class="text-sm text-gray-500">
-                                {{ $participation->user->email }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $participation->greenSpace->name }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $participation->date->format('d/m/Y') }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                @if($participation->statut === 'confirmee') bg-green-100 text-green-800
-                                @elseif($participation->statut === 'en_attente') bg-yellow-100 text-yellow-800
-                                @elseif($participation->statut === 'annulee') bg-red-100 text-red-800
-                                @else bg-blue-100 text-blue-800
-                                @endif">
-                                {{ $participation->getStatutLabel() }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="{{ route('participations.show', $participation) }}" 
-                               class="text-indigo-600 hover:text-indigo-900 mr-3">Voir</a>
-                            <a href="{{ route('participations.edit', $participation) }}" 
-                               class="text-blue-600 hover:text-blue-900 mr-3">Modifier</a>
-                            <form action="{{ route('participations.destroy', $participation) }}" 
-                                  method="POST" class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" 
-                                        class="text-red-600 hover:text-red-900"
-                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette participation?')">
-                                    Supprimer
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                            Aucune participation trouvée.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-4">
-        {{ $participations->links() }}
+<!-- Liste des participations -->
+<div class="card">
+    <div class="card-body p-0">
+        @if($participations->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Espace Vert</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                        @foreach($participations as $participation)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            {{ strtoupper(substr($participation->user->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">{{ $participation->user->name }}</h6>
+                                            <small class="text-muted">{{ $participation->user->email }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <h6 class="mb-0">{{ $participation->greenSpace->name }}</h6>
+                                        <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ $participation->greenSpace->location }}</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div>{{ $participation->date->format('d/m/Y') }}</div>
+                                        <small class="text-muted">{{ $participation->date->diffForHumans() }}</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge status-badge-{{ $participation->statut }}">
+                                        {{ $participation->getStatutLabel() }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <a href="{{ route('participations.show', $participation) }}" 
+                                           class="btn btn-sm btn-outline-primary" title="Voir">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('participations.edit', $participation) }}" 
+                                           class="btn btn-sm btn-outline-warning" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form method="POST" action="{{ route('participations.destroy', $participation) }}" 
+                                              class="d-inline"
+                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette participation?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="empty-state">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>Aucune participation trouvée</h3>
+                <p>Commencez par créer votre première participation citoyenne.</p>
+                <a href="{{ route('participations.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Nouvelle Participation
+                </a>
+            </div>
+        @endif
     </div>
 </div>
+
+@if($participations->hasPages())
+    <div class="d-flex justify-content-center mt-4">
+        {{ $participations->links() }}
+    </div>
+@endif
 @endsection

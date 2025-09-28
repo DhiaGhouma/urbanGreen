@@ -708,6 +708,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('participations.*') ? 'active' : '' }}"
+               href="{{ route('participations.index') }}">
+                <i class="fas fa-hand-holding-heart me-1"></i>Participations
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('greenspaces.*') ? 'active' : '' }}"
                href="{{ route('greenspaces.index') }}">
                 <i class="fa-solid fa-tree me-1"></i>Espaces Verts
