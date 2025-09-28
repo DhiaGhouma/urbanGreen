@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use App\Models\Association;
 use App\Models\GreenSpace;
 use App\Models\Project;
@@ -12,6 +13,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Associations
+        // Appeler le UserSeeder
+        $this->call([
+            UserSeeder::class,
+        ]);
+
+        // Créer des associations
         $associations = [
             ['name' => 'Association Green Tunisia', 'email' => 'contact@greentn.org', 'phone' => '71 123 456', 'domain' => 'Environnement'],
             ['name' => 'EcoJeunes Ariana', 'email' => 'ecojeunes@ariana.tn', 'phone' => '71 654 321', 'domain' => 'Éducation environnementale'],

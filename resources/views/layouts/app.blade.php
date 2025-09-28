@@ -505,6 +505,155 @@
         }
 
 
+        /* Custom Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-en-attente {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-confirmee {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-annulee {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-terminee {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Bootstrap-style Status Badges for Participations */
+        .status-badge-en_attente {
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            color: #92400e;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+        }
+
+        .status-badge-confirmee {
+            background: linear-gradient(135deg, #d1fae5, #34d399);
+            color: #065f46;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(52, 211, 153, 0.3);
+        }
+
+        .status-badge-annulee {
+            background: linear-gradient(135deg, #fee2e2, #f87171);
+            color: #991b1b;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(248, 113, 113, 0.3);
+        }
+
+        .status-badge-terminee {
+            background: linear-gradient(135deg, #dbeafe, #60a5fa);
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
+        }
+
+        /* Custom styles for participation views */
+        .info-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-group .value {
+            font-size: 1rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .info-group .value-large {
+            font-size: 1.25rem;
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items-center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h6 {
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+
+        .empty-state p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 1rem;
+        }
+
         /* Responsive enhancements */
         @media (max-width: 768px) {
             .page-header {
