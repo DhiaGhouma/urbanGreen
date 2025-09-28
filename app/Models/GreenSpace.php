@@ -21,4 +21,9 @@ class GreenSpace extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    public function participations(): HasMany
+    {
+        return $this->hasMany(Participation::class);
+    }
 }
