@@ -54,4 +54,9 @@ class GreenSpace extends Model
 
         return number_format($this->surface, 0) . ' m²';
     }
+
+    public function participations(): HasMany
+    {
+        return $this->hasMany(Participation::class);
+    }
 }

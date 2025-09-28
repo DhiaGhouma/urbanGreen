@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the participations for the user.
+     */
+    public function participations()
+    {
+        return $this->hasMany(Participation::class);
+    }
 }
