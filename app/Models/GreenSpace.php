@@ -59,4 +59,5 @@ class GreenSpace extends Model
     {
         return $this->hasMany(Participation::class);
     }
+
 }

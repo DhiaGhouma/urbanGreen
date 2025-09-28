@@ -27,3 +27,4 @@ Route::resource('participations', ParticipationController::class);
 // Additional route for updating participation status only
 Route::patch('participations/{participation}/status', [ParticipationController::class, 'updateStatus'])
     ->name('participations.updateStatus');
+
