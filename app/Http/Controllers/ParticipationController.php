@@ -14,21 +14,11 @@ class ParticipationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View
+    public function index(): View
     {
-        $query = Participation::with(['user', 'greenSpace']);
-
-        // Filtrer par statut
-        if ($request->filled('statut')) {
-            $query->where('statut', $request->statut);
-        }
-
-        // Filtrer par date
-        if ($request->filled('date')) {
-            $query->whereDate('date', $request->date);
-        }
-
-        $participations = $query->orderBy('date', 'desc')->paginate(10);
+        $participations = Participation::with(['user', 'greenSpace'])
+            ->orderBy('date', 'desc')
+            ->paginate(10);
 
         return view('participations.index', compact('participations'));
     }
