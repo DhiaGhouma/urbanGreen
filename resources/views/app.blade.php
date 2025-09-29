@@ -184,6 +184,12 @@
                             <i class="fa-solid fa-tree"></i>greenspaces
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('plants.*') ? 'active' : '' }}"
+                            href="{{ route('greenspaces.plants.index', 1) }}">
+                            <i class="fa-solid fa-seedling me-1"></i>Plantes
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
