@@ -60,10 +60,13 @@
                                 <td>{{ $greenSpace->type }}</td>
                                 <td>{{ $greenSpace->getFormattedSurface() }}</td>
                                 <td><span class="badge {{ $greenSpace->getStatusBadgeClass() }}">{{ ucfirst($greenSpace->status) }}</span></td>
-                                <td class="text-center">
+                                    <td class="text-center">
                                     <a href="{{ route('greenspaces.show', $greenSpace) }}" class="btn btn-sm btn-outline-primary" title="Voir">
                                         <i class="fas fa-eye"></i>
                                     </a>
++                                    <a href="{{ route('greenspaces.plants.index', $greenSpace) }}" class="btn btn-sm btn-outline-success" title="Plantes">
++                                        <i class="fas fa-seedling"></i>
++                                    </a>
                                     <a href="{{ route('greenspaces.edit', $greenSpace) }}" class="btn btn-sm btn-outline-warning" title="Modifier">
                                         <i class="fas fa-edit"></i>
                                     </a>
