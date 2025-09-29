@@ -38,7 +38,7 @@ class GreenSpacePlantsController extends Controller
 
         $greenspace->plants()->create($validated);
 
-        return redirect()->route('greenspace.plants.index', $greenspace->id)
+        return redirect()->route('greenspaces.plants.index', $greenspace->id)
                          ->with('success', 'Plante ajoutée avec succès.');
     }
 
@@ -63,7 +63,7 @@ class GreenSpacePlantsController extends Controller
 
         $plant->update($validated);
 
-        return redirect()->route('greenspace.plants.index', $greenspace->id)
+        return redirect()->route('greenspaces.plants.index', $greenspace->id)
                          ->with('success', 'Plante mise à jour avec succès.');
     }
 
@@ -72,7 +72,12 @@ class GreenSpacePlantsController extends Controller
     {
         $plant->delete();
 
-        return redirect()->route('greenspace.plants.index', $greenspace->id)
+        return redirect()->route('greenspaces.plants.index', $greenspace->id)
                          ->with('success', 'Plante supprimée avec succès.');
     }
+
+    public function show(GreenSpace $greenspace, GreenSpacePlant $plant)
+{
+    return view('plants.show', compact('greenspace', 'plant'));
+}
 }

@@ -21,6 +21,11 @@ class GreenSpacePlant extends Model
         'notes',
     ];
 
+    // Ajouter ceci pour que planted_at soit traité comme une date/Carbon
+    protected $casts = [
+        'planted_at' => 'datetime',
+    ];
+
     public function greenSpace(): BelongsTo
     {
         return $this->belongsTo(GreenSpace::class);
