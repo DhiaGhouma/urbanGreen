@@ -20,6 +20,9 @@ class UserSeeder extends Seeder
             'email' => 'admin@urbangreen.fr',
             'password' => Hash::make('admin123'),
             'email_verified_at' => now(),
+            'role' => 'admin',
+            'failed_login_attempts' => 0,
+            'last_login_at' => now(),
         ]);
 
         // Test users with specific profiles
@@ -29,48 +32,64 @@ class UserSeeder extends Seeder
                 'email' => 'marie@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'moderator',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Pierre Écologie',
                 'email' => 'pierre@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Sophie Nature',
                 'email' => 'sophie@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Lucas Biodiversité',
                 'email' => 'lucas@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Emma Citoyenne',
                 'email' => 'emma@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Thomas Environnement',
                 'email' => 'thomas@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Camille Verte',
                 'email' => 'camille@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ],
             [
                 'name' => 'Antoine Durable',
                 'email' => 'antoine@example.fr',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'role' => 'user',
+                'failed_login_attempts' => 0,
             ]
         ];
 

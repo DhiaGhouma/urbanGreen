@@ -14,11 +14,28 @@ class ParticipationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $participations = Participation::with(['user', 'greenSpace'])
-            ->orderBy('date', 'desc')
-            ->paginate(10);
+        // Show only current user's participations (unless admin)
+        $query = Participation::with(['user', 'greenSpace']);
+        
+        if (!auth()->user()->isAdmin()) {
+            $query->where('user_id', auth()->id());
+        }
+        
+        // Apply filters
+        if ($request->filled('statut')) {
+            $query->where('statut', $request->statut);
+        }
+        
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+        
+        $participations = $query->orderBy('date', 'desc')->paginate(10);
+        
+        // Append query parameters to pagination links
+        $participations->appends($request->query());
 
         return view('participations.index', compact('participations'));
     }
@@ -28,10 +45,10 @@ class ParticipationController extends Controller
      */
     public function create(): View
     {
-        $users = User::orderBy('name')->get();
+        // No need to pass users anymore - we'll use the logged-in user
         $greenSpaces = GreenSpace::orderBy('name')->get();
 
-        return view('participations.create', compact('users', 'greenSpaces'));
+        return view('participations.create', compact('greenSpaces'));
     }
 
     /**
@@ -40,16 +57,18 @@ class ParticipationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'green_space_id' => 'required|exists:green_spaces,id',
             'date' => 'required|date|after_or_equal:today',
             'statut' => 'required|in:en_attente,confirmee,annulee,terminee'
         ]);
 
+        // Automatically assign the logged-in user
+        $validated['user_id'] = auth()->id();
+
         Participation::create($validated);
 
         return redirect()->route('participations.index')
-            ->with('success', 'Participation créée avec succès!');
+            ->with('success', 'Votre participation a été créée avec succès!');
     }
 
     /**
@@ -67,10 +86,14 @@ class ParticipationController extends Controller
      */
     public function edit(Participation $participation): View
     {
-        $users = User::orderBy('name')->get();
+        // Only allow users to edit their own participations (unless admin)
+        if (!auth()->user()->isAdmin() && $participation->user_id !== auth()->id()) {
+            abort(403, 'Vous ne pouvez modifier que vos propres participations.');
+        }
+
         $greenSpaces = GreenSpace::orderBy('name')->get();
 
-        return view('participations.edit', compact('participation', 'users', 'greenSpaces'));
+        return view('participations.edit', compact('participation', 'greenSpaces'));
     }
 
     /**
@@ -78,17 +101,26 @@ class ParticipationController extends Controller
      */
     public function update(Request $request, Participation $participation): RedirectResponse
     {
+        // Only allow users to edit their own participations (unless admin)
+        if (!auth()->user()->isAdmin() && $participation->user_id !== auth()->id()) {
+            abort(403, 'Vous ne pouvez modifier que vos propres participations.');
+        }
+
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'green_space_id' => 'required|exists:green_spaces,id',
             'date' => 'required|date',
             'statut' => 'required|in:en_attente,confirmee,annulee,terminee'
         ]);
 
+        // Don't allow regular users to change the user_id
+        if (!auth()->user()->isAdmin()) {
+            $validated['user_id'] = $participation->user_id; // Keep original user
+        }
+
         $participation->update($validated);
 
         return redirect()->route('participations.index')
-            ->with('success', 'Participation mise à jour avec succès!');
+            ->with('success', 'Votre participation a été mise à jour avec succès!');
     }
 
     /**
@@ -96,10 +128,15 @@ class ParticipationController extends Controller
      */
     public function destroy(Participation $participation): RedirectResponse
     {
+        // Only allow users to delete their own participations (unless admin)
+        if (!auth()->user()->isAdmin() && $participation->user_id !== auth()->id()) {
+            abort(403, 'Vous ne pouvez supprimer que vos propres participations.');
+        }
+
         $participation->delete();
 
         return redirect()->route('participations.index')
-            ->with('success', 'Participation supprimée avec succès!');
+            ->with('success', 'Votre participation a été supprimée avec succès!');
     }
 
     /**
@@ -107,6 +144,11 @@ class ParticipationController extends Controller
      */
     public function updateStatus(Request $request, Participation $participation): RedirectResponse
     {
+        // Only allow users to update their own participations (unless admin)
+        if (!auth()->user()->isAdmin() && $participation->user_id !== auth()->id()) {
+            abort(403, 'Vous ne pouvez modifier que vos propres participations.');
+        }
+
         $validated = $request->validate([
             'statut' => 'required|in:en_attente,confirmee,annulee,terminee'
         ]);
@@ -114,6 +156,6 @@ class ParticipationController extends Controller
         $participation->update($validated);
 
         return redirect()->back()
-            ->with('success', 'Statut de la participation mis à jour!');
+            ->with('success', 'Statut de la participation mis à jour avec succès!');
     }
 }
