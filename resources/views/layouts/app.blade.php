@@ -721,7 +721,7 @@
         </li>
     </ul>
 
-    <!-- Right side link -->
+    <!-- Right side links -->
     <ul class="navbar-nav ms-auto">
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('team') ? 'active' : '' }}"
@@ -729,6 +729,72 @@
                 <i class="fas fa-users-cog me-1"></i>Team
             </a>
         </li>
+        
+        @auth
+            {{-- User is authenticated --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="user-avatar me-2">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                    </div>
+                    <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="min-width: 250px;">
+                    <li class="dropdown-header bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-circle fa-2x me-2 text-primary"></i>
+                            <div>
+                                <div class="fw-bold">{{ Auth::user()->name }}</div>
+                                <small class="text-muted">{{ Auth::user()->email }}</small>
+                            </div>
+                        </div>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item {{ request()->routeIs('auth.dashboard') ? 'active' : '' }}" href="{{ route('auth.dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-2 text-info"></i>Tableau de bord
+                        </a>
+                    </li>
+                    @if(Auth::user()->isAdmin())
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-header">
+                            <i class="fas fa-crown me-1 text-warning"></i>Administration
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-users-cog me-2 text-danger"></i>Gestion des utilisateurs
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-chart-line me-2 text-success"></i>Statistiques
+                            </a>
+                        </li>
+                    @endif
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('auth.logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
+                                <i class="fas fa-sign-out-alt me-2"></i>Se déconnecter
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        @else
+            {{-- User is not authenticated --}}
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('auth.login') ? 'active' : '' }}" href="{{ route('auth.login') }}">
+                    <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('auth.register') ? 'active' : '' }}" href="{{ route('auth.register') }}">
+                    <i class="fas fa-user-plus me-1"></i>S'inscrire
+                </a>
+            </li>
+        @endauth
     </ul>
 </div>
 
@@ -736,6 +802,7 @@
     </nav>
 
     <main class="container mt-4">
+        {{-- Flash Messages --}}
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
@@ -746,6 +813,20 @@
         @if(session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if(session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>{{ session('warning') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="fas fa-info-circle me-2"></i>{{ session('info') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
