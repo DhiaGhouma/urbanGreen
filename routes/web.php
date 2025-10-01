@@ -8,6 +8,7 @@ use App\Http\Controllers\ExportDataController;
 use App\Http\Controllers\ParticipationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GreenSpacePlantsController;
+use App\Http\Controllers\EventController;
 
 // =============================================================================
 // AUTHENTICATION ROUTES
@@ -63,6 +64,29 @@ Route::middleware('auth.custom')->group(function () {
     Route::patch('participations/{participation}/status', [ParticipationController::class, 'updateStatus'])
         ->name('participations.updateStatus');
 });
+
+// =============================================================================
+// EVENTS MODULE ROUTES
+// =============================================================================
+
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/calendar/data', [EventController::class, 'calendarData'])->name('events.calendar-data');
+
+Route::middleware('auth.custom')->group(function () {
+    Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+    Route::post('/events', [EventController::class, 'store'])->name('events.store');
+    Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
+    Route::patch('/events/{event}', [EventController::class, 'update'])->name('events.update');
+    Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+    
+    Route::post('/events/{event}/register', [EventController::class, 'register'])->name('events.register');
+    Route::delete('/events/{event}/cancel-registration', [EventController::class, 'cancelRegistration'])->name('events.cancel-registration');
+    Route::patch('/events/{event}/registrations/{registration}/status', [EventController::class, 'updateRegistrationStatus'])->name('events.update-registration-status');
+});
+
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+
+Route::resource('greenspaces.plants', GreenSpacePlantsController::class);
 
 Route::resource('greenspaces.plants', GreenSpacePlantsController::class);
 

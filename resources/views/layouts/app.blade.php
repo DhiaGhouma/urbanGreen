@@ -719,6 +719,12 @@
                 <i class="fa-solid fa-tree me-1"></i>Espaces Verts
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('events.*') ? 'active' : '' }}"
+               href="{{ route('events.index') }}">
+                <i class="fas fa-calendar-alt me-1"></i>Événements
+            </a>
+        </li>
     </ul>
 
     <!-- Right side links -->

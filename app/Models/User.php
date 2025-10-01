@@ -60,6 +60,13 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the event registrations for the user.
+     */
+    public function eventRegistrations()
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
+    /**
      * Check if the user account is currently locked
      */
     public function isLocked(): bool
