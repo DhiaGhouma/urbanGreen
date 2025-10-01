@@ -175,14 +175,25 @@
                             </div>
 
                             @if($event->capacite_max)
+                                @php
+                                    $capacityUsed = $event->capacite_max - $event->available_places;
+                                    $capacityPercentage = $event->capacite_max > 0 
+                                        ? ($capacityUsed / $event->capacite_max * 100) 
+                                        : 0;
+                                @endphp
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between small mb-1">
                                         <span>Places disponibles</span>
                                         <span class="fw-bold">{{ $event->available_places }} / {{ $event->capacite_max }}</span>
                                     </div>
                                     <div class="progress" style="height: 6px;">
-                                        <div class="progress-bar bg-success" role="progressbar" 
-                                             style="width: {{ $event->capacite_max > 0 ? (($event->capacite_max - $event->available_places) / $event->capacite_max * 100) : 0 }}%"></div>
+                                        <div class="progress-bar bg-success" 
+                                             role="progressbar" 
+                                             style="width: {{ $capacityPercentage }}%"
+                                             aria-valuenow="{{ $capacityPercentage }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                        </div>
                                     </div>
                                 </div>
                             @endif
