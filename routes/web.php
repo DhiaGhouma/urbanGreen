@@ -31,6 +31,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth.custom')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('auth.dashboard');
+    Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile.show');
     Route::patch('/profile', [AuthController::class, 'updateProfile'])->name('auth.profile.update');
     Route::patch('/password', [AuthController::class, 'changePassword'])->name('auth.password.change');
 });
@@ -48,6 +49,10 @@ Route::get('/home', function () {
 Route::get('/team', function () {
     return view('team.team');
 })->name('team');
+// AI suggestion endpoint for participations
+Route::get('participations/suggest/ai', [App\Http\Controllers\ParticipationController::class, 'suggest'])
+    ->name('participations.suggest')
+    ->middleware('auth');
 // =============================================================================
 // PROTECTED ROUTES (Require Authentication)
 // =============================================================================

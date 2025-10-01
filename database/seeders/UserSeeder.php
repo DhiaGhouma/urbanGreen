@@ -14,16 +14,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Admin user
-        User::create([
-            'name' => 'Administrateur UrbanGreen',
-            'email' => 'admin@urbangreen.fr',
-            'password' => Hash::make('admin123'),
-            'email_verified_at' => now(),
-            'role' => 'admin',
-            'failed_login_attempts' => 0,
-            'last_login_at' => now(),
-        ]);
+        // Admin user (idempotent)
+        User::updateOrCreate(
+            ['email' => 'admin@urbangreen.fr'],
+            [
+                'name' => 'Administrateur UrbanGreen',
+                'password' => Hash::make('admin123'),
+                'email_verified_at' => now(),
+                'role' => 'admin',
+                'failed_login_attempts' => 0,
+                'last_login_at' => now(),
+            ]
+        );
 
         // Test users with specific profiles
         $testUsers = [
@@ -94,11 +96,19 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($testUsers as $userData) {
-            User::create($userData);
+            User::updateOrCreate(
+                ['email' => $userData['email']],
+                $userData
+            );
         }
 
-        // Generate random users using factory
-        User::factory()->count(20)->create();
+        // Ensure at least 20 random users exist without duplicating
+        $currentRandomCount = User::whereNotIn('email', array_column($testUsers, 'email'))
+            ->where('email', '!=', 'admin@urbangreen.fr')
+            ->count();
+        if ($currentRandomCount < 20) {
+            User::factory()->count(20 - $currentRandomCount)->create();
+        }
 
         $this->command->info('Users seeded successfully!');
         $this->command->info('Admin login: admin@urbangreen.fr / admin123');

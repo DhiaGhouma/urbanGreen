@@ -19,12 +19,14 @@ class GreenSpace extends Model
         'longitude',
         'status',
         'photos_before',
-        'photos_after'
+        'photos_after',
+        'activities'
     ];
 
     protected $casts = [
         'photos_before' => 'array',
         'photos_after' => 'array',
+        'activities' => 'array',
     ];
 
     public function projects(): HasMany

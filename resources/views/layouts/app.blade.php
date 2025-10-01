@@ -769,6 +769,11 @@
                             <i class="fas fa-tachometer-alt me-2 text-info"></i>Tableau de bord
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item {{ request()->routeIs('profile.show') ? 'active' : '' }}" href="{{ route('profile.show') }}">
+                            <i class="fas fa-id-badge me-2 text-primary"></i>Mon Profil
+                        </a>
+                    </li>
                     @if(Auth::user()->isAdmin())
                         <li><hr class="dropdown-divider"></li>
                         <li class="dropdown-header">

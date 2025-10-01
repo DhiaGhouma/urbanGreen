@@ -7,13 +7,13 @@ use App\Models\User;
 use App\Models\Association;
 use App\Models\GreenSpace;
 use App\Models\Project;
+use Illuminate\Support\Arr;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Associations
-        // Appeler le UserSeeder
+        // Seed users first
         $this->call([
             UserSeeder::class,
         ]);
@@ -28,20 +28,92 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($associations as $associationData) {
-            Association::create($associationData);
+            Association::updateOrCreate(
+                ['email' => $associationData['email']],
+                $associationData
+            );
         }
 
         // Espaces verts (Tunisia)
         $greenSpaces = [
-            ['name' => 'Parc du Belvédère', 'location' => 'Tunis', 'description' => 'Plus grand parc de Tunis avec zones de pique-nique et zoo', 'type' => 'parc', 'status' => 'en cours', 'surface' => 100000, 'latitude' => 36.818, 'longitude' => 10.165, 'photos_before' => [], 'photos_after' => []],
-            ['name' => 'Parc de la République', 'location' => 'Ariana', 'description' => 'Petit parc familial avec aire de jeux', 'type' => 'parc', 'status' => 'proposé', 'surface' => 5000, 'latitude' => 36.866, 'longitude' => 10.193, 'photos_before' => [], 'photos_after' => []],
-            ['name' => 'Jardin Botanique de Sfax', 'location' => 'Sfax', 'description' => 'Espace dédié à la flore méditerranéenne', 'type' => 'jardin', 'status' => 'terminé', 'surface' => 15000, 'latitude' => 34.740, 'longitude' => 10.760, 'photos_before' => [], 'photos_after' => []],
-            ['name' => 'Plage de Monastir - Zone Verte', 'location' => 'Monastir', 'description' => 'Zone protégée avec dunes et plantations', 'type' => 'zone côtière', 'status' => 'proposé', 'surface' => 20000, 'latitude' => 35.780, 'longitude' => 10.820, 'photos_before' => [], 'photos_after' => []],
-            ['name' => 'Forêt de Bizerte', 'location' => 'Bizerte', 'description' => 'Forêt naturelle à reboiser', 'type' => 'forêt', 'status' => 'en cours', 'surface' => 50000, 'latitude' => 37.280, 'longitude' => 9.870, 'photos_before' => [], 'photos_after' => []]
+            [
+                'name' => 'Parc du Belvédère',
+                'location' => 'Tunis',
+                'description' => 'Plus grand parc de Tunis avec zones de pique-nique et zoo',
+                'type' => 'parc',
+                'status' => 'en cours',
+                'surface' => 100000,
+                'latitude' => 36.818,
+                'longitude' => 10.165,
+                'photos_before' => [],
+                'photos_after' => [],
+                'activities' => ['pique-nique', 'jogging', 'zoo', 'potager urbain', 'yoga en plein air']
+            ],
+            [
+                'name' => 'Parc de la République',
+                'location' => 'Ariana',
+                'description' => 'Petit parc familial avec aire de jeux',
+                'type' => 'parc',
+                'status' => 'proposé',
+                'surface' => 5000,
+                'latitude' => 36.866,
+                'longitude' => 10.193,
+                'photos_before' => [],
+                'photos_after' => [],
+                'activities' => ['aire de jeux', 'atelier compost', 'marche douce', 'lecture publique']
+            ],
+            [
+                'name' => 'Jardin Botanique de Sfax',
+                'location' => 'Sfax',
+                'description' => 'Espace dédié à la flore méditerranéenne',
+                'type' => 'jardin',
+                'status' => 'terminé',
+                'surface' => 15000,
+                'latitude' => 34.740,
+                'longitude' => 10.760,
+                'photos_before' => [],
+                'photos_after' => [],
+                'activities' => ['visite guidée', 'atelier botanique', 'photographie', 'sentier pédagogique']
+            ],
+            [
+                'name' => 'Plage de Monastir - Zone Verte',
+                'location' => 'Monastir',
+                'description' => 'Zone protégée avec dunes et plantations',
+                'type' => 'parc', // align with allowed types to avoid ENUM truncation
+                'status' => 'proposé',
+                'surface' => 20000,
+                'latitude' => 35.780,
+                'longitude' => 10.820,
+                'photos_before' => [],
+                'photos_after' => [],
+                'activities' => ['nettoyage de plage', 'plantation de dunes', 'observation des oiseaux', 'randonnée côtière']
+            ],
+            [
+                'name' => 'Forêt de Bizerte',
+                'location' => 'Bizerte',
+                'description' => 'Forêt naturelle à reboiser',
+                'type' => 'forêt',
+                'status' => 'en cours',
+                'surface' => 50000,
+                'latitude' => 37.280,
+                'longitude' => 9.870,
+                'photos_before' => [],
+                'photos_after' => [],
+                'activities' => ['reboisement', 'sentier nature', 'observation faune', 'atelier permaculture']
+            ]
         ];
 
         foreach ($greenSpaces as $spaceData) {
-            GreenSpace::create($spaceData);
+            $existing = GreenSpace::where('name', $spaceData['name'])->first();
+            if ($existing) {
+                // Update activities if empty to ensure full coverage
+                if (empty($existing->activities)) {
+                    $existing->activities = $spaceData['activities'];
+                    $existing->save();
+                }
+            } else {
+                GreenSpace::create($spaceData);
+            }
         }
 
         // Projets
@@ -85,7 +157,15 @@ class DatabaseSeeder extends Seeder
 
 
         foreach ($projects as $projectData) {
-            Project::create($projectData);
+            Project::firstOrCreate(
+                ['title' => $projectData['title']],
+                $projectData
+            );
         }
+
+        // Seed participations with preferences (varied per user)
+        $this->call([
+            ParticipationSeeder::class,
+        ]);
     }
 }

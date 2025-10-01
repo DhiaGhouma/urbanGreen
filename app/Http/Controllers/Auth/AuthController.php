@@ -13,6 +13,26 @@ use Illuminate\Validation\Rules\Password;
 class AuthController extends Controller
 {
     /**
+     * Show the profile page (preferences + basic info)
+     */
+    public function showProfile()
+    {
+        $user = Auth::user();
+
+        // Allowed options for preferences
+        $options = [
+            'activities_interest' => ['reboisement','nettoyage','jardinage','compostage','photographie','botanique','randonnée'],
+            'prefered_days' => ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'],
+            'availability' => ['matin','après-midi','soir'],
+            'volunteer_roles' => ['bénévole','coordinateur','formateur'],
+        ];
+
+        return view('auth.profile', [
+            'user' => $user,
+            'options' => $options,
+        ]);
+    }
+    /**
      * Show the login form
      */
     public function showLogin()
@@ -193,7 +213,9 @@ class AuthController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
+            // Basic info (optional here so the preferences form can submit alone)
             'name' => [
+                'sometimes',
                 'required', 
                 'string', 
                 'max:255', 
@@ -201,14 +223,48 @@ class AuthController extends Controller
                 'regex:/^[a-zA-ZÀ-ÿ\s\-\'\.]+$/u'
             ],
             'email' => [
+                'sometimes',
                 'required', 
                 'email:rfc,dns', 
                 'max:255', 
                 'unique:users,email,' . $user->id
             ],
+            // Preferences (all optional so dashboard form remains valid)
+            'activities_interest' => ['sometimes','array'],
+            'activities_interest.*' => ['in:reboisement,nettoyage,jardinage,compostage,photographie,botanique,randonnée'],
+            'prefered_days' => ['sometimes','array'],
+            'prefered_days.*' => ['in:lundi,mardi,mercredi,jeudi,vendredi,samedi,dimanche'],
+            'availability' => ['sometimes','array'],
+            'availability.*' => ['in:matin,après-midi,soir'],
+            'volunteer_roles' => ['sometimes','array'],
+            'volunteer_roles.*' => ['in:bénévole,coordinateur,formateur'],
+            'radius_km' => ['nullable','integer','min:1','max:200'],
         ]);
 
-        $user->update($validated);
+        // Update basic fields only if provided in the request
+        $basicUpdates = [];
+        if ($request->has('name')) {
+            $basicUpdates['name'] = $validated['name'];
+        }
+        if ($request->has('email')) {
+            $basicUpdates['email'] = $validated['email'];
+        }
+        if (!empty($basicUpdates)) {
+            $user->fill($basicUpdates);
+        }
+
+        // Build preferences safely (keep keys only if provided)
+        $prefs = $user->preferences ?: [];
+        $prefs['activities_interest'] = $request->has('activities_interest') ? array_values($request->input('activities_interest', [])) : ($prefs['activities_interest'] ?? []);
+        $prefs['prefered_days'] = $request->has('prefered_days') ? array_values($request->input('prefered_days', [])) : ($prefs['prefered_days'] ?? []);
+        $prefs['availability'] = $request->has('availability') ? array_values($request->input('availability', [])) : ($prefs['availability'] ?? []);
+        $prefs['volunteer_roles'] = $request->has('volunteer_roles') ? array_values($request->input('volunteer_roles', [])) : ($prefs['volunteer_roles'] ?? []);
+        if ($request->filled('radius_km')) {
+            $prefs['radius_km'] = (int) $request->input('radius_km');
+        }
+        $user->preferences = $prefs;
+
+        $user->save();
 
         return back()->with('success', 'Profile updated successfully!');
     }
