@@ -131,6 +131,54 @@
                     <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>Description</h5>
                     <div class="text-muted" style="white-space: pre-line;">{{ $event->description }}</div>
                 </div>
+                {{-- AJOUTEZ ICI LA CARTE MÉTÉO --}}
+                @if($forecast)
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="fas fa-cloud-sun me-2"></i>Prévisions Météo</h5>
+                    <div class="card border-0" style="background: linear-gradient(135deg, rgba(135, 206, 235, 0.1), rgba(74, 144, 226, 0.1));">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-3 text-center">
+                                    <img src="{{ $weatherAnalysis['icon_url'] }}" alt="Météo" style="width: 80px;">
+                                    <h2 class="mb-0">{{ $forecast['temperature'] }}°C</h2>
+                                    <p class="text-muted mb-0"><small>Ressenti {{ $forecast['feels_like'] }}°C</small></p>
+                                </div>
+                                <div class="col-md-5">
+                                    <p class="mb-2"><strong>{{ ucfirst($forecast['description']) }}</strong></p>
+                                    <p class="mb-1"><i class="fas fa-tint text-info me-2"></i>Humidité: {{ $forecast['humidity'] }}%</p>
+                                    <p class="mb-1"><i class="fas fa-wind text-primary me-2"></i>Vent: {{ $forecast['wind_speed'] }} km/h</p>
+                                    @if($forecast['rain'] > 0)
+                                        <p class="mb-1"><i class="fas fa-cloud-rain text-primary me-2"></i>Pluie: {{ $forecast['rain'] }}mm</p>
+                                    @endif
+                                    <p class="mb-0"><i class="fas fa-cloud text-secondary me-2"></i>Nuages: {{ $forecast['clouds'] }}%</p>
+                                </div>
+                                <div class="col-md-4">
+                                    @if($weatherAnalysis['favorable'] === true)
+                                        <div class="alert alert-success mb-0">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <strong>{{ $weatherAnalysis['reason'] }}</strong>
+                                        </div>
+                                    @elseif($weatherAnalysis['favorable'] === 'warning')
+                                        <div class="alert alert-warning mb-0">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            <strong>{{ $weatherAnalysis['reason'] }}</strong>
+                                            <br><small>Prévoyez un équipement adapté</small>
+                                        </div>
+                                    @else
+                                        <div class="alert alert-danger mb-0">
+                                            <i class="fas fa-exclamation-circle me-2"></i>
+                                            <strong>{{ $weatherAnalysis['reason'] }}</strong>
+                                            @if($weatherAnalysis['should_reschedule'])
+                                                <br><small class="fw-bold">⚠️ Report fortement recommandé</small>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
 

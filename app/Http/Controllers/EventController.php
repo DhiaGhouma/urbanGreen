@@ -8,6 +8,7 @@ use App\Models\EventRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\WeatherService;
 
 class EventController extends Controller
 {
@@ -118,19 +119,40 @@ class EventController extends Controller
     /**
      * Display the specified event.
      */
-    public function show(Event $event)
-    {
-        $event->load(['association', 'registrations.user']);
-        
-        $userRegistration = null;
-        if (Auth::check()) {
-            $userRegistration = $event->registrations()
-                                     ->where('user_id', Auth::id())
-                                     ->first();
-        }
-
-        return view('events.show', compact('event', 'userRegistration'));
+public function show(Event $event)
+{
+    $event->load(['association', 'registrations.user']);
+    
+    $userRegistration = null;
+    if (Auth::check()) {
+        $userRegistration = $event->registrations()
+                                 ->where('user_id', Auth::id())
+                                 ->first();
     }
+
+    // Obtenir la météo
+    $weatherService = new WeatherService();
+    $forecast = null;
+    $weatherAnalysis = null;
+    
+    // Vérifier si l'événement est dans le futur (moins de 16 jours)
+    $daysUntilEvent = now()->diffInDays($event->date_debut, false);
+    
+    if ($daysUntilEvent >= 0 && $daysUntilEvent <= 16) {
+        $forecast = $weatherService->getForecast(
+            $event->lieu . ($event->adresse ? ', ' . $event->adresse : ''),
+            $event->date_debut->format('Y-m-d H:i:s')
+        );
+        
+        if ($forecast) {
+            $weatherAnalysis = $weatherService->isFavorableWeather($forecast);
+            $weatherAnalysis['icon_url'] = $weatherService->getWeatherIconUrl($forecast['icon']);
+            $weatherAnalysis['should_reschedule'] = $weatherService->shouldSuggestReschedule($forecast);
+        }
+    }
+
+    return view('events.show', compact('event', 'userRegistration', 'forecast', 'weatherAnalysis'));
+}
 
     /**
      * Show the form for editing the specified event.
