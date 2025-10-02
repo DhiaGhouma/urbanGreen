@@ -19,7 +19,7 @@
         </div>
         <div>
             <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning">
-                <i class="fas fa-edit me-2"></i>Modifier
+                <i class="fas fa-edit me-1"></i>Modifier
             </a>
         </div>
     </div>

@@ -16,8 +16,12 @@
             <p>{{ $greenspace->type }}</p>
         </div>
         <div>
-            <a href="{{ route('greenspaces.edit', $greenspace) }}" class="btn btn-warning me-2">Modifier</a>
-            <a href="{{ route('projects.create') }}?greenspace_id={{ $greenspace->id }}" class="btn btn-success">Ajouter un Projet</a>
+            <a href="{{ route('greenspaces.edit', $greenspace) }}" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i>Modifier
+            </a>
+            <a href="{{ route('projects.create') }}?greenspace_id={{ $greenspace->id }}" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i>Ajouter un Projet
+            </a>
         </div>
     </div>
 </div>

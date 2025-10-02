@@ -17,10 +17,10 @@
         </div>
         <div>
             <a href="{{ route('associations.edit', $association) }}" class="btn btn-warning me-2">
-                <i class="fas fa-edit me-2"></i>Modifier
+                <i class="fas fa-edit me-1"></i>Modifier
             </a>
             <a href="{{ route('projects.create') }}?association_id={{ $association->id }}" class="btn btn-success">
-                <i class="fas fa-plus me-2"></i>Ajouter un Projet
+                <i class="fas fa-plus me-1"></i>Ajouter un Projet
             </a>
         </div>
     </div>
