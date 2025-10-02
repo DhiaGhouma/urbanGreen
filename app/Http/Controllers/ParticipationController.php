@@ -8,7 +8,7 @@ use App\Models\GreenSpace;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use App\Services\AIRecommender;
+use App\Services\FastAIRecommender;
 use Illuminate\Http\JsonResponse;
 
 class ParticipationController extends Controller
@@ -163,13 +163,20 @@ class ParticipationController extends Controller
 
     /**
      * Suggest the best greenspace for the current user using AI.
-     * Uses Ollama for intelligent reasoning - NO CACHING (preferences change)
+     * Uses FastAI server with sentence-transformers embeddings
      */
-    public function suggest(Request $request, AIRecommender $recommender): JsonResponse
+    public function suggest(Request $request, FastAIRecommender $recommender): JsonResponse
     {
         $user = auth()->user();
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Check if AI server is available
+        if (!$recommender->isAvailable()) {
+            return response()->json([
+                'error' => 'Le serveur IA n\'est pas disponible. Démarrez-le avec: php artisan ai:start-server'
+            ], 503);
         }
 
         // Consider only available/active greenspaces
