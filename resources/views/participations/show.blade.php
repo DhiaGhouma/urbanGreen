@@ -10,14 +10,16 @@
             <li class="breadcrumb-item active">Détails</li>
         </ol>
     </nav>
-    <div class="d-flex justify-content-between align-items-center">
-        <h1><i class="fas fa-hand-holding-heart me-2"></i>Participation</h1>
+    <div class="d-flex justify-content-between align-items-start">
         <div>
-            <a href="{{ route('participations.edit', $participation) }}" class="btn btn-warning">
-                <i class="fas fa-edit me-2"></i>Modifier
+            <h1><i class="fas fa-hand-holding-heart me-2"></i>Participation</h1>
+        </div>
+        <div>
+            <a href="{{ route('participations.edit', $participation) }}" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i>Modifier
             </a>
-            <a href="{{ route('participations.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Retour
+            <a href="{{ route('participations.index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Retour
             </a>
         </div>
     </div>

@@ -4,23 +4,28 @@
 
 @section('content')
 <div class="page-header">
-    <h1 class="display-4 fw-bold text-primary">
-        <i class="fas fa-plus-circle me-3"></i>Nouveau Signalement
-    </h1>
-    <p class="lead text-muted">Signalez un problème dans un espace vert</p>
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="mb-2"><i class="fas fa-flag me-2"></i>Nouveau Signalement</h1>
+            <p class="mb-0 text-muted">Signalez un problème dans un espace vert</p>
+        </div>
+        <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Retour
+        </a>
+    </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-lg-8">
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-10">
         <div class="card">
             <div class="card-body p-4">
                 <form action="{{ route('reports.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     {{-- Espace Vert --}}
-                    <div class="mb-4">
-                        <label for="green_space_id" class="form-label fw-bold">
-                            <i class="fas fa-tree me-2 text-primary"></i>Espace Vert *
+                    <div class="mb-3">
+                        <label for="green_space_id" class="form-label">
+                            <i class="fas fa-tree me-1"></i>Espace Vert <span class="text-danger">*</span>
                         </label>
                         <select name="green_space_id" 
                                 id="green_space_id" 
@@ -39,9 +44,9 @@
                     </div>
 
                     {{-- Titre --}}
-                    <div class="mb-4">
-                        <label for="title" class="form-label fw-bold">
-                            <i class="fas fa-heading me-2 text-primary"></i>Titre du signalement *
+                    <div class="mb-3">
+                        <label for="title" class="form-label">
+                            <i class="fas fa-heading me-1"></i>Titre du signalement <span class="text-danger">*</span>
                         </label>
                         <input type="text" 
                                name="title" 
@@ -55,67 +60,60 @@
                         @enderror
                     </div>
 
-                    {{-- Catégorie --}}
-                    <div class="mb-4">
-                        <label for="category" class="form-label fw-bold">
-                            <i class="fas fa-tags me-2 text-primary"></i>Catégorie *
-                        </label>
-                        <select name="category" 
-                                id="category" 
-                                class="form-select @error('category') is-invalid @enderror" 
-                                required>
-                            <option value="">Sélectionnez une catégorie</option>
-                            <option value="dechets" {{ old('category') == 'dechets' ? 'selected' : '' }}>
-                                🗑️ Déchets
-                            </option>
-                            <option value="plantes_mortes" {{ old('category') == 'plantes_mortes' ? 'selected' : '' }}>
-                                🌱 Plantes mortes
-                            </option>
-                            <option value="vandalisme" {{ old('category') == 'vandalisme' ? 'selected' : '' }}>
-                                ⚠️ Vandalisme
-                            </option>
-                            <option value="equipement" {{ old('category') == 'equipement' ? 'selected' : '' }}>
-                                🔧 Équipement endommagé
-                            </option>
-                            <option value="autre" {{ old('category') == 'autre' ? 'selected' : '' }}>
-                                📋 Autre
-                            </option>
-                        </select>
-                        @error('category')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{-- Catégorie --}}
+                            <div class="mb-3">
+                                <label for="category" class="form-label">
+                                    <i class="fas fa-tags me-1"></i>Catégorie <span class="text-danger">*</span>
+                                </label>
+                                <select name="category" 
+                                        id="category" 
+                                        class="form-select @error('category') is-invalid @enderror" 
+                                        required>
+                                    <option value="">Sélectionnez une catégorie</option>
+                                    <option value="dechets" {{ old('category') == 'dechets' ? 'selected' : '' }}>🗑️ Déchets</option>
+                                    <option value="plantes_mortes" {{ old('category') == 'plantes_mortes' ? 'selected' : '' }}>🌱 Plantes mortes</option>
+                                    <option value="vandalisme" {{ old('category') == 'vandalisme' ? 'selected' : '' }}>⚠️ Vandalisme</option>
+                                    <option value="equipement" {{ old('category') == 'equipement' ? 'selected' : '' }}>🔧 Équipement endommagé</option>
+                                    <option value="autre" {{ old('category') == 'autre' ? 'selected' : '' }}>📋 Autre</option>
+                                </select>
+                                @error('category')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
-                    {{-- Priorité --}}
-                    <div class="mb-4">
-                        <label for="priority" class="form-label fw-bold">
-                            <i class="fas fa-exclamation-triangle me-2 text-primary"></i>Priorité *
-                        </label>
-                        <select name="priority" 
-                                id="priority" 
-                                class="form-select @error('priority') is-invalid @enderror" 
-                                required>
-                            <option value="basse" {{ old('priority') == 'basse' ? 'selected' : '' }}>🟢 Basse</option>
-                            <option value="normale" {{ old('priority', 'normale') == 'normale' ? 'selected' : '' }}>🔵 Normale</option>
-                            <option value="haute" {{ old('priority') == 'haute' ? 'selected' : '' }}>🟠 Haute</option>
-                            <option value="urgente" {{ old('priority') == 'urgente' ? 'selected' : '' }}>🔴 Urgente</option>
-                        </select>
-                        @error('priority')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            <strong>Urgente:</strong> Danger immédiat | <strong>Haute:</strong> À traiter rapidement
-                        </small>
+                        <div class="col-md-6">
+                            {{-- Priorité --}}
+                            <div class="mb-3">
+                                <label for="priority" class="form-label">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Priorité <span class="text-danger">*</span>
+                                </label>
+                                <select name="priority" 
+                                        id="priority" 
+                                        class="form-select @error('priority') is-invalid @enderror" 
+                                        required>
+                                    <option value="basse" {{ old('priority') == 'basse' ? 'selected' : '' }}>🟢 Basse</option>
+                                    <option value="normale" {{ old('priority', 'normale') == 'normale' ? 'selected' : '' }}>🔵 Normale</option>
+                                    <option value="haute" {{ old('priority') == 'haute' ? 'selected' : '' }}>🟠 Haute</option>
+                                    <option value="urgente" {{ old('priority') == 'urgente' ? 'selected' : '' }}>🔴 Urgente</option>
+                                </select>
+                                @error('priority')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Description --}}
-                    <div class="mb-4">
-                        <label for="description" class="form-label fw-bold">
-                            <i class="fas fa-align-left me-2 text-primary"></i>Description détaillée *
+                    <div class="mb-3">
+                        <label for="description" class="form-label">
+                            <i class="fas fa-align-left me-1"></i>Description détaillée <span class="text-danger">*</span>
                         </label>
                         <textarea name="description" 
                                   id="description" 
-                                  rows="5" 
+                                  rows="4" 
                                   class="form-control @error('description') is-invalid @enderror" 
                                   placeholder="Décrivez le problème en détail..."
                                   required>{{ old('description') }}</textarea>
@@ -125,9 +123,9 @@
                     </div>
 
                     {{-- Photo --}}
-                    <div class="mb-4">
-                        <label for="photo" class="form-label fw-bold">
-                            <i class="fas fa-camera me-2 text-primary"></i>Photo
+                    <div class="mb-3">
+                        <label for="photo" class="form-label">
+                            <i class="fas fa-camera me-1"></i>Photo
                         </label>
                         <input type="file" 
                                name="photo" 
@@ -137,20 +135,17 @@
                         @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="form-text text-muted">
-                            Format acceptés: JPG, PNG (Max: 5MB)
-                        </small>
-                        <div id="photoPreview" class="mt-3" style="display: none;">
-                            <img src="" alt="Aperçu" class="img-fluid rounded" style="max-height: 300px;">
+                        <small class="form-text text-muted">Formats acceptés: JPG, PNG (Max: 5MB)</small>
+                        <div id="photoPreview" class="mt-2" style="display: none;">
+                            <img src="" alt="Aperçu" class="img-fluid rounded" style="max-height: 250px;">
                         </div>
                     </div>
 
                     {{-- Géolocalisation --}}
-                    <div class="card bg-light mb-4">
+                    <div class="card bg-light mb-3">
                         <div class="card-body">
-                            <h6 class="card-title">
-                                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                                Géolocalisation (optionnel)
+                            <h6 class="card-title mb-3">
+                                <i class="fas fa-map-marker-alt me-2"></i>Géolocalisation (optionnel)
                             </h6>
                             <div class="row">
                                 <div class="col-md-6 mb-3 mb-md-0">
@@ -180,19 +175,19 @@
                                     @enderror
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-3" id="getCurrentLocation">
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="getCurrentLocation">
                                 <i class="fas fa-crosshairs me-1"></i>Utiliser ma position actuelle
                             </button>
                         </div>
                     </div>
 
                     {{-- Boutons --}}
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="fas fa-paper-plane me-2"></i>Envoyer le signalement
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-1"></i>Envoyer le signalement
                         </button>
-                        <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary btn-lg">
-                            <i class="fas fa-times me-2"></i>Annuler
+                        <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>Annuler
                         </a>
                     </div>
                 </form>
