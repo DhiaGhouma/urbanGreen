@@ -9,6 +9,7 @@ use App\Http\Controllers\ParticipationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GreenSpacePlantsController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReportController;
 
 // =============================================================================
 // AUTHENTICATION ROUTES
@@ -93,3 +94,28 @@ Route::resource('greenspaces.plants', GreenSpacePlantsController::class);
 
 
 
+// =============================================================================
+// REPORTS MODULE ROUTES (Signalements & Maintenance)
+// =============================================================================
+
+// Routes publiques pour les signalements
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+// Routes protégées pour les signalements
+Route::middleware('auth.custom')->group(function () {
+    // CRUD des signalements
+    Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create'); // Création
+    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');          // Stockage
+    Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])->name('reports.edit'); // Édition
+    Route::patch('/reports/{report}', [ReportController::class, 'update'])->name('reports.update'); // Mise à jour
+    Route::delete('/reports/{report}', [ReportController::class, 'destroy'])->name('reports.destroy'); // Suppression
+
+    // Ajouter une mise à jour à un signalement
+    Route::post('/reports/{report}/updates', [ReportController::class, 'addUpdate'])->name('reports.update.add');
+
+    // Assigner un signalement à une association (Admin seulement)
+    Route::post('/reports/{report}/assign', [ReportController::class, 'assign'])->name('reports.assign');
+});
+
+// Route SHOW (doit toujours être après toutes les routes spécifiques)
+Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
