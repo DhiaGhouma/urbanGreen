@@ -124,13 +124,15 @@
         }
 
         .nav-link {
-            font-weight: 500;
-            position: relative;
-            transition: all 0.3s ease;
-            border-radius: 25px;
-            padding: 8px 16px !important;
-            margin: 0 4px;
-        }
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 15px;     /* smaller pill radius */
+    padding: 6px 10px !important; /* reduce space inside */
+    margin: 0 2px;           /* tighter spacing between links */
+    font-size: 0.9rem;       /* optional: slightly smaller text */
+}
+
 
         .nav-link:hover {
             background: rgba(255,255,255,0.1);
@@ -741,7 +743,7 @@
                 <i class="fas fa-users-cog me-1"></i>Team
             </a>
         </li>
-        
+
         @auth
             {{-- User is authenticated --}}
             <li class="nav-item dropdown">
