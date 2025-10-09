@@ -179,11 +179,13 @@ class ParticipationController extends Controller
             ], 503);
         }
 
-        // Consider only available/active greenspaces
+        // Fetch all greenspaces with activities (regardless of status)
         $greenspaces = GreenSpace::query()
-            ->when($request->filled('status'), fn($q) => $q->where('status', $request->status))
+            ->whereNotNull('activities')
+            ->where('activities', '!=', '')
+            ->where('activities', '!=', '[]')
             ->orderBy('name')
-            ->get(['id','name','description','activities']);
+            ->get();
 
         if ($greenspaces->isEmpty()) {
             return response()->json(['error' => 'Aucun espace vert disponible.'], 422);

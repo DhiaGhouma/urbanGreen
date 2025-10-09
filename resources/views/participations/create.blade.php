@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     btn.addEventListener('click', async () => {
         status.style.display = 'inline';
-        status.textContent = '🤖 Analyse IA en cours... (peut prendre 1-3 minutes)';
+        status.textContent = '🤖 Analyse IA en cours... ';
         status.classList.remove('text-danger', 'text-success', 'text-warning');
         status.classList.add('text-info');
         btn.disabled = true;
@@ -149,9 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 status.classList.add('text-success');
                 
                 if (data.reason) {
-                    const engineInfo = data.engine ? ` [Engine: ${data.engine}]` : '';
-                    const timeInfo = data.computation_time ? ` | Temps: ${data.computation_time}` : ` | Temps: ${elapsed}s`;
-                    reason.innerHTML = `<strong>Raison (Ollama):</strong> ${data.reason}${engineInfo}${timeInfo}`;
+                    reason.innerHTML = `<i class="fas fa-lightbulb text-warning"></i> ${data.reason}`;
                     reason.style.display = 'block';
                 }
             } else {

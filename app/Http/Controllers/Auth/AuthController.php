@@ -255,6 +255,8 @@ class AuthController extends Controller
 
         // Build preferences safely (keep keys only if provided)
         $prefs = $user->preferences ?: [];
+        
+        // Anciennes clés (pour compatibilité avec le formulaire)
         $prefs['activities_interest'] = $request->has('activities_interest') ? array_values($request->input('activities_interest', [])) : ($prefs['activities_interest'] ?? []);
         $prefs['prefered_days'] = $request->has('prefered_days') ? array_values($request->input('prefered_days', [])) : ($prefs['prefered_days'] ?? []);
         $prefs['availability'] = $request->has('availability') ? array_values($request->input('availability', [])) : ($prefs['availability'] ?? []);
@@ -262,6 +264,48 @@ class AuthController extends Controller
         if ($request->filled('radius_km')) {
             $prefs['radius_km'] = (int) $request->input('radius_km');
         }
+        
+        // ═══════════════════════════════════════════════════════════════
+        // Mapping vers nouvelles clés pour le système AI
+        // ═══════════════════════════════════════════════════════════════
+        
+        // preferred_activities : map depuis activities_interest
+        $prefs['preferred_activities'] = $prefs['activities_interest'] ?? [];
+        
+        // interests : extraire depuis activities_interest (simplification)
+        $prefs['interests'] = $prefs['activities_interest'] ?? [];
+        
+        // experience_level : déduire depuis volunteer_roles ou utiliser par défaut
+        if (in_array('formateur', $prefs['volunteer_roles'] ?? [])) {
+            $prefs['experience_level'] = 'expert';
+        } elseif (in_array('coordinateur', $prefs['volunteer_roles'] ?? [])) {
+            $prefs['experience_level'] = 'intermédiaire';
+        } else {
+            $prefs['experience_level'] = $prefs['experience_level'] ?? 'débutant';
+        }
+        
+        // preferred_types : déduire depuis activities_interest
+        $types = [];
+        if (in_array('jardinage', $prefs['activities_interest'] ?? [])) {
+            $types[] = 'jardin communautaire';
+        }
+        if (in_array('reboisement', $prefs['activities_interest'] ?? []) || in_array('randonnée', $prefs['activities_interest'] ?? [])) {
+            $types[] = 'forêt';
+        }
+        if (empty($types)) {
+            $types = ['parc', 'jardin communautaire'];
+        }
+        $prefs['preferred_types'] = array_unique($types);
+        
+        // max_distance : map depuis radius_km
+        $prefs['max_distance'] = $prefs['radius_km'] ?? 10;
+        
+        // coordinates : garder si existent déjà, sinon laisser null
+        // (peut être ajouté plus tard via géolocalisation)
+        if (!isset($prefs['coordinates'])) {
+            $prefs['coordinates'] = null;
+        }
+        
         $user->preferences = $prefs;
 
         $user->save();

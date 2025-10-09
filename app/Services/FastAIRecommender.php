@@ -40,6 +40,9 @@ class FastAIRecommender
      */
     public function recommend($user, $greenSpaces): ?array
     {
+        // Increase PHP execution time limit for AI processing
+        set_time_limit(90);
+        
         if (!$this->isAvailable()) {
             Log::warning('AI server is not available', ['url' => $this->serverUrl]);
             return null;
@@ -52,20 +55,13 @@ class FastAIRecommender
             'preferences' => $user->preferences ?? []
         ];
         
-        // Prepare green spaces data
+        // Prepare green spaces data using toAIFormat method
         $greenSpacesData = $greenSpaces->map(function ($gs) {
-            return [
-                'id' => $gs->id,
-                'name' => $gs->name,
-                'description' => $gs->description ?? '',
-                'activities' => $gs->activities ?? [],
-                'type' => $gs->type ?? '',
-                'location' => $gs->location ?? '',
-            ];
+            return $gs->toAIFormat();
         })->toArray();
         
         try {
-            $response = Http::timeout(35)
+            $response = Http::timeout(70)
                 ->post("{$this->serverUrl}/recommend", [
                     'user' => $userData,
                     'green_spaces' => $greenSpacesData

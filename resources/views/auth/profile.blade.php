@@ -73,7 +73,27 @@
                     @csrf
                     @method('PATCH')
 
-                    @php($prefs = $user->preferences ?? [])
+                    @php
+                        // Get preferences and normalize to ensure arrays
+                        $rawPrefs = $user->preferences ?? [];
+                        $prefs = [
+                            'activities_interest' => is_array($rawPrefs['activities_interest'] ?? null) 
+                                ? $rawPrefs['activities_interest'] 
+                                : (isset($rawPrefs['preferred_activities']) && is_array($rawPrefs['preferred_activities']) 
+                                    ? $rawPrefs['preferred_activities'] 
+                                    : []),
+                            'prefered_days' => is_array($rawPrefs['prefered_days'] ?? null) 
+                                ? $rawPrefs['prefered_days'] 
+                                : [],
+                            'availability' => is_array($rawPrefs['availability'] ?? null) 
+                                ? $rawPrefs['availability'] 
+                                : [],
+                            'volunteer_roles' => is_array($rawPrefs['volunteer_roles'] ?? null) 
+                                ? $rawPrefs['volunteer_roles'] 
+                                : [],
+                            'radius_km' => $rawPrefs['radius_km'] ?? $rawPrefs['max_distance'] ?? '',
+                        ];
+                    @endphp
 
                     <div class="mb-3">
                         <label class="form-label"><i class="fas fa-seedling me-1"></i>Activités d'intérêt</label>
