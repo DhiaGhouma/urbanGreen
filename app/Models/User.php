@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'last_login_at',
+        // preferences is set explicitly, not mass-assigned, so not mandatory here
     ];
 
     /**
@@ -48,6 +49,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'last_login_at' => 'datetime',
             'locked_until' => 'datetime',
+            'preferences' => 'array',
         ];
     }
 

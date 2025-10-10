@@ -14,11 +14,13 @@ class Participation extends Model
         'user_id',
         'green_space_id',
         'date',
-        'statut'
+        'statut',
+        'preferences'
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
+        'preferences' => 'array',
     ];
 
     // Relationship with User
