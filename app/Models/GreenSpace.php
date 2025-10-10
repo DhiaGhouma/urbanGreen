@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class GreenSpace extends Model
 {
@@ -66,6 +67,16 @@ class GreenSpace extends Model
     public function plants(): HasMany
     {
         return $this->hasMany(GreenSpacePlant::class);
+    }
+
+    public function feedbacks(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ParticipationFeedback::class,
+            Participation::class,
+            'green_space_id',
+            'participation_id'
+        );
     }
 
     public function toAIFormat(): array

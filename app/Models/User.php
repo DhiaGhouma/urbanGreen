@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany(Participation::class);
     }
 
+    public function participationFeedbacks()
+    {
+        return $this->hasMany(ParticipationFeedback::class);
+    }
+
     /**
      * Get the event registrations for the user.
      */
