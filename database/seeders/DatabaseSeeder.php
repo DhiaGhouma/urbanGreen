@@ -117,55 +117,72 @@ class DatabaseSeeder extends Seeder
         }
 
         // Projets
+        $associationsByEmail = Association::pluck('id', 'email');
+        $greenSpacesByName = GreenSpace::pluck('id', 'name');
+
         $projects = [
-            ['title' => 'Reboisement de la Forêt de Bizerte', 'description' => 'Plantation de 2000 arbres autochtones pour restaurer la biodiversité.', 'estimated_budget' => 20000.00, 'status' => 'en cours', 'association_id' => 5, 'green_space_id' => 5],
-            ['title' => 'Création d’un Jardin Botanique à Sfax', 'description' => 'Installation d’espaces thématiques pour éducation des jeunes.', 'estimated_budget' => 15000.00, 'status' => 'terminé', 'association_id' => 3, 'green_space_id' => 3],
-            ['title' => 'Nettoyage de la Plage de Monastir', 'description' => 'Campagne de nettoyage et sensibilisation des citoyens.', 'estimated_budget' => 5000.00, 'status' => 'proposé', 'association_id' => 4, 'green_space_id' => 4],
-            ['title' => 'Compostage Collectif à Ariana', 'description' => 'Mise en place de bacs à compost dans le parc.', 'estimated_budget' => 4000.00, 'status' => 'en cours', 'association_id' => 2, 'green_space_id' => 2],
-            ['title' => 'Potagers Urbains au Belvédère', 'description' => 'Création de potagers collectifs pour les habitants.', 'estimated_budget' => 8000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1],
+            ['title' => 'Reboisement de la Forêt de Bizerte', 'description' => 'Plantation de 2000 arbres autochtones pour restaurer la biodiversité.', 'estimated_budget' => 20000.00, 'status' => 'en cours', 'association_email' => 'bizerteverte@bz.tn', 'green_space_name' => 'Forêt de Bizerte'],
+            ['title' => 'Création d’un Jardin Botanique à Sfax', 'description' => 'Installation d’espaces thématiques pour éducation des jeunes.', 'estimated_budget' => 15000.00, 'status' => 'terminé', 'association_email' => 'info@sfaxnature.tn', 'green_space_name' => 'Jardin Botanique de Sfax'],
+            ['title' => 'Nettoyage de la Plage de Monastir', 'description' => 'Campagne de nettoyage et sensibilisation des citoyens.', 'estimated_budget' => 5000.00, 'status' => 'proposé', 'association_email' => 'monastir@propre.tn', 'green_space_name' => 'Plage de Monastir - Zone Verte'],
+            ['title' => 'Compostage Collectif à Ariana', 'description' => 'Mise en place de bacs à compost dans le parc.', 'estimated_budget' => 4000.00, 'status' => 'en cours', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
+            ['title' => 'Potagers Urbains au Belvédère', 'description' => 'Création de potagers collectifs pour les habitants.', 'estimated_budget' => 8000.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
 
-            ['title' => 'Sensibilisation au tri des déchets à Tunis', 'description' => 'Organisation d’ateliers sur le tri des déchets pour les familles.', 'estimated_budget' => 3000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1],
-            ['title' => 'Reboisement du Parc de la République', 'description' => 'Planter 500 arbres pour embellir le parc.', 'estimated_budget' => 7000.00, 'status' => 'en cours', 'association_id' => 2, 'green_space_id' => 2],
-            ['title' => 'Création d’espaces pédagogiques à Sfax', 'description' => 'Installer panneaux éducatifs sur la biodiversité.', 'estimated_budget' => 2500.00, 'status' => 'terminé', 'association_id' => 3, 'green_space_id' => 3],
-            ['title' => 'Nettoyage de la plage à Monastir', 'description' => 'Organisation d’une journée de nettoyage et collecte de déchets.', 'estimated_budget' => 2000.00, 'status' => 'proposé', 'association_id' => 4, 'green_space_id' => 4],
-            ['title' => 'Ateliers de jardinage urbain au Belvédère', 'description' => 'Former les habitants à cultiver des plantes locales.', 'estimated_budget' => 4500.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1],
-            ['title' => 'Plantation d’arbustes dans la Forêt de Bizerte', 'description' => 'Augmenter la biodiversité avec 1000 arbustes locaux.', 'estimated_budget' => 12000.00, 'status' => 'en cours', 'association_id' => 5, 'green_space_id' => 5],
+            ['title' => 'Sensibilisation au tri des déchets à Tunis', 'description' => 'Organisation d’ateliers sur le tri des déchets pour les familles.', 'estimated_budget' => 3000.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
+            ['title' => 'Reboisement du Parc de la République', 'description' => 'Planter 500 arbres pour embellir le parc.', 'estimated_budget' => 7000.00, 'status' => 'en cours', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
+            ['title' => 'Création d’espaces pédagogiques à Sfax', 'description' => 'Installer panneaux éducatifs sur la biodiversité.', 'estimated_budget' => 2500.00, 'status' => 'terminé', 'association_email' => 'info@sfaxnature.tn', 'green_space_name' => 'Jardin Botanique de Sfax'],
+            ['title' => 'Nettoyage de la plage à Monastir', 'description' => 'Organisation d’une journée de nettoyage et collecte de déchets.', 'estimated_budget' => 2000.00, 'status' => 'proposé', 'association_email' => 'monastir@propre.tn', 'green_space_name' => 'Plage de Monastir - Zone Verte'],
+            ['title' => 'Ateliers de jardinage urbain au Belvédère', 'description' => 'Former les habitants à cultiver des plantes locales.', 'estimated_budget' => 4500.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
+            ['title' => 'Plantation d’arbustes dans la Forêt de Bizerte', 'description' => 'Augmenter la biodiversité avec 1000 arbustes locaux.', 'estimated_budget' => 12000.00, 'status' => 'en cours', 'association_email' => 'bizerteverte@bz.tn', 'green_space_name' => 'Forêt de Bizerte'],
 
-            ['title' => 'Éco-atelier pour enfants à Ariana', 'description' => 'Ateliers pour enseigner le recyclage et le compostage.', 'estimated_budget' => 3500.00, 'status' => 'proposé', 'association_id' => 2, 'green_space_id' => 2],
-            ['title' => 'Création d’un sentier botanique à Sfax', 'description' => 'Sentier pédagogique avec plantes locales et panneaux informatifs.', 'estimated_budget' => 10000.00, 'status' => 'terminé', 'association_id' => 3, 'green_space_id' => 3],
-            ['title' => 'Plantation de fleurs méditerranéennes au Belvédère', 'description' => 'Améliorer l’esthétique et la biodiversité du parc.', 'estimated_budget' => 6000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1],
-            ['title' => 'Journée de nettoyage de la plage Monastir', 'description' => 'Collecte des déchets et sensibilisation environnementale.', 'estimated_budget' => 2500.00, 'status' => 'en cours', 'association_id' => 4, 'green_space_id' => 4],
-            ['title' => 'Reforestation du Parc de la République', 'description' => 'Planter des arbres résistants au climat local.', 'estimated_budget' => 8000.00, 'status' => 'proposé', 'association_id' => 2, 'green_space_id' => 2],
+            ['title' => 'Éco-atelier pour enfants à Ariana', 'description' => 'Ateliers pour enseigner le recyclage et le compostage.', 'estimated_budget' => 3500.00, 'status' => 'proposé', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
+            ['title' => 'Création d’un sentier botanique à Sfax', 'description' => 'Sentier pédagogique avec plantes locales et panneaux informatifs.', 'estimated_budget' => 10000.00, 'status' => 'terminé', 'association_email' => 'info@sfaxnature.tn', 'green_space_name' => 'Jardin Botanique de Sfax'],
+            ['title' => 'Plantation de fleurs méditerranéennes au Belvédère', 'description' => 'Améliorer l’esthétique et la biodiversité du parc.', 'estimated_budget' => 6000.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
+            ['title' => 'Journée de nettoyage de la plage Monastir', 'description' => 'Collecte des déchets et sensibilisation environnementale.', 'estimated_budget' => 2500.00, 'status' => 'en cours', 'association_email' => 'monastir@propre.tn', 'green_space_name' => 'Plage de Monastir - Zone Verte'],
+            ['title' => 'Reforestation du Parc de la République', 'description' => 'Planter des arbres résistants au climat local.', 'estimated_budget' => 8000.00, 'status' => 'proposé', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
 
-            ['title' => 'Création d’un jardin sensoriel à Tunis', 'description' => 'Jardin pour personnes à mobilité réduite.', 'estimated_budget' => 9000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1],
-            ['title' => 'Formation compostage à Sfax', 'description' => 'Formation pratique pour habitants et écoles.', 'estimated_budget' => 4000.00, 'status' => 'terminé', 'association_id' => 3, 'green_space_id' => 3],
-            ['title' => 'Plantation d’arbres fruitiers à Monastir', 'description' => 'Créer un verger collectif pour les habitants.', 'estimated_budget' => 7000.00, 'status' => 'en cours', 'association_id' => 4, 'green_space_id' => 4],
-            ['title' => 'Jardin communautaire à Ariana', 'description' => 'Potager partagé pour les habitants.', 'estimated_budget' => 5000.00, 'status' => 'proposé', 'association_id' => 2, 'green_space_id' => 2],
-            ['title' => 'Ateliers écologiques à Belvédère', 'description' => 'Éducation à la biodiversité et aux espèces locales.', 'estimated_budget' => 3000.00, 'status' => 'terminé', 'association_id' => 1, 'green_space_id' => 1],
+            ['title' => 'Création d’un jardin sensoriel à Tunis', 'description' => 'Jardin pour personnes à mobilité réduite.', 'estimated_budget' => 9000.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
+            ['title' => 'Formation compostage à Sfax', 'description' => 'Formation pratique pour habitants et écoles.', 'estimated_budget' => 4000.00, 'status' => 'terminé', 'association_email' => 'info@sfaxnature.tn', 'green_space_name' => 'Jardin Botanique de Sfax'],
+            ['title' => 'Plantation d’arbres fruitiers à Monastir', 'description' => 'Créer un verger collectif pour les habitants.', 'estimated_budget' => 7000.00, 'status' => 'en cours', 'association_email' => 'monastir@propre.tn', 'green_space_name' => 'Plage de Monastir - Zone Verte'],
+            ['title' => 'Jardin communautaire à Ariana', 'description' => 'Potager partagé pour les habitants.', 'estimated_budget' => 5000.00, 'status' => 'proposé', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
+            ['title' => 'Ateliers écologiques à Belvédère', 'description' => 'Éducation à la biodiversité et aux espèces locales.', 'estimated_budget' => 3000.00, 'status' => 'terminé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
 
-            ['title' => 'Plantation de haies à Bizerte', 'description' => 'Créer des corridors écologiques pour la faune locale.', 'estimated_budget' => 15000.00, 'status' => 'en cours', 'association_id' => 5, 'green_space_id' => 5],
-            ['title' => 'Création d’un espace jeux nature à Sfax', 'description' => 'Jeux éducatifs intégrés à la nature.', 'estimated_budget' => 12000.00, 'status' => 'proposé', 'association_id' => 3, 'green_space_id' => 3],
-            ['title' => 'Nettoyage de l’Avenue Verte à Monastir', 'description' => 'Sensibilisation et ramassage des déchets.', 'estimated_budget' => 3500.00, 'status' => 'en cours', 'association_id' => 4, 'green_space_id' => 4],
-            ['title' => 'Potagers éducatifs à Ariana', 'description' => 'Jardin pédagogique pour les écoles locales.', 'estimated_budget' => 6000.00, 'status' => 'terminé', 'association_id' => 2, 'green_space_id' => 2],
-            ['title' => 'Création de nichoirs à Belvédère', 'description' => 'Favoriser la biodiversité aviaire dans le parc.', 'estimated_budget' => 2500.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1],
-            ['title' => 'Plantation d’arbres méditerranéens à Bizerte', 'description' => 'Augmenter la couverture végétale et la biodiversité.', 'estimated_budget' => 18000.00, 'status' => 'en cours', 'association_id' => 5, 'green_space_id' => 5],
-            ['title' => 'Jardin communautaire sensoriel à Sfax', 'description' => 'Pour enfants et personnes âgées avec sensibilité sensorielle.', 'estimated_budget' => 9000.00, 'status' => 'proposé', 'association_id' => 3, 'green_space_id' => 3],
-            ['title' => 'Ateliers de sensibilisation à la plage Monastir', 'description' => 'Education des jeunes sur la pollution marine.', 'estimated_budget' => 4000.00, 'status' => 'en cours', 'association_id' => 4, 'green_space_id' => 4],
-            ['title' => 'Formation en permaculture à Ariana', 'description' => 'Apprentissage de méthodes de culture durable.', 'estimated_budget' => 5000.00, 'status' => 'terminé', 'association_id' => 2, 'green_space_id' => 2],
-            ['title' => 'Création d’un sentier écologique Belvédère', 'description' => 'Sentier éducatif avec panneaux sur biodiversité.', 'estimated_budget' => 7000.00, 'status' => 'proposé', 'association_id' => 1, 'green_space_id' => 1]
+            ['title' => 'Plantation de haies à Bizerte', 'description' => 'Créer des corridors écologiques pour la faune locale.', 'estimated_budget' => 15000.00, 'status' => 'en cours', 'association_email' => 'bizerteverte@bz.tn', 'green_space_name' => 'Forêt de Bizerte'],
+            ['title' => 'Création d’un espace jeux nature à Sfax', 'description' => 'Jeux éducatifs intégrés à la nature.', 'estimated_budget' => 12000.00, 'status' => 'proposé', 'association_email' => 'info@sfaxnature.tn', 'green_space_name' => 'Jardin Botanique de Sfax'],
+            ['title' => 'Nettoyage de l’Avenue Verte à Monastir', 'description' => 'Sensibilisation et ramassage des déchets.', 'estimated_budget' => 3500.00, 'status' => 'en cours', 'association_email' => 'monastir@propre.tn', 'green_space_name' => 'Plage de Monastir - Zone Verte'],
+            ['title' => 'Potagers éducatifs à Ariana', 'description' => 'Jardin pédagogique pour les écoles locales.', 'estimated_budget' => 6000.00, 'status' => 'terminé', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
+            ['title' => 'Création de nichoirs à Belvédère', 'description' => 'Favoriser la biodiversité aviaire dans le parc.', 'estimated_budget' => 2500.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
+            ['title' => 'Plantation d’arbres méditerranéens à Bizerte', 'description' => 'Augmenter la couverture végétale et la biodiversité.', 'estimated_budget' => 18000.00, 'status' => 'en cours', 'association_email' => 'bizerteverte@bz.tn', 'green_space_name' => 'Forêt de Bizerte'],
+            ['title' => 'Jardin communautaire sensoriel à Sfax', 'description' => 'Pour enfants et personnes âgées avec sensibilité sensorielle.', 'estimated_budget' => 9000.00, 'status' => 'proposé', 'association_email' => 'info@sfaxnature.tn', 'green_space_name' => 'Jardin Botanique de Sfax'],
+            ['title' => 'Ateliers de sensibilisation à la plage Monastir', 'description' => 'Education des jeunes sur la pollution marine.', 'estimated_budget' => 4000.00, 'status' => 'en cours', 'association_email' => 'monastir@propre.tn', 'green_space_name' => 'Plage de Monastir - Zone Verte'],
+            ['title' => 'Formation en permaculture à Ariana', 'description' => 'Apprentissage de méthodes de culture durable.', 'estimated_budget' => 5000.00, 'status' => 'terminé', 'association_email' => 'ecojeunes@ariana.tn', 'green_space_name' => 'Parc de la République'],
+            ['title' => 'Création d’un sentier écologique Belvédère', 'description' => 'Sentier éducatif avec panneaux sur biodiversité.', 'estimated_budget' => 7000.00, 'status' => 'proposé', 'association_email' => 'contact@greentn.org', 'green_space_name' => 'Parc du Belvédère'],
         ];
 
 
         foreach ($projects as $projectData) {
+            $associationId = $associationsByEmail[$projectData['association_email']] ?? null;
+            $greenSpaceId = $greenSpacesByName[$projectData['green_space_name']] ?? null;
+
+            if (!$associationId || !$greenSpaceId) {
+                continue;
+            }
+
             Project::firstOrCreate(
                 ['title' => $projectData['title']],
-                $projectData
+                [
+                    'description' => $projectData['description'],
+                    'estimated_budget' => $projectData['estimated_budget'],
+                    'status' => $projectData['status'],
+                    'association_id' => $associationId,
+                    'green_space_id' => $greenSpaceId,
+                ]
             );
         }
 
         // Seed participations with preferences (varied per user)
         $this->call([
             ParticipationSeeder::class,
+            ParticipationFeedbackSeeder::class,
         ]);
     }
 }

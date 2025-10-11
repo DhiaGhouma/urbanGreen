@@ -74,7 +74,10 @@ class GreenSpaceController extends Controller
     // Change parameter name from $greenSpace to $greenspace (lowercase)
     public function show(GreenSpace $greenspace): View
     {
-        $greenspace->load('projects');
+        $greenspace->load([
+            'projects',
+            'participations' => fn ($query) => $query->with(['feedback.user'])->whereHas('feedback'),
+        ]);
         return view('greenspaces.show', compact('greenspace'));
     }
 

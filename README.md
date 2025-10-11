@@ -13,16 +13,17 @@ urbanGreen is a modern **Laravel 12 web application** focused on **sustainabilit
 
 Key features include:
 
-- **Blade templating engine** for building elegant, maintainable front-end views.  
-- **Python Flask modules** for AI/ML, analytics, or other backend microservices.  
-- **Robust DevOps pipeline** integrating:
-  - **Docker** for containerization and environment consistency.
-  - **SonarQube** for code quality analysis.
-  - **Prometheus** for metrics collection.
-  - **Grafana** for real-time monitoring and dashboards.  
-- **Eloquent ORM** for intuitive and database-agnostic data management.  
-- Modular project structure for scalable and maintainable development.  
-- Real-time notifications and community management features.
+-   **Blade templating engine** for building elegant, maintainable front-end views.
+-   **Python Flask modules** for AI/ML, analytics, or other backend microservices.
+-   **Robust DevOps pipeline** integrating:
+    -   **Docker** for containerization and environment consistency.
+    -   **SonarQube** for code quality analysis.
+    -   **Prometheus** for metrics collection.
+    -   **Grafana** for real-time monitoring and dashboards.
+-   **Eloquent ORM** for intuitive and database-agnostic data management.
+-   Modular project structure for scalable and maintainable development.
+-   Real-time notifications and community management features.
+-   **Participation feedback loop** with star ratings and testimonials linked to each green space.
 
 urbanGreen is designed for developers and sustainability advocates who want to **combine modern web development with impactful environmental projects**.
 
@@ -39,3 +40,4 @@ php artisan key:generate
 php artisan serve
 # urbanGreen
 UrbanGreen est une plateforme web collaborative qui encourage la végétalisation des villes. Elle permet aux associations de proposer des projets, aux citoyens de participer (bénévolat, financement), de suivre les espaces verts et de signaler des problèmes pour rendre les villes plus vertes et vivables.
+```

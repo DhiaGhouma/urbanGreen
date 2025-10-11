@@ -78,7 +78,7 @@ class ParticipationController extends Controller
      */
     public function show(Participation $participation): View
     {
-        $participation->load(['user', 'greenSpace']);
+    $participation->load(['user', 'greenSpace', 'feedback.user']);
         
         return view('participations.show', compact('participation'));
     }

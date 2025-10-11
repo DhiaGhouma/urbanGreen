@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GreenSpaceController;
 use App\Http\Controllers\ExportDataController;
 use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\ParticipationFeedbackController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GreenSpacePlantsController;
 use App\Http\Controllers\EventController;
@@ -63,6 +64,13 @@ Route::middleware('auth.custom')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('greenspaces', GreenSpaceController::class);
     Route::resource('participations', ParticipationController::class);
+
+    Route::post('participations/{participation}/feedback', [ParticipationFeedbackController::class, 'store'])
+        ->name('participations.feedback.store');
+    Route::match(['put', 'patch'], 'participations/{participation}/feedback', [ParticipationFeedbackController::class, 'update'])
+        ->name('participations.feedback.update');
+    Route::delete('participations/{participation}/feedback', [ParticipationFeedbackController::class, 'destroy'])
+        ->name('participations.feedback.destroy');
     
     // Additional routes
     Route::get('/export/projects', [ExportDataController::class, 'exportProjects'])->name('export.projects');
