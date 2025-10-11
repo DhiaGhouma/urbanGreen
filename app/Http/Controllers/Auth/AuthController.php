@@ -47,7 +47,7 @@ class AuthController extends Controller
     {
         // Validate input
         $credentials = $request->validate([
-            'email' => ['required', 'email:rfc,dns', 'max:255'],
+            'email' => ['required', 'email:rfc', 'max:255'],
             'password' => ['required', 'string', 'min:1'],
         ]);
 
@@ -94,6 +94,11 @@ class AuthController extends Controller
         // Regenerate session for security
         $request->session()->regenerate();
 
+        // Redirect based on user role
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard')->with('success', 'Welcome back, ' . $user->name . '!');
+        }
+
         return redirect()->intended('/')->with('success', 'Welcome back, ' . $user->name . '!');
     }
 
@@ -121,7 +126,7 @@ class AuthController extends Controller
             ],
             'email' => [
                 'required', 
-                'email:rfc,dns', 
+                'email:rfc,', 
                 'max:255', 
                 'unique:users,email'
             ],
@@ -225,7 +230,7 @@ class AuthController extends Controller
             'email' => [
                 'sometimes',
                 'required', 
-                'email:rfc,dns', 
+                'email:rfc', 
                 'max:255', 
                 'unique:users,email,' . $user->id
             ],
