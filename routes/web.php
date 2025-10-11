@@ -132,3 +132,20 @@ Route::middleware('auth.custom')->group(function () {
 
 // Route SHOW (doit toujours être après toutes les routes spécifiques)
 Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
+
+// =============================================================================
+// ADMIN ROUTES (Protected by admin middleware)
+// =============================================================================
+
+Route::middleware(['auth.custom', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Admin Dashboard
+    Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // User Management
+    Route::get('/users', [App\Http\Controllers\Admin\AdminController::class, 'users'])->name('users.index');
+    Route::get('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'showUser'])->name('users.show');
+    Route::patch('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'updateUser'])->name('users.update');
+    Route::post('/users/{user}/lock', [App\Http\Controllers\Admin\AdminController::class, 'lockUser'])->name('users.lock');
+    Route::post('/users/{user}/unlock', [App\Http\Controllers\Admin\AdminController::class, 'unlockUser'])->name('users.unlock');
+    Route::delete('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'destroyUser'])->name('users.destroy');
+});

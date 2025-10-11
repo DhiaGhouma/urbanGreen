@@ -774,22 +774,6 @@
                             <i class="fas fa-id-badge me-2 text-primary"></i>Mon Profil
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin())
-                        <li><hr class="dropdown-divider"></li>
-                        <li class="dropdown-header">
-                            <i class="fas fa-crown me-1 text-warning"></i>Administration
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-users-cog me-2 text-danger"></i>Gestion des utilisateurs
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-chart-line me-2 text-success"></i>Statistiques
-                            </a>
-                        </li>
-                    @endif
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="POST" action="{{ route('auth.logout') }}" class="d-inline">
