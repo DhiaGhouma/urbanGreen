@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'last_login_at',
+        // preferences is set explicitly, not mass-assigned, so not mandatory here
     ];
 
     /**
@@ -48,6 +49,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'last_login_at' => 'datetime',
             'locked_until' => 'datetime',
+            'preferences' => 'array',
         ];
     }
 
@@ -57,6 +59,11 @@ class User extends Authenticatable
     public function participations()
     {
         return $this->hasMany(Participation::class);
+    }
+
+    public function participationFeedbacks()
+    {
+        return $this->hasMany(ParticipationFeedback::class);
     }
 
     /**

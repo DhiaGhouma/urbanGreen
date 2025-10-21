@@ -8,6 +8,8 @@ use App\Models\GreenSpace;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Services\FastAIRecommender;
+use Illuminate\Http\JsonResponse;
 
 class ParticipationController extends Controller
 {
@@ -76,7 +78,7 @@ class ParticipationController extends Controller
      */
     public function show(Participation $participation): View
     {
-        $participation->load(['user', 'greenSpace']);
+    $participation->load(['user', 'greenSpace', 'feedback.user']);
         
         return view('participations.show', compact('participation'));
     }
@@ -157,5 +159,60 @@ class ParticipationController extends Controller
 
         return redirect()->back()
             ->with('success', 'Statut de la participation mis à jour avec succès!');
+    }
+
+    /**
+     * Suggest the best greenspace for the current user using AI.
+     * Uses FastAI server with sentence-transformers embeddings
+     */
+    public function suggest(Request $request, FastAIRecommender $recommender): JsonResponse
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Check if AI server is available
+        if (!$recommender->isAvailable()) {
+            return response()->json([
+                'error' => 'Le serveur IA n\'est pas disponible. Démarrez-le avec: php artisan ai:start-server'
+            ], 503);
+        }
+
+        // Fetch all greenspaces with activities (regardless of status)
+        $greenspaces = GreenSpace::query()
+            ->whereNotNull('activities')
+            ->where('activities', '!=', '')
+            ->where('activities', '!=', '[]')
+            ->orderBy('name')
+            ->get();
+
+        if ($greenspaces->isEmpty()) {
+            return response()->json(['error' => 'Aucun espace vert disponible.'], 422);
+        }
+
+        try {
+            $startTime = microtime(true);
+            $result = $recommender->recommend($user, $greenspaces);
+            $result['computation_time'] = round((microtime(true) - $startTime) * 1000, 2) . 'ms';
+            
+            \Log::info('AI Recommendation', [
+                'user_id' => $user->id,
+                'best_match_id' => $result['best_match_id'] ?? null,
+                'score' => $result['score'] ?? null,
+                'reason' => $result['reason'] ?? null,
+                'engine' => $result['engine'] ?? null,
+                'computation_time' => $result['computation_time'] ?? null,
+                'top_rankings' => array_slice($result['rankings'] ?? [], 0, 3),
+            ]);
+            return response()->json($result);
+        } catch (\Throwable $e) {
+            \Log::error('AI Recommendation failed', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

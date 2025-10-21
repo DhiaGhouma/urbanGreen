@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GreenSpaceController;
 use App\Http\Controllers\ExportDataController;
 use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\ParticipationFeedbackController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GreenSpacePlantsController;
 use App\Http\Controllers\EventController;
@@ -31,6 +32,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth.custom')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('auth.dashboard');
+    Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile.show');
     Route::patch('/profile', [AuthController::class, 'updateProfile'])->name('auth.profile.update');
     Route::patch('/password', [AuthController::class, 'changePassword'])->name('auth.password.change');
 });
@@ -48,6 +50,10 @@ Route::get('/home', function () {
 Route::get('/team', function () {
     return view('team.team');
 })->name('team');
+// AI suggestion endpoint for participations
+Route::get('participations/suggest/ai', [App\Http\Controllers\ParticipationController::class, 'suggest'])
+    ->name('participations.suggest')
+    ->middleware('auth');
 // =============================================================================
 // PROTECTED ROUTES (Require Authentication)
 // =============================================================================
@@ -58,6 +64,12 @@ Route::middleware('auth.custom')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('greenspaces', GreenSpaceController::class);
     Route::resource('participations', ParticipationController::class);
+    Route::post('participations/{participation}/feedback', [ParticipationFeedbackController::class, 'store'])
+        ->name('participations.feedback.store');
+    Route::match(['put', 'patch'], 'participations/{participation}/feedback', [ParticipationFeedbackController::class, 'update'])
+        ->name('participations.feedback.update');
+    Route::delete('participations/{participation}/feedback', [ParticipationFeedbackController::class, 'destroy'])
+        ->name('participations.feedback.destroy');
 
     // Additional routes
     Route::get('/export/projects', [ExportDataController::class, 'exportProjects'])->name('export.projects');
@@ -119,3 +131,20 @@ Route::middleware('auth.custom')->group(function () {
 
 // Route SHOW (doit toujours être après toutes les routes spécifiques)
 Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
+
+// =============================================================================
+// ADMIN ROUTES (Protected by admin middleware)
+// =============================================================================
+
+Route::middleware(['auth.custom', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Admin Dashboard
+    Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('dashboard');
+
+    // User Management
+    Route::get('/users', [App\Http\Controllers\Admin\AdminController::class, 'users'])->name('users.index');
+    Route::get('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'showUser'])->name('users.show');
+    Route::patch('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'updateUser'])->name('users.update');
+    Route::post('/users/{user}/lock', [App\Http\Controllers\Admin\AdminController::class, 'lockUser'])->name('users.lock');
+    Route::post('/users/{user}/unlock', [App\Http\Controllers\Admin\AdminController::class, 'unlockUser'])->name('users.unlock');
+    Route::delete('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'destroyUser'])->name('users.destroy');
+});
