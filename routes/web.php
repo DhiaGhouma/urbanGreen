@@ -58,7 +58,7 @@ Route::middleware('auth.custom')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('greenspaces', GreenSpaceController::class);
     Route::resource('participations', ParticipationController::class);
-    
+
     // Additional routes
     Route::get('/export/projects', [ExportDataController::class, 'exportProjects'])->name('export.projects');
     Route::post('/projects/recommend', [ProjectController::class, 'recommend'])->name('projects.recommend');
@@ -79,7 +79,7 @@ Route::middleware('auth.custom')->group(function () {
     Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
     Route::patch('/events/{event}', [EventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
-    
+
     Route::post('/events/{event}/register', [EventController::class, 'register'])->name('events.register');
     Route::delete('/events/{event}/cancel-registration', [EventController::class, 'cancelRegistration'])->name('events.cancel-registration');
     Route::patch('/events/{event}/registrations/{registration}/status', [EventController::class, 'updateRegistrationStatus'])->name('events.update-registration-status');
