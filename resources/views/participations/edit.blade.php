@@ -42,26 +42,18 @@
                     @csrf
                     @method('PUT')
                     
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="user_id" class="form-label">Utilisateur *</label>
-                            <select name="user_id" 
-                                    id="user_id" 
-                                    class="form-select @error('user_id') is-invalid @enderror" 
-                                    required>
-                                <option value="">Sélectionner un utilisateur</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" 
-                                            {{ (old('user_id', $participation->user_id) == $user->id) ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('user_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                    <!-- Display current user info (non-editable) -->
+                    <div class="alert alert-success mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-circle me-3 fs-4"></i>
+                            <div>
+                                <strong>Participant:</strong><br>
+                                <span class="text-muted">{{ $participation->user->name }} ({{ $participation->user->email }})</span>
+                            </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row g-3">
                         <div class="col-md-6">
                             <label for="green_space_id" class="form-label">Espace Vert *</label>
                             <select name="green_space_id" 

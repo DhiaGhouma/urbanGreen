@@ -29,6 +29,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => 'user',
+            'failed_login_attempts' => 0,
+            'last_login_at' => fake()->optional()->dateTimeBetween('-1 month', 'now'),
         ];
     }
 
@@ -39,6 +42,37 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Create an admin user.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * Create a moderator user.
+     */
+    public function moderator(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'moderator',
+        ]);
+    }
+
+    /**
+     * Create a locked user account.
+     */
+    public function locked(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'failed_login_attempts' => 5,
+            'locked_until' => now()->addMinutes(15),
         ]);
     }
 }

@@ -21,4 +21,11 @@ class Association extends Model
     {
         return $this->hasMany(Project::class);
     }
+    /**
+     * Get the events for the association.
+     */
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
 }

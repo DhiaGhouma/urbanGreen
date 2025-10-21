@@ -20,25 +20,18 @@
                 <form method="POST" action="{{ route('participations.store') }}">
                     @csrf
                     
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="user_id" class="form-label">Utilisateur *</label>
-                            <select name="user_id" 
-                                    id="user_id" 
-                                    class="form-select @error('user_id') is-invalid @enderror" 
-                                    required>
-                                <option value="">Sélectionner un utilisateur</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('user_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                    <!-- Display current user info -->
+                    <div class="alert alert-info mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-circle me-3 fs-4"></i>
+                            <div>
+                                <strong>Participation pour:</strong><br>
+                                <span class="text-muted">{{ Auth::user()->name }} ({{ Auth::user()->email }})</span>
+                            </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row g-3">
                         <div class="col-md-6">
                             <label for="green_space_id" class="form-label">Espace Vert *</label>
                             <select name="green_space_id" 
@@ -55,6 +48,13 @@
                             @error('green_space_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                            <div class="mt-2">
+                                <button type="button" id="btn-ai-suggest" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-wand-magic-sparkles me-1"></i> Suggérer avec l'IA
+                                </button>
+                                <span id="ai-suggest-status" class="ms-2 text-muted" style="display:none"></span>
+                                <div id="ai-suggest-reason" class="form-text mt-1" style="display:none"></div>
+                            </div>
                         </div>
 
                         <div class="col-md-6">
@@ -109,4 +109,68 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('btn-ai-suggest');
+    const status = document.getElementById('ai-suggest-status');
+    const select = document.getElementById('green_space_id');
+    const reason = document.getElementById('ai-suggest-reason');
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+        status.style.display = 'inline';
+        status.textContent = '🤖 Analyse IA en cours... ';
+        status.classList.remove('text-danger', 'text-success', 'text-warning');
+        status.classList.add('text-info');
+        btn.disabled = true;
+        reason.style.display = 'none';
+
+        const startTime = Date.now();
+
+        try {
+            const res = await fetch("{{ route('participations.suggest') }}", {
+                headers: { 'Accept': 'application/json' }
+            });
+            const data = await res.json();
+            const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+            
+            console.log('AI suggestion result:', data);
+            if (!res.ok) throw new Error(data.error || 'Erreur lors de la suggestion');
+            
+            if (data.best_match_id) {
+                select.value = String(data.best_match_id);
+                const label = [...select.options].find(o => o.value === String(data.best_match_id))?.text || '#'+data.best_match_id;
+                
+                status.textContent = `✅ Suggestion: ${label}`;
+                status.classList.remove('text-danger', 'text-info');
+                status.classList.add('text-success');
+                
+                if (data.reason) {
+                    reason.innerHTML = `<i class="fas fa-lightbulb text-warning"></i> ${data.reason}`;
+                    reason.style.display = 'block';
+                }
+            } else {
+                status.textContent = '⚠️ Aucune suggestion disponible';
+                status.classList.add('text-warning');
+                reason.style.display = 'none';
+            }
+        } catch (e) {
+            status.textContent = '❌ ' + (e.message || 'Erreur IA');
+            status.classList.remove('text-info');
+            status.classList.add('text-danger');
+            reason.style.display = 'none';
+        } finally {
+            btn.disabled = false;
+            // Keep status visible longer so user can read it
+            setTimeout(() => { 
+                status.style.display = 'none'; 
+                reason.style.display = 'none';
+            }, 15000); // 15 seconds to read the reasoning
+        }
+    });
+});
+</script>
 @endsection
