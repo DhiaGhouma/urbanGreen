@@ -21,10 +21,3 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-
-# Python virtual environment
-.venv/
-venv/
-__pycache__/
-*.pyc
-*.pyo

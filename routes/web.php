@@ -10,6 +10,7 @@ use App\Http\Controllers\ParticipationFeedbackController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GreenSpacePlantsController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GreenSpaceMapController;
 use App\Http\Controllers\ReportController;
 
 // =============================================================================
@@ -70,6 +71,9 @@ Route::middleware('auth.custom')->group(function () {
         ->name('participations.feedback.update');
     Route::delete('participations/{participation}/feedback', [ParticipationFeedbackController::class, 'destroy'])
         ->name('participations.feedback.destroy');
+
+    Route::get('/greenspaces/{greenSpace}/map', [GreenSpaceMapController::class, 'show'])
+    ->name('greenspaces.map.show');    
 
     // Additional routes
     Route::get('/export/projects', [ExportDataController::class, 'exportProjects'])->name('export.projects');

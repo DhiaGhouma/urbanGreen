@@ -70,6 +70,11 @@
                                     <a href="{{ route('greenspaces.edit', $greenSpace) }}" class="btn btn-sm btn-outline-warning" title="Modifier">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    <a href="{{ route('greenspaces.map.show', $greenSpace) }}" 
+                                       class="btn btn-sm btn-outline-info" title="Voir sur la carte">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </a>
+
                                     <form method="POST" action="{{ route('greenspaces.destroy', $greenSpace) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet espace vert ?')">
                                         @csrf
                                         @method('DELETE')
