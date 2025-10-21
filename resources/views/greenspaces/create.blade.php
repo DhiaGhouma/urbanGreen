@@ -104,6 +104,12 @@
                             @enderror
                         </div>
 
+                        {{-- 🌍 Ajout de la carte Leaflet --}}
+                        <div class="col-md-12">
+                            <label class="form-label">Sélectionnez la position sur la carte</label>
+                            <div id="map" style="height: 400px; border-radius: 10px;"></div>
+                        </div>
+
                         <div class="col-md-6">
                             <label for="latitude" class="form-label">Latitude</label>
                             <input type="number"
@@ -168,4 +174,41 @@
         </div>
     </div>
 </div>
+
+{{-- 📍 Leaflet --}}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialisation de la carte
+    const map = L.map('map').setView([36.8065, 10.1815], 13); // Vue centrée sur Tunis
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let marker;
+
+    // Quand l'utilisateur clique sur la carte
+    map.on('click', function(e) {
+        const lat = e.latlng.lat.toFixed(6);
+        const lon = e.latlng.lng.toFixed(6);
+
+        // Mise à jour des champs du formulaire
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lon;
+
+        // Supprimer l'ancien marqueur s'il existe
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        // Ajouter un nouveau marqueur
+        marker = L.marker([lat, lon]).addTo(map)
+            .bindPopup(`Latitude: ${lat}<br>Longitude: ${lon}`)
+            .openPopup();
+    });
+});
+</script>
 @endsection
