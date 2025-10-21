@@ -147,4 +147,6 @@ Route::middleware(['auth.custom', 'admin'])->prefix('admin')->name('admin.')->gr
     Route::post('/users/{user}/lock', [App\Http\Controllers\Admin\AdminController::class, 'lockUser'])->name('users.lock');
     Route::post('/users/{user}/unlock', [App\Http\Controllers\Admin\AdminController::class, 'unlockUser'])->name('users.unlock');
     Route::delete('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'destroyUser'])->name('users.destroy');
+
+
 });
