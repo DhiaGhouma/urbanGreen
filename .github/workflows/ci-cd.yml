@@ -1,0 +1,248 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main moetaz]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Job 1: Build and Test Laravel Application
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for better SonarCloud analysis
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: xdebug
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Directory Permissions
+        run: chmod -R 775 storage bootstrap/cache
+
+      - name: Execute tests (Unit and Feature tests) with coverage
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-html=coverage-html
+
+      - name: Upload coverage to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage.xml
+            coverage-html/
+          retention-days: 5
+
+      - name: Display coverage summary
+        run: |
+          echo "✅ Tests completed successfully!"
+          if [ -f coverage.xml ]; then
+            echo "📊 Coverage report generated"
+          fi
+
+  # Job 2: Build Frontend Assets
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: public/build/
+          retention-days: 5
+
+      - name: Build success
+        run: echo "✅ Frontend assets built successfully!"
+
+  # Job 3: Code Quality Check (Local)
+  code-quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    needs: [laravel-tests]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: phpcs, phpstan
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+
+      - name: Display Coverage Summary
+        run: |
+          echo "📊 Code Coverage Report"
+          echo "======================="
+          if [ -f coverage.xml ]; then
+            echo "✅ Coverage report generated successfully"
+            # You can add coverage parsing here if needed
+          fi
+          echo "======================="
+
+      - name: Check PHP Code Style (Laravel Pint)
+        run: |
+          composer require laravel/pint --dev --no-interaction || true
+          if [ -f vendor/bin/pint ]; then
+            vendor/bin/pint --test || echo "⚠️ Code style issues found (non-blocking)"
+          fi
+        continue-on-error: true
+
+      - name: Quality Check Complete
+        run: |
+          echo "✅ Code quality checks completed"
+          echo "📝 Note: For advanced quality analysis, ask repo owner to setup SonarCloud"
+
+  # Job 3.5: Debug Info (helps troubleshoot Docker skip)
+  debug-info:
+    name: Debug Pipeline Info
+    runs-on: ubuntu-latest
+    needs: [laravel-tests, frontend-build, code-quality]
+    steps:
+      - name: Display Debug Information
+        run: |
+          echo "================================================"
+          echo "🔍 DEBUG INFORMATION"
+          echo "================================================"
+          echo "Event Name: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Repository Owner: ${{ github.repository_owner }}"
+          echo "================================================"
+          echo "Checking Docker job condition:"
+          echo "  - Is push event? ${{ github.event_name == 'push' }}"
+          echo "  - Is pull_request event? ${{ github.event_name == 'pull_request' }}"
+          echo "  - Is main branch? ${{ github.ref == 'refs/heads/main' }}"
+          echo "  - Is moetaz branch? ${{ github.ref == 'refs/heads/moetaz' }}"
+          echo "  - PR head ref: ${{ github.head_ref }}"
+          echo "  - Is PR from moetaz? ${{ github.head_ref == 'moetaz' }}"
+          echo ""
+          echo "  - Push to main/moetaz? ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/moetaz') }}"
+          echo "  - PR from moetaz? ${{ github.event_name == 'pull_request' && github.head_ref == 'moetaz' }}"
+          echo ""
+          echo "  ✅ Should Docker run? ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/moetaz')) || (github.event_name == 'pull_request' && github.head_ref == 'moetaz') }}"
+          echo "================================================"
+
+  # Job 4: Build and Push Docker Image to GitHub Container Registry (GHCR)
+  # Uses automatic GITHUB_TOKEN - NO SECRETS NEEDED!
+  # Runs on: push to main/moetaz OR pull requests from moetaz branch
+  docker:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [laravel-tests, frontend-build, code-quality]
+    if: |
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/moetaz')) ||
+      (github.event_name == 'pull_request' && github.head_ref == 'moetaz')
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: public/build/
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/urbangreen
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix=moetaz-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Docker Image Summary
+        run: |
+          echo "🐳 Docker Image pushed successfully to GitHub Container Registry!"
+          echo "📦 Repository: ghcr.io/${{ github.repository_owner }}/urbangreen"
+          echo "📦 Tags: ${{ steps.meta.outputs.tags }}"
+          echo ""
+          echo "🔗 Pull command:"
+          echo "   docker pull ghcr.io/${{ github.repository_owner }}/urbangreen:latest"
+          echo ""
+          echo "� View packages: https://github.com/${{ github.repository_owner }}?tab=packages"
+
+  # Job 5: Deployment Notification
+  notify:
+    name: Pipeline Summary
+    runs-on: ubuntu-latest
+    needs: [laravel-tests, frontend-build, code-quality, debug-info, docker]
+    if: always()
+
+    steps:
+      - name: Pipeline Status
+        run: |
+          echo "================================================"
+          echo "🎉 CI/CD Pipeline Execution Complete!"
+          echo "================================================"
+          echo "✅ Laravel Tests: ${{ needs.laravel-tests.result }}"
+          echo "✅ Frontend Build: ${{ needs.frontend-build.result }}"
+          echo "✅ Code Quality: ${{ needs.code-quality.result }}"
+          echo "🔍 Debug Info: ${{ needs.debug-info.result }}"
+          echo "✅ Docker Build: ${{ needs.docker.result }}"
+          echo "================================================"
