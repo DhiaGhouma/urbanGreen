@@ -187,6 +187,20 @@
                     </p>
 
                     @if($canLeaveFeedback)
+                        {{-- Validation Errors --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <strong>Erreur de validation :</strong>
+                                <ul class="mb-0 mt-2">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
+
                         <form action="{{ route('participations.feedback.store', $participation) }}" method="POST" class="mt-3">
                             @csrf
                             <div class="mb-3">
@@ -197,10 +211,16 @@
                                         <label for="create-rating-{{ $i }}" class="fas fa-star"></label>
                                     @endfor
                                 </div>
+                                @error('rating')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="create-comment" class="form-label fw-semibold">Votre commentaire</label>
-                                <textarea id="create-comment" name="comment" class="form-control" rows="4" required>{{ old('comment') }}</textarea>
+                                <textarea id="create-comment" name="comment" class="form-control @error('comment') is-invalid @enderror" rows="4" required>{{ old('comment') }}</textarea>
+                                @error('comment')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-paper-plane me-2"></i>Publier mon avis

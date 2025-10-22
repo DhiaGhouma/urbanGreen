@@ -10,6 +10,13 @@ class ParticipationFeedback extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'participation_feedback';
+
     protected $fillable = [
         'participation_id',
         'user_id',
