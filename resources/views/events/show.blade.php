@@ -17,12 +17,12 @@
     <div class="col-lg-8">
         <div class="card mb-4">
             @if($event->image)
-                <img src="{{ asset('storage/' . $event->image) }}" 
-                     class="card-img-top" 
-                     alt="{{ $event->titre }}" 
+                <img src="{{ asset('storage/' . $event->image) }}"
+                     class="card-img-top"
+                     alt="{{ $event->titre }}"
                      style="height: 400px; object-fit: cover;">
             @endif
-            
+
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
@@ -33,7 +33,7 @@
                             {{ ucfirst(str_replace('_', ' ', $event->statut)) }}
                         </span>
                     </div>
-                    
+
                     @auth
                         <div class="action-buttons">
                             <a href="{{ route('events.edit', $event) }}" class="btn btn-sm btn-outline-primary">
@@ -42,7 +42,7 @@
                             <form action="{{ route('events.destroy', $event) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     @if($event->date_fin)
                     <div class="col-md-6">
                         <div class="info-group">
@@ -109,8 +109,8 @@
                             <strong>{{ $event->confirmedRegistrations->count() }} / {{ $event->capacite_max }}</strong>
                         </div>
                         <div class="progress" style="height: 10px;">
-                            <div class="progress-bar {{ $event->isFull() ? 'bg-danger' : 'bg-success' }}" 
-                                 role="progressbar" 
+                            <div class="progress-bar {{ $event->isFull() ? 'bg-danger' : 'bg-success' }}"
+                                 role="progressbar"
                                  style="width: {{ ($event->confirmedRegistrations->count() / $event->capacite_max * 100) }}%">
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                                 </td>
                                 <td>
                                     @if($registration->statut === 'en_attente' && !$event->isFull())
-                                        <form action="{{ route('events.update-registration-status', [$event, $registration]) }}" 
+                                        <form action="{{ route('events.update-registration-status', [$event, $registration]) }}"
                                               method="POST" class="d-inline">
                                             @csrf
                                             @method('PATCH')
@@ -182,9 +182,9 @@
                                             </button>
                                         </form>
                                     @endif
-                                    
+
                                     @if($registration->statut !== 'annulee')
-                                        <form action="{{ route('events.update-registration-status', [$event, $registration]) }}" 
+                                        <form action="{{ route('events.update-registration-status', [$event, $registration]) }}"
                                               method="POST" class="d-inline">
                                             @csrf
                                             @method('PATCH')
@@ -222,7 +222,7 @@
                         <i class="fas fa-info-circle me-2"></i>
                         Vous êtes inscrit à cet événement
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong>Statut de votre inscription :</strong>
                         <div class="mt-2">
@@ -269,14 +269,14 @@
                     @else
                         <form action="{{ route('events.register', $event) }}" method="POST">
                             @csrf
-                            
+
                             <div class="mb-3">
                                 <label for="commentaire" class="form-label">
                                     Commentaire (optionnel)
                                 </label>
-                                <textarea class="form-control" 
-                                          id="commentaire" 
-                                          name="commentaire" 
+                                <textarea class="form-control"
+                                          id="commentaire"
+                                          name="commentaire"
                                           rows="3"
                                           placeholder="Ajoutez un message ou des questions..."></textarea>
                             </div>
