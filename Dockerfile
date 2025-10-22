@@ -67,15 +67,17 @@ RUN apk add --no-cache \
     # Configure and install PHP extensions
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
-        pdo \
-        pdo_mysql \
-        pdo_sqlite \
-        gd \
-        zip \
-        bcmath \
-        opcache \
+    pdo \
+    pdo_mysql \
+    pdo_sqlite \
+    gd \
+    zip \
+    bcmath \
+    opcache \
     # Remove build dependencies
-    && apk del .build-deps# Set working directory
+    && apk del .build-deps
+
+# Set working directory
 WORKDIR /var/www/html
 
 # Copy application code from composer-builder
