@@ -3,11 +3,12 @@
 ## ✅ What Changed?
 
 Instead of Docker Hub, we now use **GitHub Container Registry (GHCR)** which:
-- ✅ **NO secrets needed** - Uses automatic `GITHUB_TOKEN`
-- ✅ **Works for collaborators** - No special permissions needed
-- ✅ **Free and unlimited** - For public repositories
-- ✅ **Integrated with GitHub** - View packages on GitHub directly
-- ✅ **No GitHub push protection issues** - Uses official GitHub tokens
+
+-   ✅ **NO secrets needed** - Uses automatic `GITHUB_TOKEN`
+-   ✅ **Works for collaborators** - No special permissions needed
+-   ✅ **Free and unlimited** - For public repositories
+-   ✅ **Integrated with GitHub** - View packages on GitHub directly
+-   ✅ **No GitHub push protection issues** - Uses official GitHub tokens
 
 ---
 
@@ -41,8 +42,9 @@ docker-compose up -d
 ## 📦 View Your Packages
 
 After successful build, view your Docker images at:
-- https://github.com/DhiaGhouma?tab=packages
-- Or: https://github.com/DhiaGhouma/urbanGreen/pkgs/container/urbangreen
+
+-   https://github.com/DhiaGhouma?tab=packages
+-   Or: https://github.com/DhiaGhouma/urbanGreen/pkgs/container/urbangreen
 
 ---
 
@@ -63,13 +65,13 @@ docker pull ghcr.io/dhiaghouma/urbangreen:latest
 
 ## 📊 Comparison
 
-| Feature | Docker Hub | GHCR |
-|---------|-----------|------|
-| **Secrets Needed** | Yes (blocked by GitHub) | No ✅ |
-| **Collaborator Access** | Need settings access | Works automatically ✅ |
-| **Free Tier** | Yes (with limits) | Unlimited for public repos ✅ |
-| **Integration** | External | Native GitHub ✅ |
-| **Image URL** | `docker.io/user/repo` | `ghcr.io/owner/repo` |
+| Feature                 | Docker Hub              | GHCR                          |
+| ----------------------- | ----------------------- | ----------------------------- |
+| **Secrets Needed**      | Yes (blocked by GitHub) | No ✅                         |
+| **Collaborator Access** | Need settings access    | Works automatically ✅        |
+| **Free Tier**           | Yes (with limits)       | Unlimited for public repos ✅ |
+| **Integration**         | External                | Native GitHub ✅              |
+| **Image URL**           | `docker.io/user/repo`   | `ghcr.io/owner/repo`          |
 
 ---
 
