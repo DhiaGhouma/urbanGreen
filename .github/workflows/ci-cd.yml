@@ -202,7 +202,8 @@ jobs:
           images: ghcr.io/${{ github.repository_owner }}/urbangreen
           tags: |
             type=ref,event=branch
-            type=sha,prefix={{branch}}-
+            type=ref,event=pr
+            type=sha,prefix=moetaz-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
