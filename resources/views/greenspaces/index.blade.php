@@ -64,7 +64,7 @@
                                     <a href="{{ route('greenspaces.show', $greenSpace) }}" class="btn btn-sm btn-outline-primary" title="Voir">
                                         <i class="fas fa-eye"></i>
                                     </a>
-+                                    <a href="{{ route('greenspaces.plants.index', $greenSpace) }}" class="btn btn-sm btn-outline-success" title="Plantes">
+                                    <a href="{{ route('greenspaces.plants.index', $greenSpace) }}" class="btn btn-sm btn-outline-success" title="Plantes">
 +                                        <i class="fas fa-seedling"></i>
 +                                    </a>
                                     <a href="{{ route('greenspaces.edit', $greenSpace) }}" class="btn btn-sm btn-outline-warning" title="Modifier">

@@ -14,6 +14,24 @@ return [
     |
     */
 
+    'waqi' => [
+        'token' => env('WAQI_API_TOKEN'),
+        'base_url' => 'https://api.waqi.info',
+    ],
+
+    'inaturalist' => [
+        'base_url' => 'https://api.inaturalist.org/v1',
+    ],
+
+    'nominatim' => [
+        'base_url' => 'https://nominatim.openstreetmap.org',
+        'user_agent' => env('APP_NAME', 'GreenSpaceApp') . '/1.0',
+    ],
+    'openweather' => [
+        'api_key' => env('OPENWEATHER_API_KEY'),
+        'base_url' => 'https://api.openweathermap.org/data/2.5',
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

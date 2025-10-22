@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Participation extends Model
 {
@@ -14,11 +15,13 @@ class Participation extends Model
         'user_id',
         'green_space_id',
         'date',
-        'statut'
+        'statut',
+        'preferences'
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
+        'preferences' => 'array',
     ];
 
     // Relationship with User
@@ -31,6 +34,11 @@ class Participation extends Model
     public function greenSpace(): BelongsTo
     {
         return $this->belongsTo(GreenSpace::class);
+    }
+
+    public function feedback(): HasOne
+    {
+        return $this->hasOne(ParticipationFeedback::class);
     }
 
     // Helper method for status badge styling

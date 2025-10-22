@@ -12,11 +12,16 @@
             <li class="breadcrumb-item active">{{ $plant->name }}</li>
         </ol>
     </nav>
-    <div class="d-flex justify-content-between align-items-center">
-        <h1><i class="fas fa-seedling me-2"></i>{{ $plant->name }}</h1>
-        <div class="btn-group">
-            <a href="{{ route('greenspaces.plants.edit', [$greenspace, $plant]) }}" class="btn btn-primary">
-                <i class="fas fa-edit me-2"></i>Modifier
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h1><i class="fas fa-seedling me-2"></i>{{ $plant->name }}</h1>
+            @if($plant->species)
+                <p class="text-muted mb-0">{{ $plant->species }}</p>
+            @endif
+        </div>
+        <div>
+            <a href="{{ route('greenspaces.plants.edit', [$greenspace, $plant]) }}" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i>Modifier
             </a>
             <form action="{{ route('greenspaces.plants.destroy', [$greenspace, $plant]) }}" 
                   method="POST" 
@@ -25,7 +30,7 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-outline-danger">
-                    <i class="fas fa-trash me-2"></i>Supprimer
+                    <i class="fas fa-trash me-1"></i>Supprimer
                 </button>
             </form>
         </div>

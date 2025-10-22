@@ -124,13 +124,15 @@
         }
 
         .nav-link {
-            font-weight: 500;
-            position: relative;
-            transition: all 0.3s ease;
-            border-radius: 25px;
-            padding: 8px 16px !important;
-            margin: 0 4px;
-        }
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 15px;     /* smaller pill radius */
+    padding: 6px 10px !important; /* reduce space inside */
+    margin: 0 2px;           /* tighter spacing between links */
+    font-size: 0.9rem;       /* optional: slightly smaller text */
+}
+
 
         .nav-link:hover {
             background: rgba(255,255,255,0.1);
@@ -725,6 +727,12 @@
                 <i class="fas fa-calendar-alt me-1"></i>Événements
             </a>
         </li>
+         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}"
+            href="{{ route('reports.index') }}">
+                <i class="fas fa-flag me-1"></i>Signalements
+            </a>
+        </li>
     </ul>
 
     <!-- Right side links -->
@@ -735,7 +743,7 @@
                 <i class="fas fa-users-cog me-1"></i>Team
             </a>
         </li>
-        
+
         @auth
             {{-- User is authenticated --}}
             <li class="nav-item dropdown">
@@ -761,22 +769,11 @@
                             <i class="fas fa-tachometer-alt me-2 text-info"></i>Tableau de bord
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin())
-                        <li><hr class="dropdown-divider"></li>
-                        <li class="dropdown-header">
-                            <i class="fas fa-crown me-1 text-warning"></i>Administration
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-users-cog me-2 text-danger"></i>Gestion des utilisateurs
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-chart-line me-2 text-success"></i>Statistiques
-                            </a>
-                        </li>
-                    @endif
+                    <li>
+                        <a class="dropdown-item {{ request()->routeIs('profile.show') ? 'active' : '' }}" href="{{ route('profile.show') }}">
+                            <i class="fas fa-id-badge me-2 text-primary"></i>Mon Profil
+                        </a>
+                    </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="POST" action="{{ route('auth.logout') }}" class="d-inline">

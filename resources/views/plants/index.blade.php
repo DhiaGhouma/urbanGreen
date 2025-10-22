@@ -58,27 +58,25 @@
                                             @endswitch
                                         </td>
                                         <td>{{ $plant->planted_at ? $plant->planted_at->format('d/m/Y') : '-' }}</td>
-                                        <td>
-                                            <div class="btn-group btn-group-sm" role="group">
-                                                <a href="{{ route('greenspaces.plants.show', [$greenspace, $plant]) }}" 
-                                                   class="btn btn-outline-info" title="Voir">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('greenspaces.plants.edit', [$greenspace, $plant]) }}" 
-                                                   class="btn btn-outline-primary" title="Modifier">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('greenspaces.plants.destroy', [$greenspace, $plant]) }}" 
-                                                      method="POST" 
-                                                      class="d-inline"
-                                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette plante ?')">
-                                                    @csrf
+                                        <td class="text-center">
+                                            <a href="{{ route('greenspaces.plants.show', [$greenspace, $plant]) }}" 
+                                               class="btn btn-sm btn-outline-primary" title="Voir">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('greenspaces.plants.edit', [$greenspace, $plant]) }}" 
+                                               class="btn btn-sm btn-outline-warning" title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('greenspaces.plants.destroy', [$greenspace, $plant]) }}" 
+                                                  method="POST" 
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette plante ?')">
+                                                @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-outline-danger" title="Supprimer">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
-                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -1,0 +1,77 @@
+# Node dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Composer dependencies
+vendor/
+
+# Environment and config
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Testing
+coverage/
+coverage-html/
+coverage.xml
+.phpunit.result.cache
+
+# Build artifacts
+/public/hot
+/public/storage
+/storage/*.key
+
+# Laravel specific
+/bootstrap/cache/*.php
+!/bootstrap/cache/.gitignore
+
+# Documentation
+README.md
+*.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+azure-pipelines.yml
+
+# Development files
+docker-compose.yml
+docker-compose.*.yml
+*.local.yml
+
+# Logs
+storage/logs/
+*.log
+
+# Python files (AI server - not needed in Docker)
+*.py
+__pycache__/
+*.pyc
+*.pyo
+*.pkl
+*.json.backup
+venv/
+.pytest_cache/
+
+# Other
+tests/
+phpunit.xml
+.phpunit.cache
