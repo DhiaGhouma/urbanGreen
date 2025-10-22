@@ -66,6 +66,18 @@ Route::middleware('auth.custom')->group(function () {
     Route::resource('associations', AssociationController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('greenspaces', GreenSpaceController::class);
+    // Green Spaces Environmental Data API Routes
+    Route::prefix('greenspaces')->group(function () {
+    Route::get('{greenspace}/weather', [GreenSpaceController::class, 'getWeather'])->name('greenspaces.weather');
+    Route::get('{greenspace}/air-quality', [GreenSpaceController::class, 'getAirQuality'])->name('greenspaces.air-quality');
+    Route::get('{greenspace}/activity-suitability', [GreenSpaceController::class, 'checkActivitySuitability'])->name('greenspaces.activity-suitability');
+    Route::get('{greenspace}/forecast', [GreenSpaceController::class, 'getForecast'])->name('greenspaces.forecast');
+    Route::get('{greenspace}/biodiversity', [GreenSpaceController::class, 'getBiodiversity'])->name('greenspaces.biodiversity');
+    Route::get('{greenspace}/species-stats', [GreenSpaceController::class, 'getSpeciesStats'])->name('greenspaces.species-stats');
+    Route::get('{greenspace}/dashboard', [GreenSpaceController::class, 'getEnvironmentalDashboard'])->name('greenspaces.dashboard');
+    });
+
+Route::get('greenspaces/geocode', [GreenSpaceController::class, 'geocode'])->name('greenspaces.geocode');
     Route::resource('participations', ParticipationController::class);
     Route::post('participations/{participation}/feedback', [ParticipationFeedbackController::class, 'store'])
         ->name('participations.feedback.store');
@@ -132,6 +144,7 @@ Route::middleware('auth.custom')->group(function () {
     // Ajouter une mise à jour à un signalement
     Route::post('/reports/{report}/updates', [ReportController::class, 'addUpdate'])->name('reports.update.add');
 
+
     // Assigner un signalement à une association (Admin seulement)
     Route::post('/reports/{report}/assign', [ReportController::class, 'assign'])->name('reports.assign');
 });
@@ -154,4 +167,5 @@ Route::middleware(['auth.custom', 'admin'])->prefix('admin')->name('admin.')->gr
     Route::post('/users/{user}/lock', [App\Http\Controllers\Admin\AdminController::class, 'lockUser'])->name('users.lock');
     Route::post('/users/{user}/unlock', [App\Http\Controllers\Admin\AdminController::class, 'unlockUser'])->name('users.unlock');
     Route::delete('/users/{user}', [App\Http\Controllers\Admin\AdminController::class, 'destroyUser'])->name('users.destroy');
+
 });
