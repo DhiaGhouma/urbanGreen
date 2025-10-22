@@ -139,7 +139,84 @@
                     @endforeach
                 @endif
             </div>
+
+        </div>
+        <div class="card mt-4">
+    <div class="card-header">
+        <i class="fas fa-leaf me-2"></i>Suggestions de Plantes
+    </div>
+    <div class="card-body" id="plantSuggestions">
+        <div class="text-center">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Chargement...</span>
+            </div>
         </div>
     </div>
 </div>
+    </div>
+</div>
 @endsection
+
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const lat = '{{ $greenspace->latitude }}';
+    const lng = '{{ $greenspace->longitude }}';
+    
+    if (lat && lng) {
+        fetch(`/api/plant-suggestions/${lat}/${lng}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const suggestionsHtml = `
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-temperature-high me-2"></i>
+                                    <span>Température actuelle: ${data.temperature}°C</span>
+                                    <span class="ms-3">Saison: ${data.season}</span>
+                                </div>
+                            </div>
+                            ${data.suggestions.map(plant => `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${plant.name}</h5>
+                                            <p class="card-text">
+                                                <strong>Type:</strong> ${plant.type}<br>
+                                                <strong>Température idéale:</strong> ${plant.ideal_temp}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    document.getElementById('plantSuggestions').innerHTML = suggestionsHtml;
+                } else {
+                    document.getElementById('plantSuggestions').innerHTML = `
+                        <div class="alert alert-warning">
+                            Impossible de charger les suggestions de plantes.
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                document.getElementById('plantSuggestions').innerHTML = `
+                    <div class="alert alert-danger">
+                        Une erreur est survenue lors du chargement des suggestions.
+                    </div>
+                `;
+            });
+    } else {
+        document.getElementById('plantSuggestions').innerHTML = `
+            <div class="alert alert-info">
+                Les coordonnées GPS sont nécessaires pour obtenir des suggestions de plantes.
+            </div>
+        `;
+    }
+});
+</script>
+@endpush
+
