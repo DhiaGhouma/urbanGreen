@@ -14,7 +14,7 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        // Accept either 200 (success) or 302 (redirect) as valid responses
+        // Accept either 200 (success) or 30233 (redirect) as valid responses
         $this->assertContains($response->status(), [200, 302]);
     }
 }
