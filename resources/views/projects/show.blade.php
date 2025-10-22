@@ -34,13 +34,13 @@
             </div>
             <div class="card-body">
                 <p class="lead">{{ $project->description }}</p>
-                
+
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="fw-bold text-muted">Association</label>
                             <div>
-                                <a href="{{ route('associations.show', $project->association) }}" 
+                                <a href="{{ route('associations.show', $project->association) }}"
                                    class="text-decoration-none">
                                     <i class="fas fa-users me-2"></i>{{ $project->association->name }}
                                 </a>
@@ -71,7 +71,7 @@
         </div>
 
         <!-- Section Participation -->
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0"><i class="fas fa-hands-helping me-2"></i>Participation</h5>
             </div>
@@ -96,6 +96,97 @@
                 </div>
             </div>
         </div>
+
+        <!-- Section Discussion -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-comments me-2"></i>Discussion du Projet
+                    <span class="badge bg-secondary ms-2">{{ $project->messages->count() }}</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                @auth
+                    <!-- Message Form -->
+                    <form method="POST" action="{{ route('projects.messages.store', $project) }}" class="mb-4">
+                        @csrf
+                        <div class="mb-3">
+                            <textarea
+                                name="message"
+                                class="form-control @error('message') is-invalid @enderror"
+                                rows="3"
+                                placeholder="Écrivez votre message..."
+                                required
+                            ></textarea>
+                            @error('message')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                        </button>
+                    </form>
+                @else
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <a href="{{ route('login') }}">Connectez-vous</a> pour participer à la discussion.
+                    </div>
+                @endauth
+
+                <hr>
+
+                <!-- Messages List -->
+                <div class="messages-list">
+                    @forelse($project->messages as $message)
+                        <div class="message-item border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="avatar-circle me-2">
+                                            {{ strtoupper(substr($message->user->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <strong>{{ $message->user->name }}</strong>
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-clock me-1"></i>{{ $message->created_at->diffForHumans() }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0 ms-5">{{ $message->message }}</p>
+                                </div>
+
+                                @auth
+                                    @if($message->user_id === auth()->id())
+                                        <form method="POST" action="{{ route('projects.messages.destroy', [$project, $message]) }}"
+                                              class="ms-2"
+                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce message ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endauth
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-comments fa-3x mb-3 opacity-50"></i>
+                            <p class="mb-0">Aucun message pour le moment. Soyez le premier à participer !</p>
+                        </div>
+                    @endforelse
+                </div>
+
+                @if($project->messages->count() > 5)
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-arrow-up me-1"></i>Faites défiler pour voir tous les messages
+                        </small>
+                    </div>
+                @endif
+            </div>
+        </div>
     </div>
 
     <!-- Sidebar -->
@@ -112,7 +203,7 @@
                         <div>Budget Total</div>
                     </div>
                 </div>
-                
+
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span>Progression</span>
                     @php
@@ -125,8 +216,15 @@
                     @endphp
                     <span class="fw-bold">{{ $progress }}%</span>
                 </div>
-                <div class="progress">
+                <div class="progress mb-3">
                     <div class="progress-bar bg-success" style="width: {{ $progress }}%"></div>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-comments me-2"></i>Messages</span>
+                    <span class="badge bg-primary">{{ $project->messages->count() }}</span>
                 </div>
             </div>
         </div>
@@ -148,10 +246,10 @@
                         <i class="fas fa-download me-2"></i>Exporter PDF
                     </button>
                 </div>
-                
+
                 <hr>
-                
-                <form method="POST" action="{{ route('projects.destroy', $project) }}" 
+
+                <form method="POST" action="{{ route('projects.destroy', $project) }}"
                       onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">
                     @csrf
                     @method('DELETE')
@@ -163,4 +261,49 @@
         </div>
     </div>
 </div>
+
+<style>
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.message-item:last-child {
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.messages-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.messages-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.messages-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.messages-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.messages-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
 @endsection

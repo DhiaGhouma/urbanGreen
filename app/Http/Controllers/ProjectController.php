@@ -66,11 +66,11 @@ class ProjectController extends Controller
             ->with('success', 'Projet créé avec succès.');
     }
 
-    public function show(Project $project): View
-    {
-        $project->load(['association', 'greenSpace']);
-        return view('projects.show', compact('project'));
-    }
+   public function show(Project $project): View
+{
+    $project->load(['association', 'greenSpace', 'messages']);
+    return view('projects.show', compact('project'));
+}
 
     public function edit(Project $project): View
     {

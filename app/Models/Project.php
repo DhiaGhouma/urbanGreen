@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
@@ -27,6 +28,11 @@ class Project extends Model
     public function greenSpace(): BelongsTo
     {
         return $this->belongsTo(GreenSpace::class);
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(ProjectMessage::class)->orderBy('created_at', 'desc');
     }
 
     public function getStatusBadgeClass(): string
