@@ -33,21 +33,10 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Create Database
-        run: |
-          mkdir -p database
-          touch database/database.sqlite
-
-      - name: Run Migrations
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
-        run: php artisan migrate --force
+      - name: Directory Permissions
+        run: chmod -R 775 storage bootstrap/cache
 
       - name: Execute tests (Unit and Feature tests) with coverage
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
         run: vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-html=coverage-html
 
       - name: Upload coverage to artifacts
