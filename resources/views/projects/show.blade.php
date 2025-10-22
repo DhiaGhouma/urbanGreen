@@ -818,7 +818,7 @@
 }
 
 .btn-action-warning {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #c0b92eff 0%, #e6e143ff 100%);
     color: white;
 }
 
@@ -829,7 +829,7 @@
 }
 
 .btn-action-info {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #23712cff 0%, #e4eee5ff 100%);
     color: white;
 }
 
@@ -850,7 +850,7 @@
 }
 
 .btn-action-danger {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #ef1717ff 0%, #f5576c 100%);
     color: white;
 }
 
