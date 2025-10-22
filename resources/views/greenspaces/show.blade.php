@@ -44,6 +44,13 @@
             </div>
         </div>
 
+        <!-- Environmental Widget -->
+        @if($greenspace->latitude && $greenspace->longitude)
+            <div class="mt-4">
+                @include('components.environmental-widget', ['greenSpaceId' => $greenspace->id])
+            </div>
+        @endif
+
         <div class="card mt-4">
             <div class="card-header">Avis des participants</div>
             <div class="card-body">
