@@ -55,19 +55,18 @@ RUN apk add --no-cache \
     zip \
     unzip
 
-# Install PHP extensions
-RUN apk add --no-cache --virtual .build-deps \
-    $PHPIZE_DEPS \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev \
-    oniguruma-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql pdo_sqlite gd zip bcmath opcache \
-    && apk del --no-network .build-deps
-
-# Install runtime libraries
+    # Install PHP extensions
+    RUN apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        freetype-dev \
+        libzip-dev \
+        oniguruma-dev \
+        sqlite-dev \
+        && docker-php-ext-configure gd --with-freetype --with-jpeg \
+        && docker-php-ext-install -j$(nproc) pdo pdo_mysql pdo_sqlite gd zip bcmath opcache \
+        && apk del --no-network .build-deps# Install runtime libraries
 RUN apk add --no-cache \
     libpng \
     libjpeg-turbo \
