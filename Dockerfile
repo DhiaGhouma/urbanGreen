@@ -50,14 +50,21 @@ RUN apk add --no-cache \
     supervisor \
     sqlite \
     sqlite-libs \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    zip \
-    libzip-dev \
+    libpng \
+    libjpeg-turbo \
+    freetype \
+    libzip \
     bash \
     git \
     curl \
+    zip \
+    # Build dependencies (will be removed after compilation)
+    && apk add --no-cache --virtual .build-deps \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    # Configure and install PHP extensions
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         pdo \
@@ -67,12 +74,8 @@ RUN apk add --no-cache \
         zip \
         bcmath \
         opcache \
-    && apk del --no-cache \
-        freetype-dev \
-        libpng-dev \
-        libjpeg-turbo-dev
-
-# Set working directory
+    # Remove build dependencies
+    && apk del .build-deps# Set working directory
 WORKDIR /var/www/html
 
 # Copy application code from composer-builder
@@ -113,7 +116,7 @@ EXPOSE 80
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost/health || exit 1
+    CMD curl -f http://localhost/health || exit 1
 
 # Start supervisor (manages both nginx and php-fpm)
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
