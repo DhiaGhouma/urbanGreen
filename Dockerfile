@@ -44,7 +44,7 @@ RUN composer dump-autoload --optimize --no-dev
 # Stage 3: Final production image
 FROM php:8.2-fpm-alpine
 
-# Install system dependencies and PHP extensions
+# Install runtime dependencies
 RUN apk add --no-cache \
     nginx \
     supervisor \
@@ -57,24 +57,24 @@ RUN apk add --no-cache \
     bash \
     git \
     curl \
-    zip \
-    # Build dependencies (will be removed after compilation)
-    && apk add --no-cache --virtual .build-deps \
+    zip
+
+# Install build dependencies and PHP extensions
+RUN apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
     libzip-dev \
-    # Configure and install PHP extensions
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
-    pdo \
-    pdo_mysql \
-    pdo_sqlite \
-    gd \
-    zip \
-    bcmath \
-    opcache \
-    # Remove build dependencies
+        pdo \
+        pdo_mysql \
+        pdo_sqlite \
+        gd \
+        zip \
+        bcmath \
+        opcache \
     && apk del .build-deps
 
 # Set working directory
