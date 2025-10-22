@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Laravel Application with Nginx
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: urbangreen-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/html/database/database.sqlite
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./database:/var/www/html/database
+    networks:
+      - urbangreen-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: MySQL Database (uncomment if needed)
+  # db:
+  #   image: mysql:8.0
+  #   container_name: urbangreen-db
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_DATABASE: urbangreen
+  #     MYSQL_ROOT_PASSWORD: secret
+  #     MYSQL_USER: urbangreen
+  #     MYSQL_PASSWORD: secret
+  #   volumes:
+  #     - db-data:/var/lib/mysql
+  #   networks:
+  #     - urbangreen-network
+  #   ports:
+  #     - "3306:3306"
+
+  # Optional: Redis Cache (uncomment if needed)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: urbangreen-redis
+  #   restart: unless-stopped
+  #   networks:
+  #     - urbangreen-network
+  #   ports:
+  #     - "6379:6379"
+
+networks:
+  urbangreen-network:
+    driver: bridge
+
+# volumes:
+#   db-data:
+#     driver: local
