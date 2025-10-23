@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GreenSpacePlantsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GreenSpaceMapController;
+use App\Http\Controllers\PlantSuggestionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProjectMessageController;
 
@@ -76,6 +77,7 @@ Route::middleware('auth.custom')->group(function () {
     Route::get('{greenspace}/biodiversity', [GreenSpaceController::class, 'getBiodiversity'])->name('greenspaces.biodiversity');
     Route::get('{greenspace}/species-stats', [GreenSpaceController::class, 'getSpeciesStats'])->name('greenspaces.species-stats');
     Route::get('{greenspace}/dashboard', [GreenSpaceController::class, 'getEnvironmentalDashboard'])->name('greenspaces.dashboard');
+    Route::get('/plants/{latitude}/{longitude}', [PlantSuggestionController::class, 'getSuggestions']);
     });
 
 Route::get('greenspaces/geocode', [GreenSpaceController::class, 'geocode'])->name('greenspaces.geocode');
