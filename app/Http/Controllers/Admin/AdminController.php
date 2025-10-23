@@ -33,7 +33,7 @@ class AdminController extends Controller
 
         // User registration trend (last 6 months)
         $userTrend = User::select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw('strftime("%Y-%m", created_at) as month'),
                 DB::raw('COUNT(*) as count')
             )
             ->where('created_at', '>=', now()->subMonths(6))
@@ -72,7 +72,7 @@ class AdminController extends Controller
 
         // Event registrations trend
         $eventRegistrations = EventRegistration::select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw('strftime("%Y-%m", created_at) as month'),
                 DB::raw('COUNT(*) as count')
             )
             ->where('created_at', '>=', now()->subMonths(6))
@@ -150,7 +150,7 @@ class AdminController extends Controller
         // Get participation trend
         $participationTrend = $user->participations()
             ->select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw('strftime("%Y-%m", created_at) as month'),
                 DB::raw('COUNT(*) as count')
             )
             ->where('created_at', '>=', now()->subMonths(6))
