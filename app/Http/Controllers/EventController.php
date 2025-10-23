@@ -337,8 +337,8 @@ public function show(Event $event)
         };
     }
 
-    /**
- * Generate event description using AI
+/**
+ * Generate event description using Google Gemini AI (FREE & POWERFUL)
  */
 public function generateDescription(Request $request)
 {
@@ -350,44 +350,93 @@ public function generateDescription(Request $request)
     ]);
 
     try {
-        $client = \OpenAI::client(env('OPENAI_API_KEY'));
-        
+        Log::info('=== DÉBUT GÉNÉRATION AVEC GOOGLE GEMINI ===');
+
+        $apiKey = env('GEMINI_API_KEY');
+        if (!$apiKey) {
+            throw new \Exception('GEMINI_API_KEY non configurée dans .env');
+        }
+
         // Construire le prompt
         $prompt = $this->buildPrompt($validated);
-        
-        // Appeler l'API OpenAI
-        $response = $client->chat()->create([
-            'model' => 'gpt-3.5-turbo',
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => 'Tu es un assistant spécialisé dans la rédaction de descriptions d\'événements écologiques et environnementaux. Tu écris de manière professionnelle, engageante et inspirante.'
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $prompt
-                ]
-            ],
-            'temperature' => 0.7,
-            'max_tokens' => 500,
-        ]);
+        Log::info('Prompt construit (longueur ' . strlen($prompt) . '): ' . mb_strimwidth($prompt, 0, 500, '...'));
 
-        $description = $response->choices[0]->message->content;
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+
+        // Appel API Gemini
+        $response = \Illuminate\Support\Facades\Http::withOptions([
+                'timeout' => 60,
+            ])
+            ->withHeaders([
+                'x-goog-api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+            ])
+            ->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ],
+                'generationConfig' => [
+                    'temperature' => 0.7,
+                    'maxOutputTokens' => 300,
+                ]
+            ]);
+
+        if ($response->failed()) {
+            Log::error('Erreur API Gemini: ' . $response->body());
+            $errorData = $response->json() ?: [];
+            $errorMessage = $errorData['error']['message'] ?? 'Erreur inconnue';
+            throw new \Exception("Erreur API Gemini: {$errorMessage}");
+        }
+
+        $data = $response->json();
+        Log::info('Réponse brute API Gemini: ' . json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+
+        // Extraction robuste du texte généré
+        
+        $description = $data['candidates'][0]['content'][0]['text'] ??
+                        ($data['candidates'][0]['output'][0]['text'] ??
+                        "Description temporaire non disponible.");
+        $description = trim($description);
+        
+        if (!$description) {
+            $description = '⚠️ Aucune description générée.';
+        }
+        $description = trim($description);
+
+        Log::info('Description générée avec succès (longueur ' . mb_strlen($description) . ')');
 
         return response()->json([
             'success' => true,
-            'description' => trim($description)
+            'description' => $description
         ]);
 
     } catch (\Exception $e) {
-        \Log::error('OpenAI Error: ' . $e->getMessage());
-        
+        Log::error('=== ERREUR COMPLÈTE ===');
+        Log::error('Message: ' . $e->getMessage());
+        Log::error('Trace: ' . $e->getTraceAsString());
+
+        $message = $e->getMessage();
+
+        if (str_contains($message, 'API key not valid')) {
+            $message = '❌ Clé API Gemini invalide. Vérifiez votre GEMINI_API_KEY dans le fichier .env';
+        } elseif (str_contains($message, 'quota')) {
+            $message = '⚠️ Quota Gemini atteint. Attendez quelques minutes avant de réessayer.';
+        } elseif (str_contains($message, 'timeout')) {
+            $message = '⏱️ Délai d\'attente dépassé. Réessayez dans quelques instants.';
+        }
+
         return response()->json([
             'success' => false,
-            'message' => 'Erreur lors de la génération. Veuillez réessayer.'
+            'message' => $message,
         ], 500);
     }
 }
+
+
 
 /**
  * Build the AI prompt based on event data
@@ -402,22 +451,12 @@ private function buildPrompt($data)
     
     $typeLabel = $typeLabels[$data['type']] ?? $data['type'];
     
-    $prompt = "Rédige une description engageante et professionnelle pour un événement de {$typeLabel} intitulé \"{$data['titre']}\" qui se déroulera à {$data['lieu']}.";
+    $prompt = "Écris une seule phrase en français pour décrire l'événement \"{$data['titre']}\" ({$typeLabel}) à {$data['lieu']}.";
     
     if (!empty($data['date_debut'])) {
         $date = \Carbon\Carbon::parse($data['date_debut'])->locale('fr')->isoFormat('LL');
         $prompt .= " L'événement aura lieu le {$date}.";
     }
-    
-    $prompt .= "\n\nLa description doit inclure :
-- Une introduction accrocheuse
-- Les objectifs de l'événement
-- Les activités prévues (3-4 activités concrètes)
-- Ce que les participants apprendront ou accompliront
-- Une phrase de conclusion motivante
-
-Format : Un seul paragraphe fluide et engageant de 150-200 mots, sans listes à puces.";
-
     return $prompt;
 }
 }
