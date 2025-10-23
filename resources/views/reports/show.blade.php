@@ -55,6 +55,28 @@
                 <h5 class="mb-2"><i class="fas fa-info-circle me-2"></i>Description</h5>
                 <p class="text-muted" style="white-space: pre-line;">{{ $report->description }}</p>
 
+                 {{-- ✅ Recommandation d’action IA --}}
+                @if($report->recommended_action)
+                    <div class="card mb-3 border-success">
+                        <div class="card-header bg-success text-white">
+                            <i class="fas fa-robot me-2"></i>Recommandation d’action (IA)
+                        </div>
+                        <div class="card-body">
+                            <p id="aiRecommendation" class="mb-0" style="white-space: pre-line;">
+                                {{ $report->recommended_action }}
+                            </p>
+
+                            {{-- Bouton pour régénérer la recommandation --}}
+                            <div class="text-end mt-2">
+                                <button id="refreshAI" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-sync-alt me-1"></i>Régénérer la recommandation IA
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Localisation --}}
                 @if($report->latitude && $report->longitude)
                     <div class="alert alert-info mt-3">
                         <h6 class="alert-heading mb-2">
@@ -186,6 +208,7 @@
 
 @section('scripts')
 <script>
+// Aperçu photo mise à jour
 document.getElementById('update_photo').addEventListener('change', function(e) {
     const file = e.target.files[0];
     const preview = document.getElementById('updatePhotoPreview');
@@ -198,5 +221,43 @@ document.getElementById('update_photo').addEventListener('change', function(e) {
         reader.readAsDataURL(file);
     }
 });
+
+// Recommandation IA - régénération
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('refreshAI');
+    console.log('Bouton refreshIA détecté :', btn);
+    if (btn) {
+        btn.addEventListener('click', function() {
+            console.log('Bouton cliqué pour refresh IA');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Génération...';
+
+            fetch("{{ route('reports.ai-refresh', $report) }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(res => {
+                console.log('Réponse fetch status:', res.status);
+                return res.json();
+            })
+            .then(data => {
+                console.log('Data reçue du serveur:', data);
+                document.getElementById('aiRecommendation').innerText = data.recommended_action;
+            })
+            .catch(err => {
+                console.error('Erreur fetch:', err);
+                alert('Erreur lors de la génération IA.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sync-alt me-1"></i>Régénérer la recommandation IA';
+            });
+        });
+    }
+});
+
 </script>
 @endsection

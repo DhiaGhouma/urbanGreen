@@ -153,6 +153,10 @@ Route::middleware('auth.custom')->group(function () {
 
     // Assigner un signalement à une association (Admin seulement)
     Route::post('/reports/{report}/assign', [ReportController::class, 'assign'])->name('reports.assign');
+
+    Route::post('/reports/{report}/ai-refresh', [ReportController::class, 'refreshAI'])
+    ->name('reports.ai-refresh');
+
 });
 
 // Route SHOW (doit toujours être après toutes les routes spécifiques)

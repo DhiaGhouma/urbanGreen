@@ -9,6 +9,7 @@ use App\Models\GreenSpace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class ReportController extends Controller
 {
@@ -80,6 +81,13 @@ class ReportController extends Controller
         }
 
         $report = Report::create($validated);
+
+        // Générer la recommandation via Gemini
+        $recommendedAction = $this->generateRecommendedAction($report);
+
+        if ($recommendedAction) {
+            $report->setRecommendedAction($recommendedAction);
+        }
 
         return redirect()->route('reports.show', $report)
                  ->with('success', 'Signalement créé avec succès.');
@@ -185,6 +193,78 @@ class ReportController extends Controller
         return redirect()->route('reports.show', $report)
                          ->with('success', 'Signalement assigné avec succès.');
     }
+
+private function generateRecommendedAction(Report $report, array &$logs = []): ?string
+{
+    $logs[] = "🔹 Début génération recommandation IA pour report ID {$report->id}";
+
+    try {
+        $response = Http::withOptions([
+            'verify' => false // 🔹 désactive la vérification SSL pour dev local
+        ])->withHeaders([
+            'x-goog-api-key' => env('GEMINI_API_KEY'),
+            'Content-Type' => 'application/json',
+        ])->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', [
+            'contents' => [
+                [
+                    'parts' => [
+                        [
+                            'text' => "Voici la description du signalement : {$report->description}. Donne une recommandation d'action appropriée et courte."
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            $recommended = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
+            $logs[] = "✅ Réponse Gemini: " . ($recommended ?? 'NULL');
+            return $recommended;
+        }
+
+        $logs[] = "⚠️ Gemini API non réussie: " . $response->body();
+        return null;
+
+    } catch (\Exception $e) {
+        $logs[] = "❌ Exception Gemini API: " . $e->getMessage();
+        return null;
+    }
+}
+
+public function refreshAI(Report $report)
+{
+    $logs = [];
+    $logs[] = "🔹 refreshAI appelé pour report ID {$report->id} par user ID " . auth()->id();
+
+    if (!auth()->user()->isAdmin() && $report->user_id !== auth()->id()) {
+        $logs[] = "⚠️ Accès refusé pour refreshAI, user ID " . auth()->id();
+        return response()->json([
+            'recommended_action' => null,
+            'logs' => $logs,
+            'error' => 'Accès refusé'
+        ], 403);
+    }
+
+    $recommendedAction = $this->generateRecommendedAction($report, $logs);
+
+    if ($recommendedAction) {
+        $report->setRecommendedAction($recommendedAction);
+        $logs[] = "✅ Recommandation IA mise à jour pour report ID {$report->id}";
+
+        return response()->json([
+            'recommended_action' => $recommendedAction,
+            'logs' => $logs
+        ]);
+    }
+
+    $logs[] = "❌ Erreur IA pour report ID {$report->id}";
+
+    return response()->json([
+        'recommended_action' => 'Erreur IA, réessayez.',
+        'logs' => $logs
+    ], 500);
+}
 
     
 }
