@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\WeatherService;
+use Illuminate\Support\Facades\Log;
+use OpenAI;
+use Carbon\Carbon;
+
 
 class EventController extends Controller
 {
@@ -332,4 +336,88 @@ public function show(Event $event)
             default => '#6c757d',
         };
     }
+
+    /**
+ * Generate event description using AI
+ */
+public function generateDescription(Request $request)
+{
+    $validated = $request->validate([
+        'titre' => 'required|string',
+        'type' => 'required|string',
+        'lieu' => 'required|string',
+        'date_debut' => 'nullable|string',
+    ]);
+
+    try {
+        $client = \OpenAI::client(env('OPENAI_API_KEY'));
+        
+        // Construire le prompt
+        $prompt = $this->buildPrompt($validated);
+        
+        // Appeler l'API OpenAI
+        $response = $client->chat()->create([
+            'model' => 'gpt-3.5-turbo',
+            'messages' => [
+                [
+                    'role' => 'system',
+                    'content' => 'Tu es un assistant spécialisé dans la rédaction de descriptions d\'événements écologiques et environnementaux. Tu écris de manière professionnelle, engageante et inspirante.'
+                ],
+                [
+                    'role' => 'user',
+                    'content' => $prompt
+                ]
+            ],
+            'temperature' => 0.7,
+            'max_tokens' => 500,
+        ]);
+
+        $description = $response->choices[0]->message->content;
+
+        return response()->json([
+            'success' => true,
+            'description' => trim($description)
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('OpenAI Error: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la génération. Veuillez réessayer.'
+        ], 500);
+    }
+}
+
+/**
+ * Build the AI prompt based on event data
+ */
+private function buildPrompt($data)
+{
+    $typeLabels = [
+        'plantation' => 'plantation d\'arbres',
+        'conference' => 'conférence',
+        'atelier' => 'atelier pratique'
+    ];
+    
+    $typeLabel = $typeLabels[$data['type']] ?? $data['type'];
+    
+    $prompt = "Rédige une description engageante et professionnelle pour un événement de {$typeLabel} intitulé \"{$data['titre']}\" qui se déroulera à {$data['lieu']}.";
+    
+    if (!empty($data['date_debut'])) {
+        $date = \Carbon\Carbon::parse($data['date_debut'])->locale('fr')->isoFormat('LL');
+        $prompt .= " L'événement aura lieu le {$date}.";
+    }
+    
+    $prompt .= "\n\nLa description doit inclure :
+- Une introduction accrocheuse
+- Les objectifs de l'événement
+- Les activités prévues (3-4 activités concrètes)
+- Ce que les participants apprendront ou accompliront
+- Une phrase de conclusion motivante
+
+Format : Un seul paragraphe fluide et engageant de 150-200 mots, sans listes à puces.";
+
+    return $prompt;
+}
 }
