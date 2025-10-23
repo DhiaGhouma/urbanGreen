@@ -359,18 +359,12 @@ public function generateDescription(Request $request)
 
         // Construire le prompt
         $prompt = $this->buildPrompt($validated);
-        Log::info('Prompt construit (longueur ' . strlen($prompt) . '): ' . mb_strimwidth($prompt, 0, 500, '...'));
+        Log::info('Prompt construit: ' . $prompt);
 
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={$apiKey}";
 
         // Appel API Gemini
-        $response = \Illuminate\Support\Facades\Http::withOptions([
-                'timeout' => 60,
-            ])
-            ->withHeaders([
-                'x-goog-api-key' => $apiKey,
-                'Content-Type' => 'application/json',
-            ])
+        $response = \Illuminate\Support\Facades\Http::timeout(60)
             ->post($url, [
                 'contents' => [
                     [
@@ -393,21 +387,33 @@ public function generateDescription(Request $request)
         }
 
         $data = $response->json();
-        Log::info('Réponse brute API Gemini: ' . json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+        Log::info('Réponse complète Gemini: ' . json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
 
-        // Extraction robuste du texte généré
+        // ✅ CORRECTION : Extraction correcte du texte généré
+        $description = null;
         
-        $description = $data['candidates'][0]['content'][0]['text'] ??
-                        ($data['candidates'][0]['output'][0]['text'] ??
-                        "Description temporaire non disponible.");
-        $description = trim($description);
-        
-        if (!$description) {
-            $description = ' Aucune description générée.';
+        // Structure standard de Gemini : candidates[0].content.parts[0].text
+        if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+            $description = $data['candidates'][0]['content']['parts'][0]['text'];
         }
-        $description = trim($description);
+        // Fallback 1
+        elseif (isset($data['candidates'][0]['content'][0]['text'])) {
+            $description = $data['candidates'][0]['content'][0]['text'];
+        }
+        // Fallback 2
+        elseif (isset($data['candidates'][0]['output'])) {
+            $description = $data['candidates'][0]['output'];
+        }
 
-        Log::info('Description générée avec succès (longueur ' . mb_strlen($description) . ')');
+        // Nettoyage et validation
+        $description = trim($description ?? '');
+        
+        if (empty($description)) {
+            Log::warning('Aucune description extraite de la réponse Gemini');
+            throw new \Exception('L\'IA n\'a pas pu générer de description. Veuillez réessayer.');
+        }
+
+        Log::info('✅ Description générée avec succès (longueur: ' . mb_strlen($description) . ')');
 
         return response()->json([
             'success' => true,
@@ -415,18 +421,19 @@ public function generateDescription(Request $request)
         ]);
 
     } catch (\Exception $e) {
-        Log::error('=== ERREUR COMPLÈTE ===');
+        Log::error('=== ERREUR GÉNÉRATION IA ===');
         Log::error('Message: ' . $e->getMessage());
         Log::error('Trace: ' . $e->getTraceAsString());
 
         $message = $e->getMessage();
 
-        if (str_contains($message, 'API key not valid')) {
-            $message = ' Clé API Gemini invalide. Vérifiez votre GEMINI_API_KEY dans le fichier .env';
+        // Messages d'erreur personnalisés
+        if (str_contains($message, 'API key not valid') || str_contains($message, 'API_KEY_INVALID')) {
+            $message = '🔑 Clé API Gemini invalide. Vérifiez votre GEMINI_API_KEY dans le fichier .env';
         } elseif (str_contains($message, 'quota')) {
-            $message = 'Quota Gemini atteint. Attendez quelques minutes avant de réessayer.';
+            $message = '⏳ Quota Gemini atteint. Attendez quelques minutes avant de réessayer.';
         } elseif (str_contains($message, 'timeout')) {
-            $message = ' Délai d\'attente dépassé. Réessayez dans quelques instants.';
+            $message = '⏰ Délai d\'attente dépassé. Réessayez dans quelques instants.';
         }
 
         return response()->json([
@@ -435,8 +442,6 @@ public function generateDescription(Request $request)
         ], 500);
     }
 }
-
-
 
 /**
  * Build the AI prompt based on event data
@@ -451,12 +456,19 @@ private function buildPrompt($data)
     
     $typeLabel = $typeLabels[$data['type']] ?? $data['type'];
     
-    $prompt = "Écris une seule phrase en français pour décrire l'événement \"{$data['titre']}\" ({$typeLabel}) à {$data['lieu']}.";
+    $prompt = "Rédige une description professionnelle et engageante en français (2-3 phrases maximum) pour un événement intitulé \"{$data['titre']}\" qui est un événement de type {$typeLabel} qui se tiendra à {$data['lieu']}.";
     
     if (!empty($data['date_debut'])) {
-        $date = \Carbon\Carbon::parse($data['date_debut'])->locale('fr')->isoFormat('LL');
-        $prompt .= " L'événement aura lieu le {$date}.";
+        try {
+            $date = \Carbon\Carbon::parse($data['date_debut'])->locale('fr')->isoFormat('LL');
+            $prompt .= " L'événement aura lieu le {$date}.";
+        } catch (\Exception $e) {
+            // Si parsing échoue, on continue sans la date
+        }
     }
+    
+    $prompt .= " La description doit être informative et donner envie de participer.";
+    
     return $prompt;
 }
 }
