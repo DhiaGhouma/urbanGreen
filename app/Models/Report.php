@@ -24,6 +24,7 @@ class Report extends Model
         'priority',
         'latitude',
         'longitude',
+        'recommended_action', // ajouté pour l'IA
     ];
 
     /**
@@ -62,7 +63,10 @@ class Report extends Model
             default      => 'badge-light',
         };
     }
-     // 🔹 Méthode manquante pour retourner une icône selon la catégorie
+
+    /**
+     * Retourne une icône selon la catégorie
+     */
     public function getCategoryIcon(): string
     {
         return match ($this->category) {
@@ -74,50 +78,56 @@ class Report extends Model
             default => '❓',
         };
     }
+
     public function getStatusLabel(): string
-{
-    return match ($this->statut) {
-        'en_attente' => 'En attente',
-        'en_cours' => 'En cours',
-        'termine' => 'Terminé',
-        default => 'Statut inconnu',
-    };
-}
+    {
+        return match ($this->statut) {
+            'en_attente' => 'En attente',
+            'en_cours' => 'En cours',
+            'termine' => 'Terminé',
+            default => 'Statut inconnu',
+        };
+    }
 
-public function getPriorityBadgeClass(): string
-{
-    return match ($this->priority) {
-        'faible' => 'badge badge-success',
-        'normale' => 'badge badge-primary',
-        'élevée' => 'badge badge-danger',
-        default => 'badge badge-secondary',
-    };
-}
+    public function getPriorityBadgeClass(): string
+    {
+        return match ($this->priority) {
+            'faible' => 'badge badge-success',
+            'normale' => 'badge badge-primary',
+            'élevée' => 'badge badge-danger',
+            default => 'badge badge-secondary',
+        };
+    }
 
-public function getPriorityLabel(): string
-{
-    return match ($this->priority) {
-        'faible'   => 'Faible',
-        'normale'  => 'Normale',
-        'élevée'   => 'Élevée',
-        default    => 'Inconnue',
-    };
-}
+    public function getPriorityLabel(): string
+    {
+        return match ($this->priority) {
+            'faible'   => 'Faible',
+            'normale'  => 'Normale',
+            'élevée'   => 'Élevée',
+            default    => 'Inconnue',
+        };
+    }
 
-public function getCategoryLabel(): string
-{
-    return match ($this->category) {
-        'dechets'     => 'Déchets',
-        'plantes'     => 'Plantes',
-        'infrastructures' => 'Infrastructures',
-        'autre'       => 'Autre',
-        default       => 'Inconnue',
-    };
-}
+    public function getCategoryLabel(): string
+    {
+        return match ($this->category) {
+            'dechets'         => 'Déchets',
+            'plantes'         => 'Plantes',
+            'infrastructures' => 'Infrastructures',
+            'autre'           => 'Autre',
+            default           => 'Inconnue',
+        };
+    }
 
-protected $casts = [
-    'date_signalement' => 'datetime',
-];
+    // Nouvelle méthode pour stocker une recommandation d'action
+    public function setRecommendedAction(string $action): void
+    {
+        $this->recommended_action = $action;
+        $this->save();
+    }
 
-
+    protected $casts = [
+        'date_signalement' => 'datetime',
+    ];
 }
