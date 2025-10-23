@@ -8,6 +8,11 @@ use App\Models\EventRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\WeatherService;
+use Illuminate\Support\Facades\Log;
+use OpenAI;
+use Carbon\Carbon;
+
 
 class EventController extends Controller
 {
@@ -118,19 +123,40 @@ class EventController extends Controller
     /**
      * Display the specified event.
      */
-    public function show(Event $event)
-    {
-        $event->load(['association', 'registrations.user']);
-        
-        $userRegistration = null;
-        if (Auth::check()) {
-            $userRegistration = $event->registrations()
-                                     ->where('user_id', Auth::id())
-                                     ->first();
-        }
-
-        return view('events.show', compact('event', 'userRegistration'));
+public function show(Event $event)
+{
+    $event->load(['association', 'registrations.user']);
+    
+    $userRegistration = null;
+    if (Auth::check()) {
+        $userRegistration = $event->registrations()
+                                 ->where('user_id', Auth::id())
+                                 ->first();
     }
+
+    // Obtenir la météo
+    $weatherService = new WeatherService();
+    $forecast = null;
+    $weatherAnalysis = null;
+    
+    // Vérifier si l'événement est dans le futur (moins de 16 jours)
+    $daysUntilEvent = now()->diffInDays($event->date_debut, false);
+    
+    if ($daysUntilEvent >= 0 && $daysUntilEvent <= 16) {
+        $forecast = $weatherService->getForecast(
+            $event->lieu . ($event->adresse ? ', ' . $event->adresse : ''),
+            $event->date_debut->format('Y-m-d H:i:s')
+        );
+        
+        if ($forecast) {
+            $weatherAnalysis = $weatherService->isFavorableWeather($forecast);
+            $weatherAnalysis['icon_url'] = $weatherService->getWeatherIconUrl($forecast['icon']);
+            $weatherAnalysis['should_reschedule'] = $weatherService->shouldSuggestReschedule($forecast);
+        }
+    }
+
+    return view('events.show', compact('event', 'userRegistration', 'forecast', 'weatherAnalysis'));
+}
 
     /**
      * Show the form for editing the specified event.
@@ -310,4 +336,139 @@ class EventController extends Controller
             default => '#6c757d',
         };
     }
+
+/**
+ * Generate event description using Google Gemini AI (FREE & POWERFUL)
+ */
+public function generateDescription(Request $request)
+{
+    $validated = $request->validate([
+        'titre' => 'required|string',
+        'type' => 'required|string',
+        'lieu' => 'required|string',
+        'date_debut' => 'nullable|string',
+    ]);
+
+    try {
+        Log::info('=== DÉBUT GÉNÉRATION AVEC GOOGLE GEMINI ===');
+
+        $apiKey = env('GEMINI_API_KEY');
+        if (!$apiKey) {
+            throw new \Exception('GEMINI_API_KEY non configurée dans .env');
+        }
+
+        // Construire le prompt
+        $prompt = $this->buildPrompt($validated);
+        Log::info('Prompt construit: ' . $prompt);
+
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={$apiKey}";
+
+        // Appel API Gemini
+        $response = \Illuminate\Support\Facades\Http::timeout(60)
+            ->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ],
+                'generationConfig' => [
+                    'temperature' => 0.7,
+                    'maxOutputTokens' => 300,
+                ]
+            ]);
+
+        if ($response->failed()) {
+            Log::error('Erreur API Gemini: ' . $response->body());
+            $errorData = $response->json() ?: [];
+            $errorMessage = $errorData['error']['message'] ?? 'Erreur inconnue';
+            throw new \Exception("Erreur API Gemini: {$errorMessage}");
+        }
+
+        $data = $response->json();
+        Log::info('Réponse complète Gemini: ' . json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+
+        // ✅ CORRECTION : Extraction correcte du texte généré
+        $description = null;
+        
+        // Structure standard de Gemini : candidates[0].content.parts[0].text
+        if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+            $description = $data['candidates'][0]['content']['parts'][0]['text'];
+        }
+        // Fallback 1
+        elseif (isset($data['candidates'][0]['content'][0]['text'])) {
+            $description = $data['candidates'][0]['content'][0]['text'];
+        }
+        // Fallback 2
+        elseif (isset($data['candidates'][0]['output'])) {
+            $description = $data['candidates'][0]['output'];
+        }
+
+        // Nettoyage et validation
+        $description = trim($description ?? '');
+        
+        if (empty($description)) {
+            Log::warning('Aucune description extraite de la réponse Gemini');
+            throw new \Exception('L\'IA n\'a pas pu générer de description. Veuillez réessayer.');
+        }
+
+        Log::info('✅ Description générée avec succès (longueur: ' . mb_strlen($description) . ')');
+
+        return response()->json([
+            'success' => true,
+            'description' => $description
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error('=== ERREUR GÉNÉRATION IA ===');
+        Log::error('Message: ' . $e->getMessage());
+        Log::error('Trace: ' . $e->getTraceAsString());
+
+        $message = $e->getMessage();
+
+        // Messages d'erreur personnalisés
+        if (str_contains($message, 'API key not valid') || str_contains($message, 'API_KEY_INVALID')) {
+            $message = '🔑 Clé API Gemini invalide. Vérifiez votre GEMINI_API_KEY dans le fichier .env';
+        } elseif (str_contains($message, 'quota')) {
+            $message = '⏳ Quota Gemini atteint. Attendez quelques minutes avant de réessayer.';
+        } elseif (str_contains($message, 'timeout')) {
+            $message = '⏰ Délai d\'attente dépassé. Réessayez dans quelques instants.';
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+        ], 500);
+    }
+}
+
+/**
+ * Build the AI prompt based on event data
+ */
+private function buildPrompt($data)
+{
+    $typeLabels = [
+        'plantation' => 'plantation d\'arbres',
+        'conference' => 'conférence',
+        'atelier' => 'atelier pratique'
+    ];
+    
+    $typeLabel = $typeLabels[$data['type']] ?? $data['type'];
+    
+    $prompt = "Rédige une description professionnelle et engageante en français (2-3 phrases maximum) pour un événement intitulé \"{$data['titre']}\" qui est un événement de type {$typeLabel} qui se tiendra à {$data['lieu']}.";
+    
+    if (!empty($data['date_debut'])) {
+        try {
+            $date = \Carbon\Carbon::parse($data['date_debut'])->locale('fr')->isoFormat('LL');
+            $prompt .= " L'événement aura lieu le {$date}.";
+        } catch (\Exception $e) {
+            // Si parsing échoue, on continue sans la date
+        }
+    }
+    
+    $prompt .= " La description doit être informative et donner envie de participer.";
+    
+    return $prompt;
+}
 }

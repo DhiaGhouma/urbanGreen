@@ -41,13 +41,13 @@
                             <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" required>
                                 <option value="">Sélectionner un type</option>
                                 <option value="plantation" {{ old('type') == 'plantation' ? 'selected' : '' }}>
-                                    🌱 Plantation
+                                     Plantation
                                 </option>
                                 <option value="conference" {{ old('type') == 'conference' ? 'selected' : '' }}>
-                                    🎤 Conférence
+                                     Conférence
                                 </option>
                                 <option value="atelier" {{ old('type') == 'atelier' ? 'selected' : '' }}>
-                                    🛠️ Atelier
+                                     Atelier
                                 </option>
                             </select>
                             @error('type')
@@ -55,17 +55,41 @@
                             @enderror
                         </div>
 
-                        <!-- Description -->
+                        <!-- Description AVEC BOUTON IA -->
                         <div class="col-12">
-                            <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="description" class="form-label mb-0">
+                                    Description <span class="text-danger">*</span>
+                                </label>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="generateDescriptionBtn">
+                                    <i class="fas fa-magic me-1"></i> Générer avec IA
+                                </button>
+                            </div>
+                            
                             <textarea class="form-control @error('description') is-invalid @enderror" 
                                       id="description" 
                                       name="description" 
-                                      rows="5" 
+                                      rows="8" 
                                       required>{{ old('description') }}</textarea>
+                            
+                            <small class="text-muted">
+                                <i class="fas fa-lightbulb me-1"></i>
+                                Astuce : Cliquez sur "Générer avec IA" pour créer une description professionnelle automatiquement
+                            </small>
+                            
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                            
+                            <!-- Loading indicator -->
+                            <div id="aiLoadingIndicator" class="mt-2" style="display: none;">
+                                <div class="alert alert-info d-flex align-items-center">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status">
+                                        <span class="visually-hidden">Chargement...</span>
+                                    </div>
+                                    <span>L'IA génère votre description... ⏳</span>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Date debut -->
@@ -212,5 +236,79 @@ function previewImage(event) {
 
 // Set minimum date to today
 document.getElementById('date_debut').min = new Date().toISOString().slice(0, 16);
+
+// ============================================
+// GÉNÉRATION IA DE DESCRIPTION
+// ============================================
+document.getElementById('generateDescriptionBtn').addEventListener('click', async function() {
+    // Récupérer les valeurs du formulaire
+    const titre = document.getElementById('titre').value;
+    const type = document.getElementById('type').value;
+    const lieu = document.getElementById('lieu').value;
+    const dateDebut = document.getElementById('date_debut').value;
+    
+    // Validation
+    if (!titre || !type || !lieu) {
+        alert(' Veuillez d\'abord remplir : Titre, Type et Lieu');
+        return;
+    }
+    
+    // Afficher le loader
+    const btn = this;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Génération...';
+    document.getElementById('aiLoadingIndicator').style.display = 'block';
+    
+    try {
+        // Appeler l'API
+        const response = await fetch('{{ route("events.generate-description") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                titre: titre,
+                type: type,
+                lieu: lieu,
+                date_debut: dateDebut
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Insérer la description générée
+            document.getElementById('description').value = data.description;
+            
+            // Animation de succès
+            const textarea = document.getElementById('description');
+            textarea.style.border = '2px solid #28a745';
+            setTimeout(() => {
+                textarea.style.border = '';
+            }, 2000);
+            
+            // Message de succès
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success mt-2';
+            successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i>Description générée avec succès ! Vous pouvez la modifier si besoin.';
+            document.getElementById('aiLoadingIndicator').insertAdjacentElement('afterend', successAlert);
+            
+            setTimeout(() => successAlert.remove(), 5000);
+        } else {
+            throw new Error(data.message || 'Erreur lors de la génération');
+        }
+        
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert(' Erreur lors de la génération de la description. Veuillez réessayer.');
+    } finally {
+        // Réinitialiser le bouton
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        document.getElementById('aiLoadingIndicator').style.display = 'none';
+    }
+});
 </script>
 @endsection
