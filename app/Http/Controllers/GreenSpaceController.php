@@ -54,10 +54,12 @@ class GreenSpaceController extends Controller
             'location' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'required|string|max:100',
-            'complexity_level' => 'required|in:débutant,intermédiaire,avancé',
+            //'complexity_level' => 'required|in:débutant,intermédiaire,avancé',
             'surface' => 'nullable|numeric|min:0',
             'status' => 'required|in:proposé,en cours,terminé',
             'activities' => 'nullable|array',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         // Geocode the location if coordinates not provided
@@ -71,7 +73,7 @@ class GreenSpaceController extends Controller
 
         GreenSpace::create($validated);
 
-        return redirect()->route('green-spaces.index')
+        return redirect()->route('greenspaces.index')
             ->with('success', 'Espace vert créé avec succès.');
     }
 
@@ -103,7 +105,7 @@ class GreenSpaceController extends Controller
             'location' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'required|string|max:100',
-            'complexity_level' => 'required|in:débutant,intermédiaire,avancé',
+            //'complexity_level' => 'required|in:débutant,intermédiaire,avancé',
             'surface' => 'nullable|numeric|min:0',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
@@ -113,7 +115,7 @@ class GreenSpaceController extends Controller
 
         $greenspace->update($validated);
 
-        return redirect()->route('green-spaces.show', $greenspace)
+        return redirect()->route('greenspaces.show', $greenspace)
             ->with('success', 'Espace vert modifié avec succès.');
     }
 
@@ -121,7 +123,7 @@ class GreenSpaceController extends Controller
     {
         $greenspace->delete();
 
-        return redirect()->route('green-spaces.index')
+        return redirect()->route('greenspaces.index')
             ->with('success', 'Espace vert supprimé avec succès.');
     }
 
