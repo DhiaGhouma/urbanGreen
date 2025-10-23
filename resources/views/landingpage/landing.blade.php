@@ -274,74 +274,75 @@
         </div>
 
         <div class="row g-5">
-            <div class="col-12">
-                <div class="card overflow-hidden border-primary border-opacity-25"
-                     style="background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(52, 211, 153, 0.05) 100%);">
-                    <div class="card-body p-5">
-                        <h3 class="h2 fw-bold mb-4 text-center">Place de la République</h3>
-                        <div class="row g-4 align-items-center">
-                            <div class="col-md-4 text-center">
-                                <div class="bg-light rounded-3 d-flex align-items-center justify-content-center mb-3"
-                                     style="height: 128px;">
-                                    <div class="text-muted">Avant</div>
-                                </div>
-                                <p class="fw-medium text-muted">Parking asphalté</p>
-                            </div>
+    <div class="col-12">
+        <div class="card overflow-hidden border-primary border-opacity-25"
+             style="background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(52, 211, 153, 0.05) 100%);">
+            <div class="card-body p-5">
+                <h3 class="h2 fw-bold mb-4 text-center">Jardin Passage</h3>
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-4 text-center">
+                        <img src="/Images/before2.png"
+                             alt="Parking asphalté avant transformation"
+                             class="img-fluid rounded-3 mb-3"
+                             style="height: 200px; width: 100%; object-fit: cover;">
+                        <p class="fw-medium text-muted">Parking asphalté</p>
+                    </div>
 
-                            <div class="col-md-4 d-flex justify-content-center">
-                                <i class="fas fa-arrow-right text-primary" style="font-size: 2rem;"></i>
-                            </div>
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <i class="fas fa-arrow-right text-primary" style="font-size: 2rem;"></i>
+                    </div>
 
-                            <div class="col-md-4 text-center">
-                                <div class="gradient-primary rounded-3 d-flex align-items-center justify-content-center mb-3"
-                                     style="height: 128px;">
-                                    <div class="text-white">Après</div>
-                                </div>
-                                <p class="fw-medium">Jardin urbain avec fontaine</p>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4 p-3 bg-primary bg-opacity-10 rounded-3">
-                            <p class="text-primary fw-semibold mb-0">Impact: 80% de réduction de température</p>
-                        </div>
+                    <div class="col-md-4 text-center">
+                        <img src="/Images/after1.jpg"
+                             alt="Jardin urbain avec fontaine après transformation"
+                             class="img-fluid rounded-3 mb-3"
+                             style="height: 200px; width: 100%; object-fit: cover;">
+                        <p class="fw-medium">Jardin urbain avec fontaine</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-12">
-                <div class="card overflow-hidden border-primary border-opacity-25"
-                     style="background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(52, 211, 153, 0.05) 100%);">
-                    <div class="card-body p-5">
-                        <h3 class="h2 fw-bold mb-4 text-center">Rue des Oliviers</h3>
-                        <div class="row g-4 align-items-center">
-                            <div class="col-md-4 text-center">
-                                <div class="bg-light rounded-3 d-flex align-items-center justify-content-center mb-3"
-                                     style="height: 128px;">
-                                    <div class="text-muted">Avant</div>
-                                </div>
-                                <p class="fw-medium text-muted">Murs aveugles</p>
-                            </div>
-
-                            <div class="col-md-4 d-flex justify-content-center">
-                                <i class="fas fa-arrow-right text-primary" style="font-size: 2rem;"></i>
-                            </div>
-
-                            <div class="col-md-4 text-center">
-                                <div class="gradient-primary rounded-3 d-flex align-items-center justify-content-center mb-3"
-                                     style="height: 128px;">
-                                    <div class="text-white">Après</div>
-                                </div>
-                                <p class="fw-medium">Murs végétalisés</p>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4 p-3 bg-primary bg-opacity-10 rounded-3">
-                            <p class="text-primary fw-semibold mb-0">Impact: Amélioration qualité de l'air</p>
-                        </div>
-                    </div>
+                <div class="text-center mt-4 p-3 bg-primary bg-opacity-10 rounded-3">
+                    <p class="text-primary fw-semibold mb-0">Impact: 80% de réduction de température</p>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card overflow-hidden border-primary border-opacity-25"
+             style="background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(52, 211, 153, 0.05) 100%);">
+            <div class="card-body p-5">
+                <h3 class="h2 fw-bold mb-4 text-center">Jardin japonais Monplaisir</h3>
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-4 text-center">
+                        <img src="/Images/before1.png"
+                             alt="Murs aveugles avant transformation"
+                             class="img-fluid rounded-3 mb-3"
+                             style="height: 200px; width: 100%; object-fit: cover;">
+                        <p class="fw-medium text-muted">Murs aveugles</p>
+                    </div>
+
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <i class="fas fa-arrow-right text-primary" style="font-size: 2rem;"></i>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+                        <img src="/Images/after2.jpg"
+                             alt="Murs végétalisés après transformation"
+                             class="img-fluid rounded-3 mb-3"
+                             style="height: 200px; width: 100%; object-fit: cover;">
+                        <p class="fw-medium">Murs végétalisés</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4 p-3 bg-primary bg-opacity-10 rounded-3">
+                    <p class="text-primary fw-semibold mb-0">Impact: Amélioration qualité de l'air</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     </section>
 
     <!-- Call to Action -->

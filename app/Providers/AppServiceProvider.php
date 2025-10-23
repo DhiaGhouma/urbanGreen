@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use App\Services\EnvironmentalDataService;
+use App\Models\Participation;
+use App\Observers\ParticipationObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Use Bootstrap 5 for pagination
         Paginator::useBootstrapFive();
+
+        // Register Participation Observer
+        Participation::observe(ParticipationObserver::class);
 
         $this->configureRateLimiting();
     }

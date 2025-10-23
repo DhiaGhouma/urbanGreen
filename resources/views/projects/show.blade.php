@@ -752,7 +752,7 @@
 }
 
 .custom-progress .progress-bar {
-    background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+    background: linear-gradient(90deg, #33694B 0%, #BAE8B6 100%);
     border-radius: 10px;
 }
 
@@ -768,7 +768,7 @@
 .stat-item-icon {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #33694B 0%, #1BAF8A 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -805,7 +805,7 @@
 }
 
 .actions-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #33694B 0%, #BAE8B6 100%);
     padding: 15px 20px;
 }
 
@@ -818,7 +818,7 @@
 }
 
 .btn-action-warning {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #c0b92eff 0%, #e6e143ff 100%);
     color: white;
 }
 
@@ -829,7 +829,7 @@
 }
 
 .btn-action-info {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #23712cff 0%, #e4eee5ff 100%);
     color: white;
 }
 
@@ -850,7 +850,7 @@
 }
 
 .btn-action-danger {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #ef1717ff 0%, #f5576c 100%);
     color: white;
 }
 
@@ -924,7 +924,7 @@
     top: 0;
     bottom: 0;
     width: 4px;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(180deg, #33694B 0%, #BAE8B6 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -942,13 +942,13 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    color: #718096;
+    color: #1BAF8A;
 }
 
 .spinner-dot {
     width: 8px;
     height: 8px;
-    background: #667eea;
+    background: #1BAF8A;
     border-radius: 50%;
     margin: 0 4px;
     animation: pulse 1.4s infinite ease-in-out;
@@ -974,61 +974,4 @@
 }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-scroll to bottom of messages on load
-    const messagesList = document.getElementById('messagesList');
-    if (messagesList && messagesList.children.length > 0) {
-        messagesList.scrollTop = messagesList.scrollHeight;
-    }
-
-    // Character counter for textarea
-    const messageInput = document.getElementById('messageInput');
-    if (messageInput) {
-        messageInput.addEventListener('input', function() {
-            const currentLength = this.value.length;
-            const maxLength = 1000;
-
-            // You can add a character counter here if desired
-            if (currentLength > maxLength) {
-                this.value = this.value.substring(0, maxLength);
-            }
-        });
-
-        // Auto-resize textarea
-        messageInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
-    }
-
-    // Smooth scroll animation for new messages
-    const form = document.getElementById('messageForm');
-    if (form) {
-        form.addEventListener('submit', function() {
-            // Add loading state to button
-            const submitBtn = this.querySelector('.btn-send-message');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Envoi...';
-            }
-        });
-    }
-
-    // Add animation class to messages on scroll
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-
-    document.querySelectorAll('.message-bubble').forEach(bubble => {
-        observer.observe(bubble);
-    });
-});
-</script>
 @endsection
