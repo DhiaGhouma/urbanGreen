@@ -403,7 +403,7 @@ public function generateDescription(Request $request)
         $description = trim($description);
         
         if (!$description) {
-            $description = '⚠️ Aucune description générée.';
+            $description = ' Aucune description générée.';
         }
         $description = trim($description);
 
@@ -422,11 +422,11 @@ public function generateDescription(Request $request)
         $message = $e->getMessage();
 
         if (str_contains($message, 'API key not valid')) {
-            $message = '❌ Clé API Gemini invalide. Vérifiez votre GEMINI_API_KEY dans le fichier .env';
+            $message = ' Clé API Gemini invalide. Vérifiez votre GEMINI_API_KEY dans le fichier .env';
         } elseif (str_contains($message, 'quota')) {
-            $message = '⚠️ Quota Gemini atteint. Attendez quelques minutes avant de réessayer.';
+            $message = 'Quota Gemini atteint. Attendez quelques minutes avant de réessayer.';
         } elseif (str_contains($message, 'timeout')) {
-            $message = '⏱️ Délai d\'attente dépassé. Réessayez dans quelques instants.';
+            $message = ' Délai d\'attente dépassé. Réessayez dans quelques instants.';
         }
 
         return response()->json([

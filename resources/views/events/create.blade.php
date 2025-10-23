@@ -41,13 +41,13 @@
                             <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" required>
                                 <option value="">Sélectionner un type</option>
                                 <option value="plantation" {{ old('type') == 'plantation' ? 'selected' : '' }}>
-                                    🌱 Plantation
+                                     Plantation
                                 </option>
                                 <option value="conference" {{ old('type') == 'conference' ? 'selected' : '' }}>
-                                    🎤 Conférence
+                                     Conférence
                                 </option>
                                 <option value="atelier" {{ old('type') == 'atelier' ? 'selected' : '' }}>
-                                    🛠️ Atelier
+                                     Atelier
                                 </option>
                             </select>
                             @error('type')
@@ -62,7 +62,7 @@
                                     Description <span class="text-danger">*</span>
                                 </label>
                                 <button type="button" class="btn btn-sm btn-outline-primary" id="generateDescriptionBtn">
-                                    <i class="fas fa-magic me-1"></i>✨ Générer avec IA
+                                    <i class="fas fa-magic me-1"></i> Générer avec IA
                                 </button>
                             </div>
                             
@@ -249,7 +249,7 @@ document.getElementById('generateDescriptionBtn').addEventListener('click', asyn
     
     // Validation
     if (!titre || !type || !lieu) {
-        alert('⚠️ Veuillez d\'abord remplir : Titre, Type et Lieu');
+        alert(' Veuillez d\'abord remplir : Titre, Type et Lieu');
         return;
     }
     
@@ -302,7 +302,7 @@ document.getElementById('generateDescriptionBtn').addEventListener('click', asyn
         
     } catch (error) {
         console.error('Erreur:', error);
-        alert('❌ Erreur lors de la génération de la description. Veuillez réessayer.');
+        alert(' Erreur lors de la génération de la description. Veuillez réessayer.');
     } finally {
         // Réinitialiser le bouton
         btn.disabled = false;
