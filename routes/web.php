@@ -37,6 +37,7 @@ Route::middleware('auth.custom')->group(function () {
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile.show');
     Route::patch('/profile', [AuthController::class, 'updateProfile'])->name('auth.profile.update');
     Route::patch('/password', [AuthController::class, 'changePassword'])->name('auth.password.change');
+    Route::post('/events/generate-description', [EventController::class, 'generateDescription'])->name('events.generate-description');
 });
 
 // =============================================================================
