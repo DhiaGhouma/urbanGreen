@@ -42,7 +42,8 @@
                                    class="form-control @error('species') is-invalid @enderror"
                                    id="species"
                                    name="species"
-                                   value="{{ old('species') }}">
+                                   value="{{ old('species') }}"
+                                   placeholder="Ex: Ficus Benjamina">
                             @error('species')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -128,4 +129,86 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const fields = {
+        name: {
+            el: document.getElementById('name'),
+            validate: value => value.trim().length >= 3,
+            message: 'Le nom doit contenir au moins 3 caractères.'
+        },
+        species: {
+            el: document.getElementById('species'),
+            validate: value => /^[A-Za-zÀ-ÿ\s-]+$/.test(value) || value.trim() === '',
+            message: "L'espèce ne doit contenir que des lettres, espaces ou tirets."
+        },
+        quantity: {
+            el: document.getElementById('quantity'),
+            validate: value => parseInt(value) > 0 && parseInt(value) <= 1000,
+            message: 'La quantité doit être comprise entre 1 et 1000.'
+        },
+        planted_at: {
+            el: document.getElementById('planted_at'),
+            validate: value => {
+                if (!value) return true; // champ optionnel
+                const date = new Date(value);
+                const today = new Date();
+                return date <= today;
+            },
+            message: 'La date de plantation ne peut pas être dans le futur.'
+        }
+    };
+
+    // Crée un conteneur d’erreur sous chaque champ
+    Object.values(fields).forEach(f => {
+        const feedback = document.createElement('div');
+        feedback.className = 'invalid-feedback';
+        f.el.parentNode.appendChild(feedback);
+        f.feedback = feedback;
+
+        f.el.addEventListener('input', () => validateField(f));
+    });
+
+    // Empêche la saisie de caractères non valides dans "Espèce"
+    fields.species.el.addEventListener('keypress', function (e) {
+        const regex = /^[A-Za-zÀ-ÿ\s-]$/;
+        if (!regex.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    // Validation individuelle
+    function validateField(f) {
+        const value = f.el.value;
+        const valid = f.validate(value);
+
+        if (!valid) {
+            f.el.classList.add('is-invalid');
+            f.el.classList.remove('is-valid');
+            f.feedback.textContent = f.message;
+        } else {
+            f.el.classList.remove('is-invalid');
+            f.el.classList.add('is-valid');
+            f.feedback.textContent = '';
+        }
+        return valid;
+    }
+
+    // Validation globale avant soumission
+    form.addEventListener('submit', function (e) {
+        let allValid = true;
+        Object.values(fields).forEach(f => {
+            if (!validateField(f)) allValid = false;
+        });
+        if (!allValid) {
+            e.preventDefault();
+            alert('Veuillez corriger les erreurs avant de soumettre le formulaire.');
+        }
+    });
+});
+</script>
 @endsection

@@ -78,6 +78,8 @@ Route::middleware('auth.custom')->group(function () {
     Route::get('{greenspace}/species-stats', [GreenSpaceController::class, 'getSpeciesStats'])->name('greenspaces.species-stats');
     Route::get('{greenspace}/dashboard', [GreenSpaceController::class, 'getEnvironmentalDashboard'])->name('greenspaces.dashboard');
     Route::get('/plants/{latitude}/{longitude}', [PlantSuggestionController::class, 'getSuggestions']);
+    Route::get('/plant-suggestions/{lat}/{lon}', [PlantSuggestionController::class, 'getSuggestions']);
+
     });
 
 Route::get('greenspaces/geocode', [GreenSpaceController::class, 'geocode'])->name('greenspaces.geocode');
